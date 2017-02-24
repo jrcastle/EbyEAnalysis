@@ -1,6 +1,7 @@
 N="2"
 ETA="eta1.0"
 EBYESE="/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/plotMaking/MinBias_PixelTracking/EbyESE"
+ROOUNFOLD="/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold"
 OUT="!!! PROGRESS:"
 
 cd /home/j550c590/CMSSW_7_5_8_patch2/src/
@@ -21,7 +22,7 @@ do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold"); 
+gSystem->Load("$ROOUNFOLD/libRooUnfold"); 
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -43,7 +44,7 @@ do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerangGaussResp_JamesUnfold.C++
 UnfoldDataBoomerangGaussResp_JamesUnfold($N)
 EOF
@@ -63,7 +64,7 @@ do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/clusCompatTune/newCCTune2pct/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/clusCompatTune/newCCTune2pct/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -83,7 +84,7 @@ do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/tkQuality/loose/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/tkQuality/loose/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -103,7 +104,7 @@ do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/tkQuality/tight/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/tkQuality/tight/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -123,7 +124,7 @@ do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/vtxCut/vtx3_15/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/vtxCut/vtx3_15/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -143,7 +144,7 @@ do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/vtxCut/vtx_leq_3/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/systematicStudies/vtxCut/vtx_leq_3/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++ 
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -199,8 +200,6 @@ root -l -b<<EOF
 .x statUncertVtx_leq_3.C
 EOF
 
-####################################
-
 ##-- v$N/runAnalysis.sh
 echo "$OUT v$N/runAnalysis.sh (22/44)"
 cd $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults
@@ -212,7 +211,7 @@ cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -236,7 +235,7 @@ cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/vtxCut/vtx_leq_3/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/vtxCut/vtx_leq_3/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -253,7 +252,7 @@ cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/vtxCut/vtx3_15/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/vtxCut/vtx3_15/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -277,7 +276,7 @@ cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/clusCompatTune/newCCTune2pct/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/clusCompatTune/newCCTune2pct/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -301,7 +300,7 @@ cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/tkQuality/loose/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/tkQuality/loose/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -318,7 +317,7 @@ cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/tkQuality/tight/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/tkQuality/tight/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_JamesUnfold.C++
 UnfoldDataBoomerang_JamesUnfold($N)
 EOF
@@ -344,40 +343,28 @@ cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerangGaussResp_JamesUnfold.C++
 UnfoldDataBoomerangGaussResp_JamesUnfold($N)
 EOF
 cp txt/PbPb_2015/data/data$N.root $EBYESE/boomerangPlots/v$N/$ETA/UnfoldResults/dataResp/data${N}Gauss.root
 
-#### ##-- v$N/Unfolding_dosys
-#### echo "$OUT v$N/Unfolding_dosys (40/44)"
-#### cd $EBYESE/unfoldingv$N
-#### cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
-#### cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
-#### root -l -b<<EOF
-#### gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
-#### .L UnfoldDataBoomerang_DoSys.C++
-#### UnfoldDataBoomerang_DoSys($N)
-#### EOF
-#### cp txt/PbPb_2015/data/data$N.root $EBYESE/boomerangPlots/v$N/$ETA/UnfoldResults/dataResp/data${N}_dosys.root
-
 ##-- v$N/systematics/sysRespEl.C
-echo "$OUT v$N/systematics/sysRespEl.C (41/44)"
+echo "$OUT v$N/systematics/sysRespEl.C (40/44)"
 cd $EBYESE/boomerangPlots/v$N/$ETA/systematicStudies/responseElements
 root -l -b<<EOF
 .x sysRespEl.C
 EOF
 
 ##-- statErrorHandle/SVDUnfold
-echo "$OUT statErrorHandle/SVDUnfolding (42/44)"
+echo "$OUT statErrorHandle/SVDUnfolding (41/44)"
 cd $EBYESE/unfoldingv$N
 for (( SPLIT=0; SPLIT < 10; SPLIT++ ))
 do
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/AnalyzerResults/CastleEbyE_Split${SPLIT}.root data/PbPb_2015/data/CastleEbyE.root
 cp $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors_Split${SPLIT}.root DDResp/dataDrivenResponseAndPriors.root
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_SVD.C++
 UnfoldDataBoomerang_SVD($N)
 EOF
@@ -385,22 +372,42 @@ cp txt/PbPb_2015/data/data$N.root $EBYESE/boomerangPlots/statErrorHandle/v$N/$ET
 done
 
 ##-- statErrorHandle/SVDUnfold/statuncertassess 
-echo "$OUT statErrorHandle/statUncertAssessSVD.C (43/44)"
+echo "$OUT statErrorHandle/statUncertAssessSVD.C (42/44)"
 cd $EBYESE/boomerangPlots/statErrorHandle/v$N/$ETA
 root -l -b<<EOF
 .x statUncertAssessSVD.C
 EOF
 
 ##-- v$N/SVDUnfolding
-echo "$OUT v$N/SVDUnfolding (44/44)"
+echo "$OUT v$N/SVDUnfolding (43/44)"
 cd $EBYESE/unfoldingv$N
 cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
 cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 root -l -b<<EOF
-gSystem->Load("/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/libRooUnfold");
+gSystem->Load("$ROOUNFOLD/libRooUnfold");
 .L UnfoldDataBoomerang_SVD.C++
 UnfoldDataBoomerang_SVD($N)
 EOF
 cp txt/PbPb_2015/data/data$N.root $EBYESE/boomerangPlots/v$N/$ETA/UnfoldResults/dataResp/data${N}_svd.root
+
+##################### STOP! #####################
+# Do not run the next steup until you set 
+# _dosys = 1 in $ROOUNFOLD/src/RooUnfoldBayes.cxx 
+# and then recompile:
+# cd $ROOUNFOLD
+# make
+#################################################  
+
+##-- v$N/Unfolding_dosys
+#### echo "$OUT v$N/Unfolding_dosys (44/44)"
+#### cd $EBYESE/unfoldingv$N
+#### cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
+#### cp $EBYESE/boomerangPlots/v$N/$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
+#### root -l -b<<EOF
+#### gSystem->Load("$ROOUNFOLD/libRooUnfold");
+#### .L UnfoldDataBoomerang_DoSys.C++
+#### UnfoldDataBoomerang_DoSys($N)
+#### EOF
+#### cp txt/PbPb_2015/data/data$N.root $EBYESE/boomerangPlots/v$N/$ETA/UnfoldResults/dataResp/data${N}_dosys.root
 
 echo "$OUT Job finished at $(date)"
