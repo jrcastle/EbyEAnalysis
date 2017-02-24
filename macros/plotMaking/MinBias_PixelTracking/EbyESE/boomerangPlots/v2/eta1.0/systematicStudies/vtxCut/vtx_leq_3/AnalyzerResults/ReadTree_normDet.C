@@ -89,7 +89,7 @@ void ReadTree_normDet(){
   TH1I::SetDefaultSumw2();
 
   //-- Set up analyzer objects
-  fAna = new TFile("/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx_leq_3.root");
+  fAna = new TFile( fAnaTreeNameVtx_leq_3 );
 
   tree   = (TTree *) fAna->Get("ebyeana/tree");
   sumwqx = new TH2D(Form("sumwqx%i", norder_), Form("sumwqx%i", norder_), nptbinsDefault, ptbinsDefault, netabinsDefault, etabinsDefault);

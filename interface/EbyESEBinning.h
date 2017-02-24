@@ -15,42 +15,27 @@ using namespace std;
 namespace ebyese{
 
   //-- Analyzer output tree
-  const TString fAnaTreeName = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel.root";
-  const TString fileSplit    = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/SplitTree.root";
+  const TString fAnaTreeName          = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel.root";
+  const TString fAnaTreeNameNewCC     = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewCCTune_2pct.root";
+  const TString fAnaTreeNameTkQLoose  = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_loose.root";
+  const TString fAnaTreeNameTkQTight  = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_tight.root";
+  const TString fAnaTreeNameVtx3_15   = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx3_15.root";
+  const TString fAnaTreeNameVtx_leq_3 = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx_leq_3.root";
+  const TString fileSplit             = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/SplitTree.root";
 
   //-- Analyzer pt binning
-  //static const int    nptbinsDefault = 7;
-  //const double ptbinsDefault[] = {
-  //  0.30,    0.50,    1.00,    1.25,    1.50,
-  //  2.00,    2.50,    3.00
-  //};
   static const int    nptbinsDefault = 2;
   const double ptbinsDefault[] = {
     0.30,    1.00,    3.00
   };
 
   //-- Analyzer eta binning
-  //static const int    netabinsDefault = 14;
-  //const double etabinsDefault[] = {
-  //  -2.4,     -2.0,     -1.6,     -1.2,     -1.0,
-  //  -0.8,     -0.4,      0.0,      0.4,      0.8,
-  //   1.0,      1.2,      1.6,      2.0,      2.4
-  //};
   static const int    netabinsDefault = 4;
   const double etabinsDefault[] = {
     -2.4,    -1.0,    0.0,    1.0,    2.4
   };
 
   //-- Unfolding pt binning 
-  //static const int NPT  = 7;
-  //const double pt_min[NPT] = {
-  //  0.30,    0.50,    1.00,    1.25,    1.50,
-  //  2.00,    2.50
-  //};
-  //const double pt_max[NPT] ={
-  //  0.50,    1.00,    1.25,    1.50,    2.00,
-  //  2.50,    3.00
-  //};
   static const int NPT  = 2;
   const double pt_min[NPT] = {
     0.30,    1.00

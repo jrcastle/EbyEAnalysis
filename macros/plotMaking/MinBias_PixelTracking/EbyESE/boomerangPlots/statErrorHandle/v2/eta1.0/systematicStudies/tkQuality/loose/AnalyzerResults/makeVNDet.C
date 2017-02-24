@@ -66,7 +66,7 @@ void makeVNDet(){
 
 
   //-- Set up the analyzer objects
-  fAna = new TFile("/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_loose.root");
+  fAna = new TFile( fAnaTreeNameTkQLoose );
 
   tree = (TTree*) fAna->Get("ebyeana/tree");
   sumwqx = new TH2D(Form("sumwqx%i", norder_), Form("sumwqx%i", norder_), nptbinsDefault, ptbinsDefault, netabinsDefault, etabinsDefault);
