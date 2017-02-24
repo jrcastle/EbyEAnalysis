@@ -1,0 +1,14 @@
+__init__.py
+*.pyc
+.*.swp
+.#*
+#*#
+*~
+*.pdf
+*.png
+*.d
+*.so
+*.pcm
+*.o
+.svn/
+*.out

@@ -1,0 +1,20 @@
+import FWCore.ParameterSet.Config as cms
+multcentana = cms.EDAnalyzer("MultCentAnalyzer",
+                             vertexTag_               = cms.untracked.InputTag("hiSelectedVertex"),
+                             CentralityTag_           = cms.untracked.InputTag("hiCentrality"),
+                             CentralityBinTag_        = cms.untracked.InputTag("centralityBin","HFtowers"),
+                             ClusterCompatibilityTag_ = cms.untracked.InputTag("hiClusterCompatibility"),
+                             CentBinCompression_      = cms.untracked.int32(5),
+                             trackTag_                = cms.untracked.InputTag("hiGeneralTracks"),
+                             minpt_                   = cms.untracked.double(0.),
+                             maxpt_                   = cms.untracked.double(8.0),
+                             minet_                   = cms.untracked.double(-1.),
+                             maxet_                   = cms.untracked.double(-1.),
+                             etaMax_                  = cms.untracked.double(2.4),
+                             minvz_                   = cms.untracked.double(-15.),
+                             maxvz_                   = cms.untracked.double(15.),
+                             nvtx_                    = cms.untracked.int32(100),
+                             trackQualityCuts_        = cms.untracked.int32(1),
+                             usePixelTeff_            = cms.untracked.bool(False),
+                             effTable_                = cms.untracked.string('')
+                             )
