@@ -15,16 +15,15 @@
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/HiEvtPlaneList.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyECumu.h"
-#include "HeavyIonsAnalysis/EbyEAnalysis/interface/ATLAS_PV2.h"
 #include "/home/j550c590/tdrstyle.C"
 
 #include <iostream>
 
 using namespace hi;
 using namespace ebyese;
-using namespace atlas_pv2;
 
 int BIN = 1;
+string fname = "EllPFits_Linear_Test2.root";
 /*
 double pEllP(double * x, double * par){
 
@@ -88,20 +87,20 @@ void FitPvn(){
 
   bool dosys       = 0;
   bool ATLAS       = 1;
-  bool fixKn       = 0;
+  bool fixKn       = 1;
   bool fixAlpha    = 0;
   bool russianFits = 0;
   // kn 0.40
   // al 71.1
   // e0 .17
   //-- Free kn
-  double knGuess[NCENT] = {16.2,  16.2,  16.2,  0.48,    0.38, 0.37, 0.37, 0.34, 0.32, 0.29, 0.28, 0.28};
-  double alGuess[NCENT] = {2.8e5, 2.8e5, 2.8e5, 90.0,    63.0, 47.0, 41.0, 30.0, 20.0, 12.0, 11.0, 8.0};
-  double e0Guess[NCENT] = {0.0,   0.0,   0.0,   0.13,    0.19, 0.22, 0.23, 0.26, 0.29, 0.30, 0.31, 0.30};
+  //double knGuess[NCENT] = {16.2,  16.2,  16.2,  0.48,    0.38, 0.37, 0.37, 0.34, 0.32, 0.29, 0.28, 0.28};
+  //double alGuess[NCENT] = {2.8e5, 2.8e5, 2.8e5, 90.0,    63.0, 47.0, 41.0, 30.0, 20.0, 12.0, 11.0, 8.0};
+  //double e0Guess[NCENT] = {0.0,   0.0,   0.0,   0.13,    0.19, 0.22, 0.23, 0.26, 0.29, 0.30, 0.31, 0.30};
   //-- ATLAS KN
-  //double knGuess[NCENT] = {16.2,  16.2,  16.2,     0.441, 0.394, 0.392, 0.364, 0.352, 0.344, 0.315, 0.280, 0.260};
-  //double alGuess[NCENT] = {2.8e5, 2.8e5, 2.8e5,    44.0,  35.1,  28.3,  23.4,  19.1,  16.6,  14.6,  13.6,  13.8};
-  //double e0Guess[NCENT] = {0.0,   0.0,   0.0,      0.215, 0.248, 0.272, 0.288, 0.294, 0.296, 0.290, 0.281, 0.271};
+  double knGuess[NCENT] = {16.2,  16.2,  16.2,     0.441, 0.394, 0.392, 0.364, 0.352, 0.344, 0.315, 0.280, 0.260};
+  double alGuess[NCENT] = {2.8e5, 2.8e5, 2.8e5,    44.0,  35.1,  28.3,  23.4,  19.1,  16.6,  14.6,  13.6,  13.8};
+  double e0Guess[NCENT] = {0.0,   0.0,   0.0,      0.215, 0.248, 0.272, 0.288, 0.294, 0.296, 0.290, 0.281, 0.271};
   //-- kn = 0.47
   //double knGuess[NCENT] = {16.2,  16.2,  16.2,     0.47,  0.47,  0.47,  0.47,  0.47,  0.47,  0.47,  0.47,  0.47};
   //double alGuess[NCENT] = {2.8e5, 2.8e5, 2.8e5,    119.5, 98.4,  81.7,  69.6,  58.2,  51.6,  46.3,  43.5,  43.2};
@@ -228,7 +227,7 @@ void FitPvn(){
   SmoothSysTotAlpha = (TH1D*) fSys->Get("SmoothSysTotAlpha");
   SmoothSysTotE0    = (TH1D*) fSys->Get("SmoothSysTotE0");
 
-  fOut = new TFile("EllPFits.root", "recreate");
+  fOut = new TFile(fname.data(), "recreate");
   fBottomLine = new TFile("SmearSpaceChi2.root");
   grChi2EllP = (TGraph*) fBottomLine->Get("grEllPChi2");
   grChi2BG   = (TGraph*) fBottomLine->Get("grBGChi2");
@@ -476,7 +475,12 @@ void FitPvn(){
 
   formatGraph(grFitKn,    "Centrality %", 0., 0.75,  "k_{n}",        1, 20, "grFitKn");
   formatGraph(grFitAlpha, "Centrality %", 0., 130,  "#alpha",       2, 21, "grFitAlpha");
-  formatGraph(grFitE0,    "Centrality %", 0., 0.4,  "#epsilon_{0}", 4, 34, "grFitE0");
+  formatGraph(grFitE0,    "Centrality %", 0., 0.5,  "#epsilon_{0}", 4, 34, "grFitE0");
+
+  fOut->cd();
+  grFitKn->Write();
+  grFitAlpha->Write();
+  grFitE0->Write();
 
   grFitKnSys    = 0;
   grFitAlphaSys = 0;
@@ -508,91 +512,6 @@ void FitPvn(){
   formatGraph(grATLASKn,    "Centrality %", 0.1, 1.0,  "k_{n}",        1, 24, "grATLASKn");
   formatGraph(grATLASAlpha, "Centrality %", 0.1, 120,  "#alpha",       2, 25, "grATLASAlpha");
   formatGraph(grATLASEcc0,  "Centrality %", 0.1, 0.5,  "#epsilon_{0}", 4, 26, "grATLASE0");
-
-  std::cout<<"-----ATLAS FIT-----"<<std::endl;
-  ATLAS_PV2[9]->SetLineColor(4);
-  ATLAS_PV2[9]->SetMarkerColor(4);
-  ATLAS_PV2[9]->SetMarkerStyle(20);
-  ATLAS_PV2[9]->GetXaxis()->SetTitle("v_{2}");
-  ATLAS_PV2[9]->GetYaxis()->SetTitle("p(v_{2})");
-  ATLAS_PV2[9]->GetYaxis()->SetRangeUser(TMath::MinElement(NATLAS[9], ATLAS_PV2[9]->GetY()), 1.9*TMath::MaxElement(NATLAS[9], ATLAS_PV2[9]->GetY()));
-  TF1 * fATLASpEllP = new TF1("fATLASpEllP", pEllP, 0.0, 0.27, 4);
-  fATLASpEllP->SetLineColor(2);
-  fATLASpEllP->SetLineWidth(2);
-  fATLASpEllP->SetParLimits(0, 0., 1.);
-  fATLASpEllP->SetParLimits(2, 0., 1.);
-  fATLASpEllP->SetParameters(e0Guess[9], alGuess[9], knGuess[9], TMath::MaxElement(NATLAS[9], ATLAS_PV2[9]->GetY()));
-  fATLASpEllP->SetParNames("ecc0", "alpha", "kn", "Scale");
-  ATLAS_PV2[9]->Fit( "fATLASpEllP", "L0", "", 0.0, vnmax[9]);
-
-
-  if(ATLAS && !russianFits){
-    TCanvas * cATLASComp = new TCanvas("cATLASComp","cATLASComp", 1000, 500);
-    cATLASComp->Divide(2,1);
-
-    //-- CMS
-    cATLASComp->cd(1);
-    cATLASComp->cd(1)->SetLogy();
-    hFinalUnfoldSys[9]->Draw("2");
-    setex2->Draw("same");
-    hFinalUnfoldStat[9]->Draw("same");
-    fEllP[9]->Draw("same");
-    latex.DrawLatex(0.75, 0.76, "CMS");
-    latex.DrawLatex(0.2, 0.38, Form("#bf{Cent %i - %i%s}", cent_min[9], cent_max[9], "%"));
-    double  alpha9  = fEllP[9]->GetParameter(1);
-    double  alpha9e = fEllP[9]->GetParError(1);
-    double  eps09   = fEllP[9]->GetParameter(0);
-    double  eps09e  = fEllP[9]->GetParError(0);
-    double  kn9     = fEllP[9]->GetParameter(2);
-    double  kn9e    = fEllP[9]->GetParError(2);
-    latex.DrawLatex(0.2, 0.32, Form("#epsilon_{0} = %.3f #pm %.3f", eps09,  eps09e));
-    latex.DrawLatex(0.2, 0.26,  Form("#alpha = %.1f #pm %.1f",      alpha9, alpha9e));
-    latex.DrawLatex(0.2, 0.2,  Form("k_{n} = %.3f #pm %.3f",       kn9,    kn9e));
-
-    cATLASComp->cd(1)->SetTickx(0);
-    cATLASComp->cd(1)->SetTopMargin(0.15);
-    double xmin9 = 0;
-    double xmax9 = 0.3-binw;
-    double ymax9 = 1.9*hFinalUnfold[9]->GetMaximum();
-
-    TGaxis * axxEcc9 = new TGaxis(xmin9, ymax9, xmax9, ymax9, xmin9/kn9, xmax9/kn9, 508, "-");
-    axxEcc9->SetTitle("#epsilon_{2}");
-    axxEcc9->SetLabelSize(0.055);
-    axxEcc9->SetTitleSize(0.055);
-    axxEcc9->Draw("same");
-
-    //-- ATLAS
-    cATLASComp->cd(2);
-    cATLASComp->cd(2)->SetLogy();
-    ATLAS_PV2[9]->Draw("ap");
-    fATLASpEllP->Draw("same");
-    latex.DrawLatex(0.75, 0.76, "ATLAS");
-    latex.DrawLatex(0.2, 0.38, Form("#bf{Cent %i - %i%s}", cent_min[9], cent_max[9], "%"));
-    alpha9  = fATLASpEllP->GetParameter(1);
-    alpha9e = fATLASpEllP->GetParError(1);
-    eps09   = fATLASpEllP->GetParameter(0);
-    eps09e  = fATLASpEllP->GetParError(0);
-    kn9     = fATLASpEllP->GetParameter(2);
-    kn9e    = fATLASpEllP->GetParError(2);
-    latex.DrawLatex(0.2, 0.32, Form("#epsilon_{0} = %.3f #pm %.3f", eps09,  eps09e));
-    latex.DrawLatex(0.2, 0.26,  Form("#alpha = %.1f #pm %.1f",      alpha9, alpha9e));
-    latex.DrawLatex(0.2, 0.2,  Form("k_{n} = %.3f #pm %.3f",       kn9,    kn9e));
-
-    cATLASComp->cd(2)->SetTickx(0);
-    cATLASComp->cd(2)->SetTopMargin(0.15);
-    xmin9 = 0;
-    xmax9 = 0.3-binw;
-    ymax9 = 1.9*TMath::MaxElement(NATLAS[9], ATLAS_PV2[9]->GetY());
-
-    TGaxis * axxxEcc9 = new TGaxis(xmin9, ymax9, xmax9, ymax9, xmin9/kn9, xmax9/kn9, 508, "-");
-    axxxEcc9->SetTitle("#epsilon_{2}");
-    axxxEcc9->SetLabelSize(0.055);
-    axxxEcc9->SetTitleSize(0.055);
-    axxxEcc9->Draw("same");
-
-    cATLASComp->SaveAs("plots/unfolding/ATLASvsCMS_EllpFit.pdf");
-
-  }
 
   TLegend * legKn = new TLegend(0.2, 0.2, 0.65, 0.35);
   legKn->SetBorderSize(0);

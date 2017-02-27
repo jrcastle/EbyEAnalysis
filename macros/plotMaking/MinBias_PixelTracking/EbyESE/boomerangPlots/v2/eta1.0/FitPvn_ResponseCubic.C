@@ -15,26 +15,30 @@
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/HiEvtPlaneList.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyECumu.h"
-#include "HeavyIonsAnalysis/EbyEAnalysis/interface/ATLAS_PV2.h"
 #include "/home/j550c590/tdrstyle.C"
 
 #include <iostream>
 
 using namespace hi;
 using namespace ebyese;
-using namespace atlas_pv2;
 
-int BIN   = 8;
-bool TEST = 0;
+int BIN      = 11;
+bool TEST    = 0;
+int Scenario = 1; // [1] -> vn = kn*en + knPr*kn*en^3;  [2] -> vn = kn*en + knPr*en^3
+
+string fname = "EllPFits_Cubic1_Test1.root";
 
 double fEccn(double vn, double kn, double knPr){
-  double value = (pow(0.6666666666666666,0.3333333333333333)*kn)/pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),0.3333333333333333) - pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),0.3333333333333333)/(pow(2,0.3333333333333333)*pow(3,0.6666666666666666)*kn*knPr);
-
+  double value = 0.;
+  if(Scenario == 1) value = (pow(0.6666666666666666,0.3333333333333333)*kn)/pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),0.3333333333333333) - pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),0.3333333333333333)/(pow(2,0.3333333333333333)*pow(3,0.6666666666666666)*kn*knPr);
+  if(Scenario == 2) value = (pow(0.6666666666666666,0.3333333333333333)*kn)/pow(-9*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,3)*pow(knPr,3) + 27*pow(knPr,4)*pow(vn,2)),0.3333333333333333) - pow(-9*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,3)*pow(knPr,3) + 27*pow(knPr,4)*pow(vn,2)),0.3333333333333333)/(pow(2,0.3333333333333333)*pow(3,0.6666666666666666)*knPr);
   return value;
 }
 
 double DEccnDvn(double vn,double kn, double knPr){
-  double value = -(pow(0.6666666666666666,0.3333333333333333)*kn*(-9*pow(kn,2)*pow(knPr,2) + (27*sqrt(3)*pow(kn,4)*pow(knPr,4)*vn)/sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2))))/(3.*pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),1.3333333333333333)) - (-9*pow(kn,2)*pow(knPr,2) + (27*sqrt(3)*pow(kn,4)*pow(knPr,4)*vn)/sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)))/(3.*pow(2,0.3333333333333333)*pow(3,0.6666666666666666)*kn*knPr*pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),0.6666666666666666));
+  double value = 0.;
+  if(Scenario == 1) value = -(pow(0.6666666666666666,0.3333333333333333)*kn*(-9*pow(kn,2)*pow(knPr,2) + (27*sqrt(3)*pow(kn,4)*pow(knPr,4)*vn)/sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2))))/(3.*pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),1.3333333333333333)) - (-9*pow(kn,2)*pow(knPr,2) + (27*sqrt(3)*pow(kn,4)*pow(knPr,4)*vn)/sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)))/(3.*pow(2,0.3333333333333333)*pow(3,0.6666666666666666)*kn*knPr*pow(-9*pow(kn,2)*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,6)*pow(knPr,3) + 27*pow(kn,4)*pow(knPr,4)*pow(vn,2)),0.6666666666666666));
+  if(Scenario == 2) value = -(pow(0.6666666666666666,0.3333333333333333)*kn*(-9*pow(knPr,2) + (27*sqrt(3)*pow(knPr,4)*vn)/sqrt(4*pow(kn,3)*pow(knPr,3) + 27*pow(knPr,4)*pow(vn,2))))/(3.*pow(-9*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,3)*pow(knPr,3) + 27*pow(knPr,4)*pow(vn,2)),1.3333333333333333)) - (-9*pow(knPr,2) + (27*sqrt(3)*pow(knPr,4)*vn)/sqrt(4*pow(kn,3)*pow(knPr,3) + 27*pow(knPr,4)*pow(vn,2)))/(3.*pow(2,0.3333333333333333)*pow(3,0.6666666666666666)*knPr*pow(-9*pow(knPr,2)*vn + sqrt(3)*sqrt(4*pow(kn,3)*pow(knPr,3) + 27*pow(knPr,4)*pow(vn,2)),0.6666666666666666));
   return value;
 }
 
@@ -72,38 +76,65 @@ double pEllP(double * x, double * par){
 void FitPvn_ResponseCubic(){
 
   bool dosys       = 0;
-  bool ATLAS       = 1;
-  bool fixKn       = 1;
-  bool fixKnPr     = 1;
+  bool ATLAS       = 0;
+  bool PRC_93_2016 = 0;
+  bool fixKn       = 0;
+  bool fixKnPr     = 0;
   bool fixAlpha    = 0;
   bool russianFits = 0;
 
-  double fixedKnPr = 0.10;
-  // kn 0.40
-  // al 71.1
-  // e0 .17
-  //-- Free kn, knPR         0      1      2      3     4     5     6     7     8     9     10    11
+  double fixedKnPr = 0.0;
+  //-- Free kn, knPR [1]     0      1      2      3     4     5     6     7     8     9     10    11
+  double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.35, 0.29, 0.28, 0.24};
+  double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.10, 0.12, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10};
+  double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 41.0, 30.0, 30.0, 12.0, 11.0, 6.8};
+  double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.18, 0.22, 0.23, 0.26, 0.24, 0.30, 0.31, 0.31};
+  double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.27, 0.26, 0.26};
+  //-- Fix kn = ATLAS, Fix knPr = 0.1 [1]   0      1      2      3      4      5      6      7      8      9      10     11
+  //double knGuess[NCENT]                = {16.2,  16.2,  16.2,  0.368, 0.331, 0.328, 0.303, 0.294, 0.269, 0.265, 0.234, 0.221};
+  //double knPrGuess[NCENT]              = {0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10};
+  //double alGuess[NCENT]                = {2.8e5, 2.8e5, 2.8e5, 60.0,  60.0,  45.0,  41.0,  30.0,  30.0,  12.0,  11.0,  6.8}; 
+  //double e0Guess[NCENT]                = {0.0,   0.0,   0.0,   0.13,  0.18,  0.22,  0.23,  0.26,  0.24,  0.30,  0.31,  0.31};
+  //double vnmax[NCENT]                  = {0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.27,  0.26,  0.26,  0.25,  0.24};
+  //-- Fix knPr = 0.1 [1]      0      1      2      3     4     5     6     7     8     9     10    11 
   //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.35, 0.29, 0.28, 0.24};
-  //double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.10, 0.12, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10};
-  //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 41.0, 30.0, 30.0, 12.0, 11.0, 6.8};
-  //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.18, 0.22, 0.23, 0.26, 0.24, 0.30, 0.31, 0.31};
-  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.27, 0.26, 0.26};
-  //-- Fix kn = ATLAS, Fix knPr = 0.1    0      1      2      3      4      5      6      7      8      9      10     11
-  double knGuess[NCENT]               = {16.2,  16.2,  16.2,  0.368, 0.331, 0.328, 0.303, 0.294, 0.269, 0.265, 0.234, 0.221};
-  double knPrGuess[NCENT]             = {0.10,  0.10,  0.10,  0.10,  0.12,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10};
-  double alGuess[NCENT]               = {2.8e5, 2.8e5, 2.8e5, 60.0,  60.0,  45.0,  41.0,  30.0,  30.0,  12.0,  11.0,  6.8}; 
-  double e0Guess[NCENT]               = {0.0,   0.0,   0.0,   0.13,  0.18,  0.22,  0.23,  0.26,  0.24,  0.30,  0.31,  0.31};
-  double vnmax[NCENT]                 = {0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.27,  0.26,  0.26,  0.25,  0.24};
-  //-- Fix knPr = 0.1        0      1      2      3     4     5     6     7     8     9     10    11 
-  //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.35, 0.29, 0.28, 0.24};
-  //double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.10, 0.12, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10};
+  //double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10};
   //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 41.0, 30.0, 30.0, 12.0, 11.0, 6.8};
   //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.20, 0.22, 0.23, 0.26, 0.24, 0.30, 0.31, 0.31};
-  //-- alpha = (Npart-1)/2
-  //double knGuess[NCENT] = {16.2,  16.2,  16.2,     0.472, 0.478, 0.480, 0.475, 0.471, 0.453, 0.432, 0.400, 0.360};
-  //double e0Guess[NCENT] = {0.0,   0.0,   0.0,      0.137, 0.156, 0.171, 0.183, 0.190, 0.199, 0.207, 0.217, 0.232};
-  //double alGuess[NCENT];
-  //for(int icent = 0; icent < NCENT; icent++) alGuess[icent] = (Npart[icent]-1)/2.;
+  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.26, 0.25, 0.25}; 
+  //-- Free kn, knPR [2]     0      1      2      3     4     5     6     7     8     9     10    11
+  //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.34, 0.29, 0.28, 0.24};
+  //double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.08, 0.08, 0.10, 0.04, 0.03, 0.03, 0.05, 0.05, 0.05};
+  //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 38.0, 35.0, 30.0, 25.0, 20.0, 12.0};
+  //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.18, 0.22, 0.23, 0.25, 0.25, 0.27, 0.27, 0.29};
+  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.27, 0.26, 0.26};
+  //-- Fix knPr = PRC [2]  
+  //TF1 * f = new TF1("f", "pol1", 0., 60.);
+  //f->SetParameters(0.0262387, 0.00190748);
+  //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.245, 0.240, 0.239, 0.233, 0.224, 0.219, 0.210, 0.202, 0.196};
+  //double knPrGuess[NCENT];
+  //for(int icent = 0; icent < NCENT; icent++) knPrGuess[icent] = f->Eval(centBinCenter[icent]);
+  //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 30.0,  30.0,  45.0,  41.0,  30.0,  30.0,  12.0,  11.0,  6.8};
+  //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.30,  0.30,  0.22,  0.23,  0.26,  0.24,  0.30,  0.31,  0.31};
+  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.27,  0.26,  0.28,  0.27,  0.26};
+  //-- Fix kn = PRC [2] 
+  //TF1 * f = new TF1("f", "pol1", 0., 60.);
+  //f->SetParameters(0.0262387, 0.00190748);
+  //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.245, 0.240, 0.239, 0.233, 0.224, 0.219, 0.210, 0.202, 0.196};
+  //double knPrGuess[NCENT];
+  //for(int icent = 0; icent < NCENT; icent++) knPrGuess[icent] = f->Eval(centBinCenter[icent]);
+  //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 30.0,  30.0,  45.0,  41.0,  30.0,  30.0,  12.0,  11.0,  6.8};
+  //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.30,  0.30,  0.22,  0.23,  0.26,  0.24,  0.30,  0.31,  0.31};
+  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.27,  0.26,  0.28,  0.27,  0.26};
+  //-- Fix kn, knPr = PRC [2]
+  //TF1 * f = new TF1("f", "pol1", 0., 60.);
+  //f->SetParameters(0.0262387, 0.00190748);
+  //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.245, 0.240, 0.239, 0.233, 0.224, 0.219, 0.210, 0.202, 0.196};
+  //double knPrGuess[NCENT];
+  //for(int icent = 0; icent < NCENT; icent++) knPrGuess[icent] = f->Eval(centBinCenter[icent]); 
+  //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 30.0,  30.0,  45.0,  41.0,  30.0,  30.0,  12.0,  11.0,  6.8};
+  //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.30,  0.30,  0.22,  0.23,  0.26,  0.24,  0.30,  0.31,  0.31};
+  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.27,  0.26,  0.28,  0.28,  0.28};
 
   if( fixAlpha ){
     for(int icent = 0; icent < NCENT; icent++){
@@ -157,6 +188,10 @@ void FitPvn_ResponseCubic(){
   TGraphErrors * grATLASKn;
   TGraphErrors * grATLASAlpha;
   TGraphErrors * grATLASEcc0;
+
+  //-- Phys.Rev. C93 (2016) Kns
+  TGraph * grPRC_93_2016Kn;
+  TGraph * grPRC_93_2016KnPr;
 
   //-- Systematics
   TFile * fSys;
@@ -213,7 +248,7 @@ void FitPvn_ResponseCubic(){
   SmoothSysTotAlpha = (TH1D*) fSys->Get("SmoothSysTotAlpha");
   SmoothSysTotE0    = (TH1D*) fSys->Get("SmoothSysTotE0");
 
-  fOut = new TFile("EllPFits_Cubic.root", "recreate");
+  fOut = new TFile(fname.data(), "recreate");
   fBottomLine = new TFile("SmearSpaceChi2_Cubic.root");
   grChi2EllP = (TGraph*) fBottomLine->Get("grEllPChi2");
   grChi2BG   = (TGraph*) fBottomLine->Get("grBGChi2");
@@ -308,7 +343,7 @@ void FitPvn_ResponseCubic(){
       fEllP[icent]->SetParLimits(3, 0., 1.);
       fEllP[icent]->SetParameters(e0Guess[icent], alGuess[icent], knGuess[icent], knGuess[icent], hFinalUnfold[icent]->GetMaximum());
       if( fixKn )    fEllP[icent]->FixParameter(2, knGuess[icent]);
-      if( fixKnPr )  fEllP[icent]->FixParameter(3, fixedKnPr);
+      if( fixKnPr )  fEllP[icent]->FixParameter(3, knPrGuess[icent]);
       if( fixAlpha ) fEllP[icent]->FixParameter(1, alGuess[icent]);
       fEllP[icent]->SetParNames("ecc0", "alpha", "kn", "knPr", "Scale");
     }
@@ -489,25 +524,47 @@ void FitPvn_ResponseCubic(){
       formatGraph(grATLASAlpha, "Centrality %", 0.1, 120,  "#alpha",       2, 25, "grATLASAlpha");
       formatGraph(grATLASEcc0,  "Centrality %", 0.1, 0.5,  "#epsilon_{0}", 4, 26, "grATLASE0");
     }
+    //-- PRC_93_2016
+    if( PRC_93_2016 ){
+      grPRC_93_2016Kn   = new TGraph("k_n_PRC_93_2016.txt", "%lg %lg");
+      grPRC_93_2016KnPr = new TGraph("knPr_PRC_93_2016.txt", "%lg %lg");
+
+      formatGraph(grPRC_93_2016Kn,   "Centrality %", 0.1,   1.0,  "k_{n}",    2, 24, "grPRC_93_2016Kn");
+      formatGraph(grPRC_93_2016KnPr, "Centrality %", -0.01, 0.15, "#kappa\'", 4, 22, "grPRC_93_2016KnPr");
+    }
+
     double c_err[NCENT];
     for(int icent = 0; icent < NCENT; icent++) c_err[icent] = 0;
 
     grFitKn    = new TGraphErrors(NCENT, centBinCenter, fitKn,    c_err, fitKn_err);
-    grFitKnPr  = new TGraphErrors(NCENT, centBinCenter, fitKnPr,    c_err, fitKnPr_err);
+    grFitKnPr  = new TGraphErrors(NCENT, centBinCenter, fitKnPr,  c_err, fitKnPr_err);
     grFitAlpha = new TGraphErrors(NCENT, centBinCenter, fitAlpha, c_err, fitAlpha_err);
     grFitE0    = new TGraphErrors(NCENT, centBinCenter, fitE0,    c_err, fitE0_err);
 
-    formatGraph(grFitKn,    "Centrality %", 0.,   0.75, "k_{n}",        1, 20, "grFitKn");
-    formatGraph(grFitKnPr,  "Centrality %", -0.01, 0.15, "#kappa\'",     8, 22, "grFitKnPr");
-    formatGraph(grFitAlpha, "Centrality %", 0.,   130,  "#alpha",       2, 21, "grFitAlpha");
-    formatGraph(grFitE0,    "Centrality %", 0.,   0.5,  "#epsilon_{0}", 4, 34, "grFitE0");
+    formatGraph(grFitKn,    "Centrality %", 0.,   0.75, "k_{n}",        1,        20, "grFitKn");
+    formatGraph(grFitKnPr,  "Centrality %", -0.01, 0.15, "#kappa\'",    kGreen+3, 22, "grFitKnPr");
+    formatGraph(grFitAlpha, "Centrality %", 0.,   130,  "#alpha",       2,        21, "grFitAlpha");
+    formatGraph(grFitE0,    "Centrality %", 0.,   0.5,  "#epsilon_{0}", 4,        34, "grFitE0");
     grFitE0->SetMarkerSize(1.5);
+
+    fOut->cd();
+    grFitKn->Write();
+    grFitKnPr->Write();
+    grFitAlpha->Write();
+    grFitE0->Write();
 
     TLegend * legKn = new TLegend(0.2, 0.2, 0.65, 0.35);
     legKn->SetBorderSize(0);
     legKn->SetFillStyle(0);
     legKn->AddEntry(grFitKn, "CMS", "lp");
     if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS", "lp");
+    if(PRC_93_2016) legKn->AddEntry(grPRC_93_2016Kn, "Hydro #eta/s = 1/4#pi", "l");
+
+    TLegend * legKnPr = new TLegend(0.2, 0.2, 0.65, 0.35);
+    legKnPr->SetBorderSize(0);
+    legKnPr->SetFillStyle(0);
+    legKnPr->AddEntry(grFitKnPr, "CMS", "lp");
+    if(PRC_93_2016) legKnPr->AddEntry(grPRC_93_2016KnPr, "Hydro #eta/s = 1/4#pi", "l");
 
     TLegend * legAlpha = new TLegend(0.5, 0.75, 0.95, 0.9);
     legAlpha->SetBorderSize(0);
@@ -559,10 +616,9 @@ void FitPvn_ResponseCubic(){
 
       cParmSummary->cd(1);
       grFitKn->Draw("ap");
-      if(ATLAS){
-	grATLASKn->Draw("psame");
-	legKn->Draw("same");
-      }
+      if(ATLAS) grATLASKn->Draw("psame");
+      if(PRC_93_2016) grPRC_93_2016Kn->Draw("lsame");
+      if(ATLAS || PRC_93_2016) legKn->Draw("same");
       latex.DrawLatex(0.2, 0.88, "CMS #it{Preliminary}");
       latex.DrawLatex(0.2, 0.82, "PbPb #sqrt{s_{NN}} = 5.02 TeV");
       latex.DrawLatex(0.2, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -570,6 +626,10 @@ void FitPvn_ResponseCubic(){
 
       cParmSummary->cd(2);
       grFitKnPr->Draw("ap");
+      if(PRC_93_2016){
+	grPRC_93_2016KnPr->Draw("lsame");
+	legKnPr->Draw("same");
+      }
 
       cParmSummary->cd(3);
       grFitE0->Draw("ap");
@@ -935,8 +995,9 @@ void FitPvn_ResponseCubic(){
     cUnfoldDistsBig->Update();
     cUnfoldDistsBig->SaveAs(Form("plots/unfolding/finalUnfFit_Cubic_v%i.pdf",norder_));
 
-  } //-- End if( !TEST )
+    for(int icent = 3; icent < NCENT; icent++) std::cout << "Cent = " << icent << "\t Chi2/NDF = " << Form("%.1f", fEllP[icent]->GetChisquare()/fEllP[icent]->GetNDF()) << std::endl;
+    for(int icent = 3; icent < NCENT; icent++) std::cout << "Cent = " << icent << "\tkn+knPr = " << fEllP[icent]->GetParameter(2) + fEllP[icent]->GetParameter(3) << std::endl; 
 
-  for(int icent = 3; icent < NCENT; icent++) std::cout << "Cent = " << icent << "\t Chi2/NDF = " << Form("%.1f", fEllP[icent]->GetChisquare()/fEllP[icent]->GetNDF()) << std::endl;
+  } //-- End if( !TEST )
 
 }

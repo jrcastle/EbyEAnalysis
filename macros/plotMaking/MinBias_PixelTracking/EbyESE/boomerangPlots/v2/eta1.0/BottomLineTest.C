@@ -20,6 +20,8 @@ using namespace ebyese;
 
 void BottomLineTest(){
 
+  string fin = "EllPFits_Cubic2_Test1.root";
+
   bool cubic = 1;
 
   const int norder_ = 2;
@@ -63,8 +65,7 @@ void BottomLineTest(){
   fUnf = new TFile( Form("systematicStudies/SysUnfoldDistns_v%i.root", norder_) );
   fFit = 0;
 
-  if(cubic) fFit = new TFile( "EllPFits_Cubic.root" );
-  else      fFit = new TFile( "EllPFits.root" );
+  fFit = new TFile( fin.data() );
 
 
   hNormFactor = (TH1D*) fUnf->Get("hNormFactor");
