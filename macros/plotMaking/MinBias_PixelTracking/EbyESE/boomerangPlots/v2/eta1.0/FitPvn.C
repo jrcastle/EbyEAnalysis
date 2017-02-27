@@ -89,7 +89,7 @@ void FitPvn(){
   bool ATLAS       = 1;
   bool fixKn       = 1;
   bool fixAlpha    = 0;
-  bool russianFits = 0;
+  bool moscowFits = 0;
   // kn 0.40
   // al 71.1
   // e0 .17
@@ -137,7 +137,7 @@ void FitPvn(){
   TLatex latex2;
   TLatex latex3;
 
-  TFile * fRussianFits;
+  TFile * fMoscowFits;
 
   //-- Unfold histos
   TFile * fFinalUnf;
@@ -217,7 +217,7 @@ void FitPvn(){
   TExec *setex2 = new TExec("setex2","gStyle->SetErrorX(0.5)");
 
   fFinalUnf    = new TFile( Form("systematicStudies/SysUnfoldDistns_v%i.root", norder_) );
-  fRussianFits = new TFile("RussianEllpFits.root");
+  fMoscowFits = new TFile("MoscowEllpFits.root");
 
   hNormFactor = (TH1D*) fFinalUnf->Get("hNormFactor");
 
@@ -276,7 +276,7 @@ void FitPvn(){
     if( icent < 3 ) continue;
     std::cout<<Form("-------- Centbin %i --------", icent)<<std::endl;
 
-    if(russianFits){
+    if(moscowFits){
       hFinalUnfold[icent]->Scale(fEllP[icent]->GetMaximum()/hFinalUnfold[icent]->GetMaximum());
       hFinalUnfoldStat[icent]->Scale(fEllP[icent]->GetMaximum()/hFinalUnfoldStat[icent]->GetMaximum());
       hFinalUnfoldSys[icent]->Scale(fEllP[icent]->GetMaximum()/hFinalUnfoldSys[icent]->GetMaximum());
@@ -305,12 +305,12 @@ void FitPvn(){
     }
     fBG[icent]->SetParameters(hFinalUnfold[icent]->GetMaximum(), BGmu, BGDelta);
 
-    if(russianFits) fEllP[icent] = (TF1*) fRussianFits->Get( Form("elliptic%i", icent) );
+    if(moscowFits) fEllP[icent] = (TF1*) fMoscowFits->Get( Form("elliptic%i", icent) );
     else            fEllP[icent] = new TF1(Form("fEllP_c%i", icent), pEllP, 0.0, 0.26, 4);
     fEllP[icent]->SetLineColor(2);
     fEllP[icent]->SetLineWidth(2);
 
-    if(!russianFits){
+    if(!moscowFits){
       //-- [0] = ecc0; [1] = Alpha; [2] = kn; [3] = Scale;
       fEllP[icent]->SetParLimits(0, 0., 1.);
       fEllP[icent]->SetParLimits(2, 0., 1.);
@@ -321,7 +321,7 @@ void FitPvn(){
     }
 
     hFinalUnfold[icent]->Fit( Form("fBG_c%i", icent), "BL0", "", 0.0, vnmax[icent]);
-    if(!russianFits){
+    if(!moscowFits){
       hFinalUnfold[icent]->Fit( Form("fEllP_c%i", icent), "L0", "", 0.0, vnmax[icent]);
 
       //-- contours
@@ -422,7 +422,7 @@ void FitPvn(){
     fEllP[icent]->Write();
     fBG[icent]->Write();
 
-    if(russianFits){
+    if(moscowFits){
       fitKn[icent]    = fEllP[icent]->GetParameter(1);
       fitAlpha[icent] = fEllP[icent]->GetParameter(0);
       fitE0[icent]    = fEllP[icent]->GetParameter(2);
@@ -653,7 +653,7 @@ void FitPvn(){
   double eps03e;
   double kn3;
   double kn3e;
-  if(russianFits){
+  if(moscowFits){
     alpha3  = fEllP[3]->GetParameter(0);
     alpha3e = fEllP[3]->GetParError(0);
     eps03   = fEllP[3]->GetParameter(2);
@@ -717,7 +717,7 @@ void FitPvn(){
   double eps05e;
   double kn5;
   double kn5e;
-  if(russianFits){
+  if(moscowFits){
     alpha5  = fEllP[5]->GetParameter(0);
     alpha5e = fEllP[5]->GetParError(0);
     eps05   = fEllP[5]->GetParameter(2);
@@ -774,7 +774,7 @@ void FitPvn(){
   double eps07e;
   double kn7;
   double kn7e;
-  if(russianFits){
+  if(moscowFits){
     alpha7  = fEllP[7]->GetParameter(0);
     alpha7e = fEllP[7]->GetParError(0);
     eps07   = fEllP[7]->GetParameter(2);
@@ -831,7 +831,7 @@ void FitPvn(){
   double eps09e;
   double kn9;
   double kn9e;
-  if(russianFits){
+  if(moscowFits){
     alpha9  = fEllP[9]->GetParameter(0);
     alpha9e = fEllP[9]->GetParError(0);
     eps09   = fEllP[9]->GetParameter(2);
@@ -888,7 +888,7 @@ void FitPvn(){
   double eps011e;
   double kn11;
   double kn11e;
-  if(russianFits){
+  if(moscowFits){
     alpha11  = fEllP[11]->GetParameter(0);
     alpha11e = fEllP[11]->GetParError(0);
     eps011   = fEllP[11]->GetParameter(2);

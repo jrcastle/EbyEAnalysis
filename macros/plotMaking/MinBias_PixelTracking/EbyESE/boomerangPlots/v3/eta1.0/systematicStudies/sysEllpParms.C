@@ -66,7 +66,7 @@ void sysEllpParms(){
 
   const int norder_ = 3;
 
-  bool russianFits = 0;
+  bool moscowFits = 0;
   bool fixKn       = 0;
 
   double knGuess[NCENT] = {16.2,  16.2,  16.2,  0.40,    0.38, 0.37, 0.37, 0.34, 0.32, 0.29, 0.28, 0.24};
@@ -279,7 +279,7 @@ void sysEllpParms(){
   TGraphErrors * grFitAlpha_RatioToNom_Vtx3_15SysVtx;
   TGraphErrors * grFitKn_RatioToNom_Vtx3_15SysVtx;
 
-  //-- Russian Fits
+  //-- Moscow Fits
   TFile * fRussiaSysReg;
   TFile * fRussiaSysResp;
   TFile * fRussiaSysNewCC;
@@ -304,12 +304,12 @@ void sysEllpParms(){
   fSysTkQ   = new TFile("tkQuality/SysTkQuality.root");
   fSysVtx   = new TFile("vtxCut/SysVtx.root");
 
-  //-- Russian Fits
-  fRussiaSysReg   = new TFile("chi2Cutoff/RussianFits_SysReg.root");
-  fRussiaSysResp  = new TFile("responseElements/RussianFits_SysResp.root");
-  fRussiaSysNewCC = new TFile("clusCompatTune/RussianFits_SysNewCC.root");
-  fRussiaSysTkQ1  = new TFile("tkQuality/RussianFits_SysTrk1.root");
-  fRussiaSysTkQ2  = new TFile("tkQuality/RussianFits_SysTrk2.root");
+  //-- Moscow Fits
+  fRussiaSysReg   = new TFile("chi2Cutoff/MoscowFits_SysReg.root");
+  fRussiaSysResp  = new TFile("responseElements/MoscowFits_SysResp.root");
+  fRussiaSysNewCC = new TFile("clusCompatTune/MoscowFits_SysNewCC.root");
+  fRussiaSysTkQ1  = new TFile("tkQuality/MoscowFits_SysTrk1.root");
+  fRussiaSysTkQ2  = new TFile("tkQuality/MoscowFits_SysTrk2.root");
   fRussiaSysVtx1  = new TFile("vtxCut/SysFits_SysVtx1.root");
   fRussiaSysVtx2  = new TFile("vtxCut/SysFits_SysVtx2.root");
 
@@ -408,7 +408,7 @@ void sysEllpParms(){
     //hUnfoldSysReg[icent]->Scale(1./hUnfoldSysReg[icent]->Integral());
     hUnfoldSysReg[icent]->SetStats(0);
 
-    if(russianFits){
+    if(moscowFits){
       fEllP_SysReg[icent] = (TF1*) fRussiaSysReg->Get( Form("elliptic%i", icent) );
       fEllP_SysReg[icent]->SetLineColor(2);
       fEllP_SysReg[icent]->SetLineWidth(2);
@@ -477,7 +477,7 @@ void sysEllpParms(){
     //hUnfoldSysResp[icent]->Scale(1./hUnfoldSysResp[icent]->Integral());
     hUnfoldSysResp[icent]->SetStats(0);
 
-    if(russianFits){
+    if(moscowFits){
       fEllP_SysResp[icent] = (TF1*) fRussiaSysResp->Get( Form("elliptic%i", icent) );
       fEllP_SysResp[icent]->SetLineColor(2);
       fEllP_SysResp[icent]->SetLineWidth(2);
@@ -545,7 +545,7 @@ void sysEllpParms(){
     //hUnfoldSysNewCC[icent]->Scale(1./hUnfoldSysNewCC[icent]->Integral());
     hUnfoldSysNewCC[icent]->SetStats(0);
 
-    if(russianFits){
+    if(moscowFits){
       fEllP_SysNewCC[icent] = (TF1*) fRussiaSysNewCC->Get( Form("elliptic%i", icent) );
       fEllP_SysNewCC[icent]->SetLineColor(2);
       fEllP_SysNewCC[icent]->SetLineWidth(2);
@@ -613,7 +613,7 @@ void sysEllpParms(){
     //hUnfoldLooseSysTkQ[icent]->Scale(1./hUnfoldLooseSysTkQ[icent]->Integral());
     hUnfoldLooseSysTkQ[icent]->SetStats(0);
 
-    if(russianFits){
+    if(moscowFits){
       fEllP_LooseSysTkQ[icent] = (TF1*) fRussiaSysTkQ1->Get( Form("elliptic%i", icent) );
       fEllP_LooseSysTkQ[icent]->SetLineColor(2);
       fEllP_LooseSysTkQ[icent]->SetLineWidth(2);
@@ -681,7 +681,7 @@ void sysEllpParms(){
     //hUnfoldTightSysTkQ[icent]->Scale(1./hUnfoldTightSysTkQ[icent]->Integral());
     hUnfoldTightSysTkQ[icent]->SetStats(0);
 
-    if(russianFits){
+    if(moscowFits){
       fEllP_TightSysTkQ[icent] = (TF1*) fRussiaSysTkQ2->Get( Form("elliptic%i", icent) );
       fEllP_TightSysTkQ[icent]->SetLineColor(2);
       fEllP_TightSysTkQ[icent]->SetLineWidth(2);
@@ -749,7 +749,7 @@ void sysEllpParms(){
     //hUnfoldVtx3SysVtx[icent]->Scale(1./hUnfoldVtx3SysVtx[icent]->Integral());
     hUnfoldVtx3SysVtx[icent]->SetStats(0);
 
-    if(russianFits){
+    if(moscowFits){
       fEllP_Vtx3SysVtx[icent] = (TF1*) fRussiaSysVtx1->Get( Form("elliptic%i", icent) );
       fEllP_Vtx3SysVtx[icent]->SetLineColor(2);
       fEllP_Vtx3SysVtx[icent]->SetLineWidth(2);
@@ -817,7 +817,7 @@ void sysEllpParms(){
     //hUnfoldVtx3_15SysVtx[icent]->Scale(1./hUnfoldVtx3_15SysVtx[icent]->Integral());
     hUnfoldVtx3_15SysVtx[icent]->SetStats(0);
 
-    if(russianFits){
+    if(moscowFits){
       fEllP_Vtx3_15SysVtx[icent] = (TF1*) fRussiaSysVtx2->Get( Form("elliptic%i", icent) );
       fEllP_Vtx3_15SysVtx[icent]->SetLineColor(2);
       fEllP_Vtx3_15SysVtx[icent]->SetLineWidth(2);
