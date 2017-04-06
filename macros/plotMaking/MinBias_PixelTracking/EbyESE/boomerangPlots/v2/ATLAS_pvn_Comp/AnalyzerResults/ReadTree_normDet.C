@@ -24,10 +24,14 @@ void ReadTree_normDet(){
   const double ptMax = 20.0;
   const double etaMax = 2.4;
 
-  static const int ptBinMin  = 0;
-  static const int ptBinMax  = nptbinsDefault-1;
-  static const int etaBinMin = 0; //0;
-  static const int etaBinMax = netabinsDefault-1;
+  const int ptBinMin  = 0;
+  const int ptBinMax  = nptbinsDefault-1;
+  const int etaBinMin = 0; //0;
+  const int etaBinMax = netabinsDefault-1;
+
+  const double PTBINSDEFAULT[] = {
+    0.50,    1.00,    20.0
+  };
 
   TFile * fAna;
   TTree * tree;
@@ -93,10 +97,10 @@ void ReadTree_normDet(){
   fAna = new TFile( "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_ATLASComp.root" );
 
   tree   = (TTree *) fAna->Get("ebyeana/tree");
-  sumwqx = new TH2D(Form("sumwqx%i", norder_), Form("sumwqx%i", norder_), nptbinsDefault, ptbinsDefault, netabinsDefault, etabinsDefault);
-  sumwqy = new TH2D(Form("sumwqy%i", norder_), Form("sumwqy%i", norder_), nptbinsDefault, ptbinsDefault, netabinsDefault, etabinsDefault);
-  sumw   = new TH2D("sumw",                    "sumw",                    nptbinsDefault, ptbinsDefault, netabinsDefault, etabinsDefault);
-  hMult  = new TH2I("hMult",                   "hMult",                   nptbinsDefault, ptbinsDefault, netabinsDefault, etabinsDefault);
+  sumwqx = new TH2D(Form("sumwqx%i", norder_), Form("sumwqx%i", norder_), nptbinsDefault, PTBINSDEFAULT, netabinsDefault, etabinsDefault);
+  sumwqy = new TH2D(Form("sumwqy%i", norder_), Form("sumwqy%i", norder_), nptbinsDefault, PTBINSDEFAULT, netabinsDefault, etabinsDefault);
+  sumw   = new TH2D("sumw",                    "sumw",                    nptbinsDefault, PTBINSDEFAULT, netabinsDefault, etabinsDefault);
+  hMult  = new TH2I("hMult",                   "hMult",                   nptbinsDefault, PTBINSDEFAULT, netabinsDefault, etabinsDefault);
 
   tree->SetBranchAddress("Cent",                    &centval);
   tree->SetBranchAddress("Vtx",                     &vtx);

@@ -28,6 +28,8 @@ using namespace atlas_pv2;
 
 void compareAtlasPV2(){
 
+  bool ATLASreg = 0;
+
   const int norder_ = 2;
 
   //-- CMS
@@ -38,24 +40,28 @@ void compareAtlasPV2(){
   TH1D * hRefold[NCENT][NITER];
   TH1D * hUnfold[NCENT][NITER];
   TH1D * hFinalUnfold[NCENT];
+  TH1D * hUnfold_ATLASreg[NCENT];
+  TFile * fOut;
 
-
-
-  TLatex latex;
+  TLatex latex3;
 
   //
   // MAIN
   //
   setTDRStyle();
-  latex.SetNDC();
+  latex3.SetNDC();
 
   fAna = new TFile( "AnalyzerResults/CastleEbyE.root" );
   fUnf = new TFile( "UnfoldResults/dataResp/data2.root" );
+  fOut = new TFile( "FinalUnfoldDistns.root", "recreate" );
 
   for(int icent = 0; icent < NCENT; icent++){
 
     //-- Get Obs
     hObs[icent] = (TH1D*) fAna->Get( Form("qwebye/hVnFull_c%i", icent) );
+
+    //-- Get ATLAS reg hist
+    hUnfold_ATLASreg[icent] = (TH1D*) fUnf->Get( Form("hreco128_c%i", icent) );
 
     //-- Get Unf
     for(int i = 0; i < NITER; i++){
@@ -75,53 +81,80 @@ void compareAtlasPV2(){
 
     } //-- End iter loop
 
+    FixUnfold( hFinalUnfold[icent] );
+    FixUnfold( hUnfold_ATLASreg[icent] );
+
+    fOut->cd();
+    hFinalUnfold[icent]->Write( Form("hFinalUnfoldStat_c%i", icent) );
+    hUnfold_ATLASreg[icent]->Write( Form("hFinalUnfoldATLASreg_c%i", icent) );
+
     //-- Cosmetics
     hFinalUnfold[icent]->SetLineColor(2);
     hFinalUnfold[icent]->SetMarkerColor(2);
     hFinalUnfold[icent]->SetMarkerStyle(20);
-    hFinalUnfold[icent]->SetFillColor(15);
+    hFinalUnfold[icent]->GetXaxis()->SetRange(1, hFinalUnfold[icent]->FindBin(0.3));
 
-    ATLAS_PV2[icent]->SetLineColor(1);
-    ATLAS_PV2[icent]->SetMarkerColor(1);
-    ATLAS_PV2[icent]->SetMarkerStyle(20);
+    hUnfold_ATLASreg[icent]->SetLineColor(4);
+    hUnfold_ATLASreg[icent]->SetMarkerColor(4);
+    hUnfold_ATLASreg[icent]->SetMarkerStyle(20);
+    hUnfold_ATLASreg[icent]->GetXaxis()->SetRange(1, hUnfold_ATLASreg[icent]->FindBin(0.3));
 
-    double atlasmax = TMath::MaxElement(ATLAS_PV2[icent]->GetN(), ATLAS_PV2[icent]->GetY());
+    ATLASPV2_Stat[icent]->SetLineColor(1);
+    ATLASPV2_Stat[icent]->SetMarkerColor(1);
+    ATLASPV2_Stat[icent]->SetMarkerStyle(20);
+    ATLASPV2_Stat[icent]->GetXaxis()->SetNdivisions(507);
+    double atlasmax = TMath::MaxElement(ATLASPV2_Stat[icent]->GetN(), ATLASPV2_Stat[icent]->GetY());
     hFinalUnfold[icent]->Scale( atlasmax / hFinalUnfold[icent]->GetMaximum() );
+    hUnfold_ATLASreg[icent]->Scale( atlasmax / hUnfold_ATLASreg[icent]->GetMaximum() );
 
-    //-- Shift CMS to have the same mean as ATLAS
-    /*
-    double meanATLAS = ATLAS_PV2[icent]->GetMean(1);
-    double meanCMS = hFinalUnfold[icent]->GetMean();
-    int nb = hFinalUnfold[icent]->GetNbinsX();
-    
-    for(int i = 1; i <= nb; i++){
-      double vn   = hFinalUnfold[icent]->GetBinCenter(i);
-      double pvn  = hFinalUnfold[icent]->GetBinContent(i);
-      double pvne = hFinalUnfold[icent]->GetBinError(i);
-      double shiftedVn = vn * (meanATLAS / meanCMS);
-      int shiftedVnBin = hFinalUnfold[icent]->FindBin( shiftedVn );
-      hFinalUnfoldShift[icent]->Fill(shiftedVn, pvn);
-    }
-    */
   } //-- End cent loop
 
-  //TLegend * leg = new T
+
+  //-- CMS Refold Reg VS ATLAS Data
+  TLegend * leg = new TLegend(0.42, 0.71, 0.71, 0.90);
+  legInit( leg );
+  leg->AddEntry(hFinalUnfold[0],  "CMS 5.02 TeV",   "lp");
+  leg->AddEntry(ATLASPV2_Stat[0], "ATLAS 2.76 TeV", "lp");
 
   TCanvas * c = new TCanvas("c", "c", 2000, 1500);
   c->Divide(4,3);
   for(int icent = 0; icent < NCENT; icent++){
     c->cd(icent+1);
     c->cd(icent+1)->SetLogy();
-    hFinalUnfold[icent]->Draw();
-    ATLAS_PV2[icent]->Draw("psame");
+    if( ATLASreg ) hUnfold_ATLASreg[icent]->Draw();
+    else           hFinalUnfold[icent]->Draw();
+    ATLASPV2_Stat[icent]->Draw("psame");
+    if(icent == 0) leg->Draw("same");
+    latex3.DrawLatex(0.2, 0.22, Form("#bf{Cent. %i - %i%s}", cent_min[icent], cent_max[icent], "%") );
 
-    std::cout << Form("=========== Cent %i ===========", icent) << std::endl;
-    std::cout << "MEAN CMS   = " << hFinalUnfoldShift[icent]->GetMean() << std::endl;
-    std::cout << "MEAN ATLAS = " << ATLAS_PV2[icent]->GetMean(1) << std::endl;
-
+    ATLASPV2_Stat[icent]->GetYaxis()->SetRangeUser(ATLASPV2_Stat[icent]->GetYaxis()->GetXmin(), 2.*ATLASPV2_Stat[icent]->GetYaxis()->GetXmax() );
   }
 
+  leg->SetTextFont(43);
+  leg->SetTextSize(23);
+  c->Update();
+  c->SaveAs("ATLASComp.pdf");
 
+  //-- CMS Refold Reg VS CMS ATLAS Reg
+  TLegend * leg2 = new TLegend(0.42, 0.71, 0.71, 0.90);
+  legInit( leg2 );
+  leg2->AddEntry(hFinalUnfold[0],     "CMS Refold Reg", "lp");
+  leg2->AddEntry(hUnfold_ATLASreg[0], "CMS ATLAS Reg",  "lp");
 
+  TCanvas * c2 = new TCanvas("c2", "c2", 2000, 1500);
+  c2->Divide(4,3);
+  for(int icent = 0; icent < NCENT; icent++){
+    c2->cd(icent+1);
+    c2->cd(icent+1)->SetLogy();
+    hUnfold_ATLASreg[icent]->Draw();
+    hFinalUnfold[icent]->Draw("same");
+    if(icent == 0) leg2->Draw("same");
+    latex3.DrawLatex(0.2, 0.22, Form("#bf{Cent. %i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+  }
+
+  leg2->SetTextFont(43);
+  leg2->SetTextSize(23);
+  c2->Update();
+  c2->SaveAs("CMSRegComp.pdf");
 
 }

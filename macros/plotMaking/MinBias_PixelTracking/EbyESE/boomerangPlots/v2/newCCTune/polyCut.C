@@ -291,6 +291,7 @@ void polyCut(){
   TCanvas * c2DHist = new TCanvas("c2DHist", "c2DHist", 500, 500);
   c2DHist->cd();
   hCCvsNpix->Draw();
+  /*
   polyCut_0p5pct->Draw("same");
   polyCut_1pct->Draw("same");
   polyCut_2pct->Draw("same");
@@ -304,6 +305,7 @@ void polyCut(){
   highPixLine_2pct->Draw("same");
   highPixLine_3pct->Draw("same");
   leg->Draw("same");
+  */
   c2DHist->SaveAs("c2DHist.pdf");
 
 

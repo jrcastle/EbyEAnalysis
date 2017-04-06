@@ -24,9 +24,9 @@ using namespace ebyese;
 
 int BIN      = 11;
 bool TEST    = 0;
-int Scenario = 1; // [1] -> vn = kn*en + knPr*kn*en^3;  [2] -> vn = kn*en + knPr*en^3
+int Scenario = 2; // [1] -> vn = kn*en + knPr*kn*en^3;  [2] -> vn = kn*en + knPr*en^3
 
-string fname = "EllPFits_Cubic1_Test1.root";
+string fname = "EllPFits_Cubic2.root";
 
 double fEccn(double vn, double kn, double knPr){
   double value = 0.;
@@ -81,15 +81,16 @@ void FitPvn_ResponseCubic(){
   bool fixKn       = 0;
   bool fixKnPr     = 0;
   bool fixAlpha    = 0;
-  bool moscowFits = 0;
+  bool moscowFits  = 0;
+  bool contours    = 1;
 
   double fixedKnPr = 0.0;
   //-- Free kn, knPR [1]     0      1      2      3     4     5     6     7     8     9     10    11
-  double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.35, 0.29, 0.28, 0.24};
-  double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.10, 0.12, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10};
-  double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 41.0, 30.0, 30.0, 12.0, 11.0, 6.8};
-  double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.18, 0.22, 0.23, 0.26, 0.24, 0.30, 0.31, 0.31};
-  double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.27, 0.26, 0.26};
+  //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.35, 0.29, 0.28, 0.24};
+  //double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.10, 0.12, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10};
+  //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 41.0, 30.0, 30.0, 12.0, 11.0, 6.8};
+  //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.18, 0.22, 0.23, 0.26, 0.24, 0.30, 0.31, 0.31};
+  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.27, 0.26, 0.26};
   //-- Fix kn = ATLAS, Fix knPr = 0.1 [1]   0      1      2      3      4      5      6      7      8      9      10     11
   //double knGuess[NCENT]                = {16.2,  16.2,  16.2,  0.368, 0.331, 0.328, 0.303, 0.294, 0.269, 0.265, 0.234, 0.221};
   //double knPrGuess[NCENT]              = {0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10};
@@ -103,11 +104,11 @@ void FitPvn_ResponseCubic(){
   //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.20, 0.22, 0.23, 0.26, 0.24, 0.30, 0.31, 0.31};
   //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.26, 0.25, 0.25}; 
   //-- Free kn, knPR [2]     0      1      2      3     4     5     6     7     8     9     10    11
-  //double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.34, 0.29, 0.28, 0.24};
-  //double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.08, 0.08, 0.10, 0.04, 0.03, 0.03, 0.05, 0.05, 0.05};
-  //double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 38.0, 35.0, 30.0, 25.0, 20.0, 12.0};
-  //double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.18, 0.22, 0.23, 0.25, 0.25, 0.27, 0.27, 0.29};
-  //double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.27, 0.26, 0.26};
+  double knGuess[NCENT]   = {16.2,  16.2,  16.2,  0.48, 0.40, 0.30, 0.37, 0.34, 0.34, 0.29, 0.28, 0.24};
+  double knPrGuess[NCENT] = {0.10,  0.10,  0.10,  0.08, 0.08, 0.10, 0.04, 0.03, 0.03, 0.05, 0.05, 0.05};
+  double alGuess[NCENT]   = {2.8e5, 2.8e5, 2.8e5, 60.0, 60.0, 45.0, 38.0, 35.0, 30.0, 25.0, 20.0, 12.0};
+  double e0Guess[NCENT]   = {0.0,   0.0,   0.0,   0.13, 0.18, 0.22, 0.23, 0.25, 0.25, 0.27, 0.27, 0.29};
+  double vnmax[NCENT]     = {0.25,  0.25,  0.25,  0.25, 0.25, 0.25, 0.25, 0.27, 0.26, 0.27, 0.26, 0.26};
   //-- Fix knPr = PRC [2]  
   //TF1 * f = new TF1("f", "pol1", 0., 60.);
   //f->SetParameters(0.0262387, 0.00190748);
@@ -214,9 +215,12 @@ void FitPvn_ResponseCubic(){
 
   //-- Contours
   const int Nsig = 3;
-  TGraph * grKnE0[Nsig][NCENT];
-  TGraph * grKnAlpha[Nsig][NCENT];
-  TGraph * grAlphaE0[Nsig][NCENT];
+  TGraph * grE0Kn[Nsig][NCENT];
+  TGraph * grE0KnPr[Nsig][NCENT];
+  TGraph * grE0Alpha[Nsig][NCENT];
+  TGraph * grAlphaKn[Nsig][NCENT];
+  TGraph * grAlphaKnPr[Nsig][NCENT];
+  TGraph * grKnKnPr[Nsig][NCENT];
   int contCol[Nsig] = {1, 2, 4};
 
   TH1D * hDummy[NCENT];
@@ -353,48 +357,90 @@ void FitPvn_ResponseCubic(){
       hFinalUnfold[icent]->Fit( Form("fEllP_c%i", icent), "L0", "", 0.0, vnmax[icent]);
 
       //-- contours
-      /*
-      for(int isig = 0; isig < Nsig; isig++){
+      if( contours ){
+	for(int isig = 0; isig < Nsig; isig++){
 
-	gMinuit->SetErrorDef( pow(isig+1, 2) );
+	  gMinuit->SetErrorDef( pow(isig+1, 2) );
 
-	//-- E0 VS kn
-	grKnE0[isig][icent] = (TGraph*) gMinuit->Contour(50, 2, 0);
-	grKnE0[isig][icent]->GetXaxis()->SetTitle( Form("k_{%i}", norder_) );
-	grKnE0[isig][icent]->GetXaxis()->SetNdivisions(508);
-	grKnE0[isig][icent]->GetYaxis()->SetTitle( "#epsilon_{0}" );
-	grKnE0[isig][icent]->GetYaxis()->SetNdivisions(508);
-	grKnE0[isig][icent]->SetLineColor( contCol[isig] );
-	grKnE0[isig][icent]->SetMarkerColor( contCol[isig] );
-	grKnE0[isig][icent]->SetFillColor( contCol[isig] );
+	  //-- E0 VS kn
+	  grE0Kn[isig][icent] = (TGraph*) gMinuit->Contour(50, 2, 0);
+	  if( grE0Kn[isig][icent] ){
+	    grE0Kn[isig][icent]->GetXaxis()->SetTitle( Form("k_{%i}", norder_) );
+	    grE0Kn[isig][icent]->GetXaxis()->SetNdivisions(508);
+	    grE0Kn[isig][icent]->GetYaxis()->SetTitle( "#epsilon_{0}" );
+	    grE0Kn[isig][icent]->GetYaxis()->SetNdivisions(508);
+	    grE0Kn[isig][icent]->SetLineColor( contCol[isig] );
+	    grE0Kn[isig][icent]->SetMarkerColor( contCol[isig] );
+	    grE0Kn[isig][icent]->SetFillColor( contCol[isig] );
+	  }
+	  //-- E0 VS knPr
+          grE0KnPr[isig][icent] = (TGraph*) gMinuit->Contour(50, 3, 0);
+	  if( grE0KnPr[isig][icent] ){
+	    grE0KnPr[isig][icent]->GetXaxis()->SetTitle( "#kappa\'" );
+	    grE0KnPr[isig][icent]->GetXaxis()->SetNdivisions(508);
+	    grE0KnPr[isig][icent]->GetYaxis()->SetTitle( "#epsilon_{0}" );
+	    grE0KnPr[isig][icent]->GetYaxis()->SetNdivisions(508);
+	    grE0KnPr[isig][icent]->SetLineColor( contCol[isig] );
+	    grE0KnPr[isig][icent]->SetMarkerColor( contCol[isig] );
+	    grE0KnPr[isig][icent]->SetFillColor( contCol[isig] );
+	  }
 
-	//-- Alpha VS kn
-	grKnAlpha[isig][icent] = (TGraph*) gMinuit->Contour(50, 2, 1);
-	grKnAlpha[isig][icent]->GetXaxis()->SetTitle( Form("k_{%i}", norder_) );
-	grKnAlpha[isig][icent]->GetXaxis()->SetNdivisions(508);
-	grKnAlpha[isig][icent]->GetYaxis()->SetTitle( "#alpha" );
-	grKnAlpha[isig][icent]->GetYaxis()->SetNdivisions(508);
-	grKnAlpha[isig][icent]->SetLineColor( contCol[isig] );     
-	grKnAlpha[isig][icent]->SetMarkerColor( contCol[isig] );
-        grKnAlpha[isig][icent]->SetFillColor( contCol[isig] );
+	  //-- E0 VS Alpha
+	  grE0Alpha[isig][icent] = (TGraph*) gMinuit->Contour(50, 1, 0);
+	  if( grE0Alpha[isig][icent] ){
+	    grE0Alpha[isig][icent]->GetXaxis()->SetTitle( "#alpha" );
+	    grE0Alpha[isig][icent]->GetXaxis()->SetNdivisions(508);
+	    grE0Alpha[isig][icent]->GetYaxis()->SetTitle( "#epsilon_{0}" );
+	    grE0Alpha[isig][icent]->GetYaxis()->SetNdivisions(508);
+	    grE0Alpha[isig][icent]->SetLineColor( contCol[isig] );
+	    grE0Alpha[isig][icent]->SetMarkerColor( contCol[isig] );
+	    grE0Alpha[isig][icent]->SetFillColor( contCol[isig] );
+	  }
+	  //-- Alpha VS kn
+	  grAlphaKn[isig][icent] = (TGraph*) gMinuit->Contour(50, 2, 1);
+	  if( grAlphaKn[isig][icent] ){	  
+	    grAlphaKn[isig][icent]->GetXaxis()->SetTitle( Form("k_{%i}", norder_) );
+	    grAlphaKn[isig][icent]->GetXaxis()->SetNdivisions(508);
+	    grAlphaKn[isig][icent]->GetYaxis()->SetTitle( "#alpha" );
+	    grAlphaKn[isig][icent]->GetYaxis()->SetNdivisions(508);
+	    grAlphaKn[isig][icent]->SetLineColor( contCol[isig] );     
+	    grAlphaKn[isig][icent]->SetMarkerColor( contCol[isig] );
+	    grAlphaKn[isig][icent]->SetFillColor( contCol[isig] );
+	  }
 
-	//-- E0 VS Alpha
-	grAlphaE0[isig][icent] = (TGraph*) gMinuit->Contour(50, 1, 0);
-	grAlphaE0[isig][icent]->GetXaxis()->SetTitle( "#alpha" );
-	grAlphaE0[isig][icent]->GetXaxis()->SetNdivisions(508);
-	grAlphaE0[isig][icent]->GetYaxis()->SetTitle( "#epsilon_{0}" );
-	grAlphaE0[isig][icent]->GetYaxis()->SetNdivisions(508);
-	grAlphaE0[isig][icent]->SetLineColor( contCol[isig] );     
-	grAlphaE0[isig][icent]->SetMarkerColor( contCol[isig] );
-        grAlphaE0[isig][icent]->SetFillColor( contCol[isig] );
-	
-	fOut->cd();
-	//grKnE0[isig][icent]->Write( Form( "grKnE0_%is_c%i", isig+1, icent)  );
-	//grKnAlpha[isig][icent]->Write( Form("grKnAlpha_%is_c%i", isig+1, icent) );
-	grAlphaE0[isig][icent]->Write( Form("grAlphaE0_%is_c%i", isig+1, icent) );
-  
+	  //-- Alpha VS knPr
+          grAlphaKnPr[isig][icent] = (TGraph*) gMinuit->Contour(50, 3, 1);
+	  if(  grAlphaKnPr[isig][icent] ){
+	    grAlphaKnPr[isig][icent]->GetXaxis()->SetTitle( "#kappa\'" );
+	    grAlphaKnPr[isig][icent]->GetXaxis()->SetNdivisions(508);
+	    grAlphaKnPr[isig][icent]->GetYaxis()->SetTitle( "#alpha" );
+	    grAlphaKnPr[isig][icent]->GetYaxis()->SetNdivisions(508);
+	    grAlphaKnPr[isig][icent]->SetLineColor( contCol[isig] );
+	    grAlphaKnPr[isig][icent]->SetMarkerColor( contCol[isig] );
+	    grAlphaKnPr[isig][icent]->SetFillColor( contCol[isig] );
+	  }
+
+	  //-- kn VS knPr
+          grKnKnPr[isig][icent] = (TGraph*) gMinuit->Contour(50, 3, 2);
+	  if( grKnKnPr[isig][icent] ){
+	    grKnKnPr[isig][icent]->GetXaxis()->SetTitle( "#kappa\'" );
+	    grKnKnPr[isig][icent]->GetXaxis()->SetNdivisions(508);
+	    grKnKnPr[isig][icent]->GetYaxis()->SetTitle( Form("k_{%i}", norder_) );
+	    grKnKnPr[isig][icent]->GetYaxis()->SetNdivisions(508);
+	    grKnKnPr[isig][icent]->SetLineColor( contCol[isig] );
+	    grKnKnPr[isig][icent]->SetMarkerColor( contCol[isig] );
+	    grKnKnPr[isig][icent]->SetFillColor( contCol[isig] );
+	  }
+
+	  fOut->cd();
+	  if( grE0Kn[isig][icent] )      grE0Kn[isig][icent]      -> Write( Form("grE0Kn_%is_c%i",      isig+1, icent) );
+	  if( grE0KnPr[isig][icent] )    grE0KnPr[isig][icent]    -> Write( Form("grE0KnPr_%is_c%i",    isig+1, icent) );
+	  if( grE0Alpha[isig][icent] )   grE0Alpha[isig][icent]   -> Write( Form("grE0Alpha_%is_c%i",   isig+1, icent) );
+	  if( grAlphaKn[isig][icent] )   grAlphaKn[isig][icent]   -> Write( Form("grAlphaKn_%is_c%i",   isig+1, icent) );
+	  if( grAlphaKnPr[isig][icent] ) grAlphaKnPr[isig][icent] -> Write( Form("grAlphaKnPr_%is_c%i", isig+1, icent) );
+	  if( grKnKnPr[isig][icent] )    grKnKnPr[isig][icent]    -> Write( Form("grKnKnPr_%is_c%i",    isig+1, icent) );
+	}
       }
-      */
     }
 
     //-- Increase hist maximums post-fit.

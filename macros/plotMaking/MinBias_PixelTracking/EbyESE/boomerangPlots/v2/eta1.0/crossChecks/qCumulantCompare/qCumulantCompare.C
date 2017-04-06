@@ -367,25 +367,25 @@ void qCumulantCompare(){
 
 
   //-- Draw cumus
-  TLegend * legvn2 = new TLegend(0.4720, 0.1909, 0.9909, 0.3834);
+  TLegend * legvn2 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn2->SetBorderSize(0);
   legvn2->SetFillStyle(0);
   legvn2->AddEntry(grEbyEVn2, "EbyE", "lp");
   legvn2->AddEntry(grQuanVn2, "Q-Cumulant", "lp");
 
-  TLegend * legvn4 = new TLegend(0.4720, 0.1909, 0.9909, 0.3834);
+  TLegend * legvn4 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn4->SetBorderSize(0);
   legvn4->SetFillStyle(0);
   legvn4->AddEntry(grEbyEVn4, "EbyE", "lp");
   legvn4->AddEntry(grQuanVn4, "Q-Cumulant", "lp");
 
-  TLegend * legvn6 = new TLegend(0.4720, 0.1909, 0.9909, 0.3834);
+  TLegend * legvn6 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn6->SetBorderSize(0);
   legvn6->SetFillStyle(0);
   legvn6->AddEntry(grEbyEVn6, "EbyE", "lp");
   legvn6->AddEntry(grQuanVn6, "Q-Cumulant", "lp");
 
-  TLegend * legvn8 = new TLegend(0.4720, 0.1909, 0.9909, 0.3834);
+  TLegend * legvn8 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn8->SetBorderSize(0);
   legvn8->SetFillStyle(0);
   legvn8->AddEntry(grEbyEVn8, "EbyE", "lp");
@@ -395,24 +395,36 @@ void qCumulantCompare(){
   cCumu->Divide(4, 1);
 
   cCumu->cd(1);
+  cCumu->cd(1)->SetLeftMargin(0.19);
+  cCumu->cd(1)->SetRightMargin(0.07);
+  cCumu->cd(1)->SetTopMargin(0.1);
   grEbyEVn2_sys->Draw("apE2");
   grEbyEVn2->Draw("psame");
   grQuanVn2->Draw("psame");
   legvn2->Draw("same");
 
   cCumu->cd(2);
+  cCumu->cd(2)->SetLeftMargin(0.19);
+  cCumu->cd(2)->SetRightMargin(0.07);
+  cCumu->cd(2)->SetTopMargin(0.1);
   grEbyEVn4_sys->Draw("apE2");
   grEbyEVn4->Draw("psame");
   grQuanVn4->Draw("psame");
   legvn4->Draw("same");
 
   cCumu->cd(3);
+  cCumu->cd(3)->SetLeftMargin(0.19);
+  cCumu->cd(3)->SetRightMargin(0.07);
+  cCumu->cd(3)->SetTopMargin(0.1);
   grEbyEVn6_sys->Draw("apE2");
   grEbyEVn6->Draw("psame");
   grQuanVn6->Draw("psame");
   legvn6->Draw("same");
 
   cCumu->cd(4);
+  cCumu->cd(4)->SetLeftMargin(0.19);
+  cCumu->cd(4)->SetRightMargin(0.07);
+  cCumu->cd(4)->SetTopMargin(0.1);
   grEbyEVn8_sys->Draw("apE2");
   grEbyEVn8->Draw("psame");
   grQuanVn8->Draw("psame");
@@ -426,18 +438,35 @@ void qCumulantCompare(){
 
   TCanvas * cCumu_RQtoE = new TCanvas("cCumu_RQtoE", "cCumu_RQtoE", 2000, 500);
   cCumu_RQtoE->Divide(4, 1);
+
   cCumu_RQtoE->cd(1);
+  cCumu_RQtoE->cd(1)->SetLeftMargin(0.19);
+  cCumu_RQtoE->cd(1)->SetRightMargin(0.07);
+  cCumu_RQtoE->cd(1)->SetTopMargin(0.1);
   grVn2_RatioQuanToEbyE->Draw("ap");
   lone->Draw("same");
+
   cCumu_RQtoE->cd(2);
+  cCumu_RQtoE->cd(2)->SetLeftMargin(0.19);
+  cCumu_RQtoE->cd(2)->SetRightMargin(0.07);
+  cCumu_RQtoE->cd(2)->SetTopMargin(0.1);
   grVn4_RatioQuanToEbyE->Draw("ap");
   lone->Draw("same");
+
   cCumu_RQtoE->cd(3);
+  cCumu_RQtoE->cd(3)->SetLeftMargin(0.19);
+  cCumu_RQtoE->cd(3)->SetRightMargin(0.07);
+  cCumu_RQtoE->cd(3)->SetTopMargin(0.1);
   grVn6_RatioQuanToEbyE->Draw("ap");
   lone->Draw("same");
+
   cCumu_RQtoE->cd(4);
+  cCumu_RQtoE->cd(4)->SetLeftMargin(0.19);
+  cCumu_RQtoE->cd(4)->SetRightMargin(0.07);
+  cCumu_RQtoE->cd(4)->SetTopMargin(0.1);
   grVn8_RatioQuanToEbyE->Draw("ap");
   lone->Draw("same");
+
   cCumu_RQtoE->SaveAs("CumuRaw_QCumuCompRatio.pdf");
 
 

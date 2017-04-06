@@ -1358,7 +1358,7 @@ void SmoothSys(){
     double sysTotVn8Vn4    = sqrt( pow(sysRegVn8Vn4,2) + pow(sysRespVn8Vn4,2) + pow(sysNewCCVn8Vn4,2) + pow(sysTkQVn8Vn4,2) + pow(sysVtxVn8Vn4,2) );
     double sysTotVn8Vn6    = sqrt( pow(sysRegVn8Vn6,2) + pow(sysRespVn8Vn6,2) + pow(sysNewCCVn8Vn6,2) + pow(sysTkQVn8Vn6,2) + pow(sysVtxVn8Vn6,2) );
     double sysTotVn46_Vn68 = sqrt( pow(sysRegVn46_Vn68,2) + pow(sysRespVn46_Vn68,2) + pow(sysNewCCVn46_Vn68,2) + pow(sysTkQVn46_Vn68,2) + pow(sysVtxVn46_Vn68,2) );
-    double sysTotG1E       = sqrt( pow(sysRegG1E,2) + pow(sysRespG1E,2) + pow(sysNewCCG1E,2) + pow(sysTkQG1E,2) + pow(sysVtxG1E,2) + pow(0.07, 2) );
+    double sysTotG1E       = sqrt( pow(sysRegG1E,2) + pow(sysRespG1E,2) + pow(sysNewCCG1E,2) + pow(sysTkQG1E,2) + pow(sysVtxG1E,2) );
 
     SmoothSysTotVn2       -> SetBinContent(icent+1, sysTotVn2);
     SmoothSysTotVn4       -> SetBinContent(icent+1, sysTotVn4);
@@ -1614,19 +1614,19 @@ void SmoothSys(){
   std::cout << "Cent"  << "\tVn2      " << "\tVn4      " << "\tVn6      " << "\tVn8      " << "\tG1E      " << "\tVn6Vn4   " << "\tVn8Vn4   "<< "\tVn8Vn6   " << std::endl;
   std::cout << "0--10\\% \t & "  << Form("%.1f", aveSys_00_10_Vn2)    << "\t & " << Form("%.1f", aveSys_00_10_Vn4)    << "\t & " << Form("%.1f", aveSys_00_10_Vn6) 
 	    << "\t & "           << Form("%.1f", aveSys_00_10_Vn8)    << "\t & " << Form("%.1f", aveSys_00_10_G1E)    << "\t & " << Form("%.1f", aveSys_00_10_Vn6Vn4) 
-	    << "\t & "           << Form("%.1f", aveSys_00_10_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_00_10_Vn8Vn6) << std::endl;
+	    << "\t & "           << Form("%.1f", aveSys_00_10_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_00_10_Vn8Vn6) << " \\\\" << std::endl;
   std::cout << "10--20\\%\t & "  << Form("%.1f", aveSys_10_20_Vn2)    << "\t & " << Form("%.1f", aveSys_10_20_Vn4)    << "\t & " << Form("%.1f", aveSys_10_20_Vn6)
             << "\t & "           << Form("%.1f", aveSys_10_20_Vn8)    << "\t & " << Form("%.1f", aveSys_10_20_G1E)    << "\t & " << Form("%.1f", aveSys_10_20_Vn6Vn4)
-            << "\t & "           << Form("%.1f", aveSys_10_20_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_10_20_Vn8Vn6) << std::endl;
+            << "\t & "           << Form("%.1f", aveSys_10_20_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_10_20_Vn8Vn6) << " \\\\" << std::endl;
   std::cout << "20--30\\%\t & "  << Form("%.1f", aveSys_20_30_Vn2)    << "\t & " << Form("%.1f", aveSys_20_30_Vn4)    << "\t & " << Form("%.1f", aveSys_20_30_Vn6)
             << "\t & "           << Form("%.1f", aveSys_20_30_Vn8)    << "\t & " << Form("%.1f", aveSys_20_30_G1E)    << "\t & " << Form("%.1f", aveSys_20_30_Vn6Vn4)
-            << "\t & "           << Form("%.1f", aveSys_20_30_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_20_30_Vn8Vn6) << std::endl;
+            << "\t & "           << Form("%.1f", aveSys_20_30_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_20_30_Vn8Vn6) << " \\\\" << std::endl;
   std::cout << "30--50\\%\t & "  << Form("%.1f", aveSys_30_50_Vn2)    << "\t & " << Form("%.1f", aveSys_30_50_Vn4)    << "\t & " << Form("%.1f", aveSys_30_50_Vn6)
             << "\t & "           << Form("%.1f", aveSys_30_50_Vn8)    << "\t & " << Form("%.1f", aveSys_30_50_G1E)    << "\t & " << Form("%.1f", aveSys_30_50_Vn6Vn4)
-            << "\t & "           << Form("%.1f", aveSys_30_50_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_30_50_Vn8Vn6) << std::endl;
+            << "\t & "           << Form("%.1f", aveSys_30_50_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_30_50_Vn8Vn6) << " \\\\" << std::endl;
   std::cout << "50--60\\%\t & "  << Form("%.1f", aveSys_50_60_Vn2)    << "\t & " << Form("%.1f", aveSys_50_60_Vn4)    << "\t & " << Form("%.1f", aveSys_50_60_Vn6)
             << "\t & "           << Form("%.1f", aveSys_50_60_Vn8)    << "\t & " << Form("%.1f", aveSys_50_60_G1E)    << "\t & " << Form("%.1f", aveSys_50_60_Vn6Vn4)
-            << "\t & "           << Form("%.1f", aveSys_50_60_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_50_60_Vn8Vn6) << std::endl;
+            << "\t & "           << Form("%.1f", aveSys_50_60_Vn8Vn4) << "\t & " << Form("%.1f", aveSys_50_60_Vn8Vn6) << " \\\\" << std::endl;
 
 
   std::cout << "\n\n======================================================" << std::endl;

@@ -10,7 +10,7 @@
 #include "TLatex.h"
 
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-#include "HeavyIonsAnalysis/EbyEAnalysis/interface/SysTablesEbyESE.h"
+//#include "HeavyIonsAnalysis/EbyEAnalysis/interface/SysTablesEbyESE.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/HiEvtPlaneList.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyECumu.h"
 #include "/home/j550c590/tdrstyle.C"
@@ -19,7 +19,7 @@
 
 using namespace hi;
 using namespace ebyese;
-using namespace sysebyese;
+//using namespace sysebyese;
 
 void sysResultsPlots(){
 
@@ -171,6 +171,7 @@ void sysResultsPlots(){
   TH1D * hVarianceOfMean_Vn8Vn4;
   TH1D * hVarianceOfMean_Vn8Vn6;
   TH1D * hVarianceOfMean_Vn46_Vn68;
+  TH1D * hVarianceOfMean_Bin[NCENT];
 
   TFile * fSmoothSys;
   TH1D * SmoothSysTotVn2;
@@ -186,7 +187,6 @@ void sysResultsPlots(){
   //
   // MAIN
   //
-
   setTDRStyle();
   latex.SetNDC();
   latex.SetTextFont(43);
@@ -235,6 +235,7 @@ void sysResultsPlots(){
   hVarianceOfMean_Vn8Vn4    = (TH1D*) fStat->Get("hVarianceOfMean_Vn8Vn4");
   hVarianceOfMean_Vn8Vn6    = (TH1D*) fStat->Get("hVarianceOfMean_Vn8Vn6");
   hVarianceOfMean_Vn46_Vn68 = (TH1D*) fStat->Get("hVarianceOfMean_Vn46_Vn68");
+  for(int icent = 0; icent < NCENT; icent++) hVarianceOfMean_Bin[icent] = (TH1D*) fStat->Get( Form("hVarianceOfMean_Bin_c%i", icent) );
 
   //-- Smooth Systematics
   fSmoothSys = new TFile("SmoothSysTot.root");
@@ -257,16 +258,9 @@ void sysResultsPlots(){
 
     for(int i = 0; i < NITER; i++){
 
-      //-- Get the unfolded histograms
+      //-- Get the (re)unfolded histograms
       hUnfold[icent][i] = (TH1D*) fUnfold->Get( Form("hreco%i_c%i", iter[i], icent) );
-      hUnfold[icent][i]->SetLineColor(col[i]);
-      hUnfold[icent][i]->SetMarkerColor(col[i]);
-
-      //-- Get the Refolded histograms
       hRefold[icent][i] = (TH1D*) fUnfold->Get( Form("hrefold%i_c%i", iter[i], icent) );
-      hRefold[icent][i]->SetLineWidth(2);
-      hRefold[icent][i]->SetLineColor(col[i]);
-      hRefold[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
       double chi2NDF_Refold = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF"); 
@@ -287,8 +281,14 @@ void sysResultsPlots(){
     std::cout << Form("============ Cent Bin %i ============",icent) << std::endl;
 
     int ii = iterCutoff[icent];
-
+    
+    //-- Truncate, update stat errors, and update colors
     FixUnfold( hUnfold[icent][ii] );
+    UpdateUnfoldBinErrors( hUnfold[icent][ii], hVarianceOfMean_Bin[icent]);
+    hUnfold[icent][ii]->SetLineColor( centCol[icent] );
+    hUnfold[icent][ii]->SetMarkerColor( centCol[icent] );
+
+    //-- Calculate Cumulants
     EbyECumu cumu(hUnfold[icent][ii]);
     double vn2  = cumu.GetCumu_vn2();
     double vn4  = cumu.GetCumu_vn4();
@@ -330,7 +330,7 @@ void sysResultsPlots(){
 
     //-- Sys Error
     double centval = hCentBins.GetBinCenter(icent+1); 
-    int isys = hSysBins.FindBin(centval)-1;
+    //int isys = hSysBins.FindBin(centval)-1;
 
     double sysRelErrTotVn2;
     double sysRelErrTotVn4;
@@ -354,6 +354,7 @@ void sysResultsPlots(){
       sysRelErrTotVn46_Vn68 = SmoothSysTotVn46_Vn68->GetBinContent(icent+1);
     }
     else{
+      /*
       sysRelErrTotVn2       = sysTotalV2_pt0p3_3_eta1p0_Vn2[isys];
       sysRelErrTotVn4       = sysTotalV2_pt0p3_3_eta1p0_Vn4[isys];
       sysRelErrTotVn6       = sysTotalV2_pt0p3_3_eta1p0_Vn6[isys];
@@ -363,6 +364,7 @@ void sysResultsPlots(){
       sysRelErrTotVn8Vn4    = sysTotalV2_pt0p3_3_eta1p0_Vn8Vn4[isys];
       sysRelErrTotVn8Vn6    = sysTotalV2_pt0p3_3_eta1p0_Vn8Vn6[isys];
       sysRelErrTotVn46_Vn68 = sysTotalV2_pt0p3_3_eta1p0_Vn46_Vn68[isys];
+      */
     }
 
     double sysErrVn2       = sysRelErrTotVn2 * vn2;
@@ -750,7 +752,7 @@ void sysResultsPlots(){
   legCumu->Draw("same");
   legCumu->SetTextFont(43); 
   legCumu->SetTextSize(23);
-  latex.DrawLatex(0.20, 0.913, "#bf{CMS} #it{Preliminary}");
+  latex.DrawLatex(0.20, 0.913, "#bf{CMS}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.24, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex2.DrawLatex(0.24, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -860,7 +862,7 @@ void sysResultsPlots(){
   grGamma1ExpSys->Draw("pE2same");
   grGamma1Exp->Draw("psame");
   legg1e->Draw("same");
-  latex.DrawLatex(0.20, 0.913, "#bf{CMS} #it{Preliminary}");
+  latex.DrawLatex(0.20, 0.913, "#bf{CMS}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.48, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex2.DrawLatex(0.72, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -909,7 +911,7 @@ void sysResultsPlots(){
   grvn6vn4Ratio->Draw("psame");
   line->Draw("same");
   leg64->Draw("same");
-  latex.DrawLatex(0.20, 0.915, "#bf{CMS} #it{Preliminary}");
+  latex.DrawLatex(0.20, 0.915, "#bf{CMS}");
   latex.DrawLatex(0.66, 0.915, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.48, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex2.DrawLatex(0.73, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -922,7 +924,7 @@ void sysResultsPlots(){
   grvn8vn4Ratio->Draw("psame");
   line2->Draw("same");
   leg84->Draw("same");
-  latex.DrawLatex(0.20, 0.915, "#bf{CMS} #it{Preliminary}");
+  latex.DrawLatex(0.20, 0.915, "#bf{CMS}");
   latex.DrawLatex(0.66, 0.915, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.48, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex2.DrawLatex(0.73, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -935,7 +937,7 @@ void sysResultsPlots(){
   grvn8vn6Ratio->Draw("psame");
   line2->Draw("same");
   leg86->Draw("same");
-  latex.DrawLatex(0.20, 0.915, "#bf{CMS} #it{Preliminary}");
+  latex.DrawLatex(0.20, 0.915, "#bf{CMS}");
   latex.DrawLatex(0.66, 0.915, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.48, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex2.DrawLatex(0.73, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -1128,7 +1130,7 @@ void sysResultsPlots(){
     grvn6vn4Ratio_Npart->Draw("psame");
     lone->Draw("same");
     leg64a->Draw("same");
-    latex.DrawLatex(0.19, 0.915, "#bf{CMS} #it{Preliminary}");
+    latex.DrawLatex(0.19, 0.915, "#bf{CMS}");
     latex.DrawLatex(0.65, 0.915, "PbPb 5.02 TeV");
     latex2.DrawLatex(0.47, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
     latex2.DrawLatex(0.715, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -1142,7 +1144,7 @@ void sysResultsPlots(){
     grvn8vn4Ratio_Npart->Draw("psame");
     lone->Draw("same");
     leg84a->Draw("same");
-    latex.DrawLatex(0.19, 0.915, "#bf{CMS} #it{Preliminary}");
+    latex.DrawLatex(0.19, 0.915, "#bf{CMS}");
     latex.DrawLatex(0.65, 0.915, "PbPb 5.02 TeV");
     latex2.DrawLatex(0.47, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
     latex2.DrawLatex(0.715, 0.76, Form("|#eta| < %.1f", tkEta));
@@ -1182,11 +1184,137 @@ void sysResultsPlots(){
   grTrentoPm1_en46_en68->Draw("psame");
   l11->Draw("same");
   leg4668->Draw("same");
-  latex.DrawLatex(0.20, 0.913, "#bf{CMS} #it{Preliminary}");
+  latex.DrawLatex(0.20, 0.913, "#bf{CMS}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.49, 0.84, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex2.DrawLatex(0.725, 0.77, Form("|#eta| < %.1f", tkEta));
   cVn46_Vn68->SaveAs("../plots/skew/SysVn46_Vn68.pdf");
+
+  TLegend * leg46682 = new TLegend(0.37, 0.15, 0.56, 0.32);
+  legInit(leg46682);
+  leg46682->AddEntry(grvn46_vn68Ratio,      Form("(v_{%i}{4}-v_{%i}{6})/(v_{%i}{6}-v_{%i}{8})", norder_, norder_, norder_, norder_), "lp");
+
+  // PAPER FIG.
+  TCanvas * cG1eAndVn46_Vn68 = new TCanvas("cG1eAndVn46_Vn68", "cG1eAndVn46_Vn68", 1000, 500);
+  cG1eAndVn46_Vn68->Divide(2,1);
+
+  cG1eAndVn46_Vn68->cd(1);
+  cG1eAndVn46_Vn68->cd(1)->SetLeftMargin(0.19);
+  cG1eAndVn46_Vn68->cd(1)->SetRightMargin(0.09);
+  cG1eAndVn46_Vn68->cd(1)->SetTopMargin(0.1);
+  grGamma1ExpSys->Draw("apE2");
+  grGamma1ExpTheory->Draw("3same");
+  grGamma1ExpTheory->Draw("lXsame");
+  grGamma1ExpSys->Draw("pE2same");
+  grGamma1Exp->Draw("psame");
+  legg1e->Draw("same");
+  latex.DrawLatex(0.19, 0.915, "#bf{CMS}");
+  latex.DrawLatex(0.65, 0.915, "PbPb 5.02 TeV");
+  latex2.DrawLatex(0.47, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+  latex2.DrawLatex(0.715, 0.76, Form("|#eta| < %.1f", tkEta));
+
+  cG1eAndVn46_Vn68->cd(2);
+  cG1eAndVn46_Vn68->cd(2)->SetLeftMargin(0.19);
+  cG1eAndVn46_Vn68->cd(2)->SetRightMargin(0.09);
+  cG1eAndVn46_Vn68->cd(2)->SetTopMargin(0.1);
+  grvn46_vn68RatioSys->Draw("apE2");
+  grvn46_vn68Ratio->Draw("psame");
+  l11->Draw("same");
+  leg46682->Draw("same");
+  latex.DrawLatex(0.19, 0.915, "#bf{CMS}");
+  latex.DrawLatex(0.65, 0.915, "PbPb 5.02 TeV");
+  latex2.DrawLatex(0.47, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+  latex2.DrawLatex(0.715, 0.76, Form("|#eta| < %.1f", tkEta));
+
+
+  leg46682->SetTextFont(43);
+  leg46682->SetTextSize(23);
+
+  cG1eAndVn46_Vn68->Update();
+  cG1eAndVn46_Vn68->SaveAs("../plots/skew/cSysG1EAndVn46_Vn68.pdf");
+
+  //-- MERGE Fig. 2 and Fig. 5
+  grvn6vn4Ratio_ATLASNpart->SetLineColor(1);
+  grvn6vn4Ratio_ATLASNpart->SetMarkerColor(1);
+  grvn6vn4Ratio_ATLASNpart->SetMarkerStyle(24);
+
+  grvn8vn4Ratio_ATLASNpart->SetLineColor(1);
+  grvn8vn4Ratio_ATLASNpart->SetMarkerColor(1);
+  grvn8vn4Ratio_ATLASNpart->SetMarkerStyle(25);
+
+  grvn6vn4RatioSys->SetFillColorAlpha(17, 0.6);
+  grvn8vn4RatioSys->SetFillColorAlpha(17, 0.6);
+
+  TLegend * leg64c = new TLegend(0.29, 0.20, 0.62, 0.38);
+  legInit( leg64c );
+  leg64c->AddEntry(grvn6vn4Ratio,            "v_{2}{6} / v_{2}{4}", "lp");
+  leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "lp");
+  leg64c->AddEntry(grvn6vn4RatioTheory,      "2.76 TeV Hydro",      "f");
+
+  TLegend * leg84c = new TLegend(0.29, 0.20, 0.61, 0.33);
+  legInit( leg84c );
+  leg84c->AddEntry(grvn8vn4Ratio,            "v_{2}{8} / v_{2}{4}", "lp");
+  leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "lp");
+
+  TCanvas * cCumuRatioWithATLAS = new TCanvas("cCumuRatioWithATLAS", "cCumuRatioWithATLAS", 1500, 500);
+  cCumuRatioWithATLAS->Divide(3,1);
+
+  cCumuRatioWithATLAS->cd(1);
+  cCumuRatioWithATLAS->cd(1)->SetLeftMargin(0.19);
+  cCumuRatioWithATLAS->cd(1)->SetRightMargin(0.07);
+  cCumuRatioWithATLAS->cd(1)->SetTopMargin(0.1);
+  grvn6vn4RatioSys->Draw("apE2");
+  grvn6vn4RatioTheory->Draw("3same");
+  grvn6vn4RatioTheory->Draw("lXsame");
+  grvn6vn4Ratio_ATLASNpart->Draw("psame");
+  grvn6vn4RatioSys->Draw("pE2same");
+  grvn6vn4Ratio->Draw("psame");
+  line->Draw("same");
+  leg64c->Draw("same");
+  latex.DrawLatex(0.20, 0.915, "#bf{CMS}");
+  latex.DrawLatex(0.66, 0.915, "PbPb 5.02 TeV");
+  latex2.DrawLatex(0.48, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+  latex2.DrawLatex(0.73, 0.76, Form("|#eta| < %.1f", tkEta));
+
+  cCumuRatioWithATLAS->cd(2);
+  cCumuRatioWithATLAS->cd(2)->SetLeftMargin(0.19);
+  cCumuRatioWithATLAS->cd(2)->SetRightMargin(0.07);
+  cCumuRatioWithATLAS->cd(2)->SetTopMargin(0.1);
+  grvn8vn4RatioSys->Draw("apE2");
+  grvn8vn4Ratio_ATLASNpart->Draw("psame");
+  grvn8vn4RatioSys->Draw("pE2same");
+  grvn8vn4Ratio->Draw("psame");
+  line2->Draw("same");
+  leg84c->Draw("same");
+  latex.DrawLatex(0.20, 0.915, "#bf{CMS}");
+  latex.DrawLatex(0.66, 0.915, "PbPb 5.02 TeV");
+  latex2.DrawLatex(0.48, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+  latex2.DrawLatex(0.73, 0.76, Form("|#eta| < %.1f", tkEta));
+
+  cCumuRatioWithATLAS->cd(3);
+  cCumuRatioWithATLAS->cd(3)->SetLeftMargin(0.19);
+  cCumuRatioWithATLAS->cd(3)->SetRightMargin(0.07);
+  cCumuRatioWithATLAS->cd(3)->SetTopMargin(0.1);
+  grvn8vn6RatioSys->Draw("apE2");
+  grvn8vn6Ratio->Draw("psame");
+  line2->Draw("same");
+  leg86->Draw("same");
+  latex.DrawLatex(0.20, 0.915, "#bf{CMS}");
+  latex.DrawLatex(0.66, 0.915, "PbPb 5.02 TeV");
+  latex2.DrawLatex(0.48, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+  latex2.DrawLatex(0.73, 0.76, Form("|#eta| < %.1f", tkEta));
+
+  leg64c->SetTextFont(43);
+  leg64c->SetTextSize(26);
+
+  leg84c->SetTextFont(43);
+  leg84c->SetTextSize(26);
+
+  leg86->SetTextFont(43);
+  leg86->SetTextSize(26);
+
+  cCumuRatioWithATLAS->Update();
+  cCumuRatioWithATLAS->SaveAs("../plots/skew/SysCumuRatioWithATLAS.pdf");
 
   //-- Save results to file
   fOut = new TFile("PhysicsResults.root", "recreate");

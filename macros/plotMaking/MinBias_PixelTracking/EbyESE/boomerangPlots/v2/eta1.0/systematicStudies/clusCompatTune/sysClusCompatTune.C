@@ -448,15 +448,15 @@ void sysClusCompatTune(){
   grVn46_Vn682pct = new TGraphErrors(NCENT, centBinCenter, vn46_vn682pct, c_err, vn46_vn682pct_err);
   grG1E2pct       = new TGraphErrors(NCENT, centBinCenter, g1e2pct,       c_err, g1e2pct_err);
 
-  formatGraph(grVn22pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{2}", norder_),                                                                  9,         21, "grVn22pct");
-  formatGraph(grVn42pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{4}", norder_),                                                                  kSpring+4, 21, "grVn42pct");
-  formatGraph(grVn62pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{6}", norder_),                                                                  6,         21, "grVn62pct");
-  formatGraph(grVn82pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{8}", norder_),                                                                  kOrange+7, 21, "grVn82pct");
-  formatGraph(grVn6Vn42pct,    "Centrality %", vn6vn4Min,    vn6vn4Max,    Form("v_{%i}{6}/v_{%i}{4}", norder_, norder_),                                               4,         21, "grVn6Vn42pct");
-  formatGraph(grVn8Vn42pct,    "Centrality %", vn8vn4Min,    vn8vn4Max,    Form("v_{%i}{8}/v_{%i}{4}", norder_, norder_),                                               kGreen+2,  34, "grVn8Vn42pct");
-  formatGraph(grVn8Vn62pct,    "Centrality %", vn8vn6Min,    vn8vn6Max,    Form("v_{%i}{8}/v_{%i}{6}", norder_, norder_),                                               kViolet-1, 33, "grVn8Vn62pct");
-  formatGraph(grVn46_Vn682pct, "Centrality %", vn46_vn68Min, vn46_vn68Max, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_), kGray+2,   22, "grVn46_Vn682pct");
-  formatGraph(grG1E2pct,       "Centrality %", g1eMin,       g1eMax,       "#gamma_{1}^{exp}",                                                                          2,         20, "grG1E2pct");
+  formatGraph(grVn22pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{2}", norder_),                                                                  9,         25, "grVn22pct");
+  formatGraph(grVn42pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{4}", norder_),                                                                  kSpring+4, 25, "grVn42pct");
+  formatGraph(grVn62pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{6}", norder_),                                                                  6,         25, "grVn62pct");
+  formatGraph(grVn82pct,       "Centrality %", cumuMin,      cumuMax,      Form("v_{%i}{8}", norder_),                                                                  kOrange+7, 25, "grVn82pct");
+  formatGraph(grVn6Vn42pct,    "Centrality %", vn6vn4Min,    vn6vn4Max,    Form("v_{%i}{6}/v_{%i}{4}", norder_, norder_),                                               4,         25, "grVn6Vn42pct");
+  formatGraph(grVn8Vn42pct,    "Centrality %", vn8vn4Min,    vn8vn4Max,    Form("v_{%i}{8}/v_{%i}{4}", norder_, norder_),                                               kGreen+2,  28, "grVn8Vn42pct");
+  formatGraph(grVn8Vn62pct,    "Centrality %", vn8vn6Min,    vn8vn6Max,    Form("v_{%i}{8}/v_{%i}{6}", norder_, norder_),                                               kViolet-1, 27, "grVn8Vn62pct");
+  formatGraph(grVn46_Vn682pct, "Centrality %", vn46_vn68Min, vn46_vn68Max, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_), kGray+2,   26, "grVn46_Vn682pct");
+  formatGraph(grG1E2pct,       "Centrality %", g1eMin,       g1eMax,       "#gamma_{1}^{exp}",                                                                          2,         24, "grG1E2pct");
 
   //-- Ratio to Default
   grVn22pct_RatioToDefault       = new TGraphErrors(NCENT, centBinCenter, vn22pct_RatioToDefault,       c_err, vn22pct_RatioToDefault_err);
@@ -485,25 +485,25 @@ void sysClusCompatTune(){
   lOne->SetLineWidth(2);
 
   //-- cumu
-  TLegend * legvn2  = new TLegend(0.4538, 0.7421, 0.94, 0.9172);
+  TLegend * legvn2  = new TLegend(0.68, 0.22, 0.97, 0.39);
   legvn2->SetBorderSize(0);
   legvn2->SetFillStyle(0);
   legvn2->AddEntry(grVn2Default, "Default", "lp");
   legvn2->AddEntry(grVn22pct,    "2%",      "lp");
 
-  TLegend * legvn4  = new TLegend(0.4538, 0.7421, 0.94, 0.9172);
+  TLegend * legvn4  = new TLegend(0.68, 0.22, 0.97, 0.39);
   legvn4->SetBorderSize(0);
   legvn4->SetFillStyle(0);
   legvn4->AddEntry(grVn4Default, "Default", "lp");
   legvn4->AddEntry(grVn42pct,    "2%",      "lp");
 
-  TLegend * legvn6  = new TLegend(0.4538, 0.7421, 0.94, 0.9172);
+  TLegend * legvn6  = new TLegend(0.68, 0.22, 0.97, 0.39);
   legvn6->SetBorderSize(0);
   legvn6->SetFillStyle(0);
   legvn6->AddEntry(grVn6Default, "Default", "lp");
   legvn6->AddEntry(grVn62pct,    "2%",      "lp");
 
-  TLegend * legvn8  = new TLegend(0.4538, 0.7421, 0.94, 0.9172);
+  TLegend * legvn8  = new TLegend(0.68, 0.22, 0.97, 0.39);
   legvn8->SetBorderSize(0);
   legvn8->SetFillStyle(0);
   legvn8->AddEntry(grVn8Default, "Default", "lp");

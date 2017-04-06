@@ -21,13 +21,17 @@ void sysUnfoldDistns(){
   int norder_     = 2;
   double tkEta    = 1.0;
 
-  bool smooth = 1;
+  bool smooth  = 1;
+  bool drawObs = 1;
 
   TFile * fAna;
   TH1D * hObs[NCENT];
   TFile * fUnfold;
   TH1D * hUnfold[NCENT][NITER];
   TH1D * hRefold[NCENT][NITER];
+
+  TFile * fStat;
+  TH1D * hVarianceOfMean_Bin[NCENT];
 
   TFile * fUnfoldCov;
   TH2D * hUnfoldCov[NCENT][NITER];
@@ -126,6 +130,9 @@ void sysUnfoldDistns(){
 
   TLatex latex;
   TLatex latex2;
+  TLatex latex3;
+  TLatex latex4;
+
   //
   // MAIN
   // 
@@ -133,7 +140,16 @@ void sysUnfoldDistns(){
   latex.SetNDC();
   latex.SetTextFont(43);
   latex.SetTextSize(23);
+
   latex2.SetNDC();
+
+  latex3.SetNDC();
+  latex3.SetTextFont(43);
+  latex3.SetTextSize(26);
+
+  latex4.SetNDC();
+  latex4.SetTextFont(43);
+  latex4.SetTextSize(30);
 
   TExec *setex2 = new TExec("setex2","gStyle->SetErrorX(0.5)");
   TExec *setex1 = new TExec("setex1","gStyle->SetErrorX(0)");
@@ -141,6 +157,10 @@ void sysUnfoldDistns(){
   //-- Get the output files for the reported distributions
   fAna    = new TFile( "../AnalyzerResults/CastleEbyE.root" );
   fUnfold = new TFile( Form("../UnfoldResults/dataResp/data%i.root", norder_) );
+
+  //-- Get the stat errors for the reported distributions
+  fStat = new TFile( Form("../../../statErrorHandle/v%i/eta%.1f/StatisticalUncertainties_v%i.root ", norder_, tkEta, norder_) );
+  for(int icent = 0; icent < NCENT; icent++) hVarianceOfMean_Bin[icent] = (TH1D*) fStat->Get( Form("hVarianceOfMean_Bin_c%i", icent) );
 
   //-- Get the output files for SysResp
   fUnfoldResp = new TFile( Form("../UnfoldResults/dataResp/data%i_dosys.root", norder_) );
@@ -362,6 +382,9 @@ void sysUnfoldDistns(){
     FixUnfold( hFinalUnfSysTkTight[icent] );
     FixUnfold( hFinalUnfSysNewCC[icent] );
     FixUnfold( hFinalUnfSysGaussResp[icent] );
+
+    //-- Update Stat Uncertainty for hFinalUnf
+    UpdateUnfoldBinErrors(hFinalUnf[icent], hVarianceOfMean_Bin[icent]);
 
     //-- Normalize
     hNormFactor->SetBinContent( icent+1, 1./hFinalUnf[icent]->Integral() );
@@ -879,5 +902,233 @@ void sysUnfoldDistns(){
     latex.DrawLatex(0.67, 0.88, Form( "Cent %i-%i%s", cent_min[icent], cent_max[icent], "%") );
   }
   cFinalUnfold->SaveAs( Form("../plots/systematicStudies/sysFinalUnfoldDistns_v%i.pdf", norder_) );
+
+  //-- 6 x 2
+  /*
+  //-- Draw Final Unfolded distns on one plot
+  TLegend * legUnfObs = new TLegend(0.62, 0.06, 0.82, 0.26);
+  legInit(legUnfObs);
+
+  TCanvas * cFinalUnfoldMerged = new TCanvas("cFinalUnfoldMerged", "cFinalUnfoldMerged", 3000, 1000);
+  cFinalUnfoldMerged->Divide(6,2,0,0);
+
+  for(int icent = 0; icent < NCENT; icent++){
+
+    cFinalUnfoldMerged->cd(icent+1);
+    cFinalUnfoldMerged->cd(icent+1)->SetLogy();
+    if(icent < 6) cFinalUnfoldMerged->cd(icent+1)->SetTopMargin(0.07);
+    else          cFinalUnfoldMerged->cd(icent+1)->SetBottomMargin(0.22);
+    if(icent == 0 || icent == 6)  cFinalUnfoldMerged->cd(icent+1)->SetLeftMargin(0.17);
+    if(icent == 5 || icent == 11) cFinalUnfoldMerged->cd(icent+1)->SetRightMargin(0.01);
+
+    //-- X axes 
+    double m = 0.27;
+    hObs[icent]->GetXaxis()->SetRange(0, hFinalUnfoldSys[icent]->FindBin(m));
+    hFinalUnfoldSys[icent]->GetXaxis()->SetRange(0, hFinalUnfoldSys[icent]->FindBin(m));
+    hFinalUnf[icent]->GetXaxis()->SetRange(0, hFinalUnfoldSys[icent]->FindBin(m));
+
+    hObs[icent]->GetXaxis()->SetNdivisions(507);
+    hFinalUnfoldSys[icent]->GetXaxis()->SetNdivisions(507);
+    hFinalUnf[icent]->GetXaxis()->SetNdivisions(507);
+
+    hObs[icent]->GetXaxis()->SetLabelFont(43);
+    hFinalUnfoldSys[icent]->GetXaxis()->SetLabelFont(43);
+    hFinalUnf[icent]->GetXaxis()->SetLabelFont(43);
+
+    hObs[icent]->GetXaxis()->SetLabelSize(30);
+    hFinalUnfoldSys[icent]->GetXaxis()->SetLabelSize(30);
+    hFinalUnf[icent]->GetXaxis()->SetLabelSize(30);
+
+    hObs[icent]->GetXaxis()->SetTitleFont(43);
+    hFinalUnfoldSys[icent]->GetXaxis()->SetTitleFont(43);
+    hFinalUnf[icent]->GetXaxis()->SetTitleFont(43);
+
+    hObs[icent]->GetXaxis()->SetTitleSize(45);
+    hFinalUnfoldSys[icent]->GetXaxis()->SetTitleSize(45);
+    hFinalUnf[icent]->GetXaxis()->SetTitleSize(45);
+
+    hObs[icent]->GetXaxis()->SetTitleOffset(1.3);
+    hFinalUnfoldSys[icent]->GetXaxis()->SetTitleOffset(1.3);
+    hFinalUnf[icent]->GetXaxis()->SetTitleOffset(1.3);
+
+    //-- Y axes
+    double mm = 0.5;
+    hObs[icent]->SetMaximum(mm);
+    hFinalUnfoldSys[icent]->SetMaximum(mm);
+    hFinalUnf[icent]->SetMaximum(mm);
+
+    double mmm = 2e-5;
+    hObs[icent]->SetMinimum(mmm);
+    hFinalUnfoldSys[icent]->SetMinimum(mmm);
+    hFinalUnf[icent]->SetMinimum(mmm);
+
+    hObs[icent]->GetYaxis()->SetLabelFont(43);
+    hFinalUnfoldSys[icent]->GetYaxis()->SetLabelFont(43);
+    hFinalUnf[icent]->GetYaxis()->SetLabelFont(43);
+
+    hObs[icent]->GetYaxis()->SetLabelSize(30);
+    hFinalUnfoldSys[icent]->GetYaxis()->SetLabelSize(30);
+    hFinalUnf[icent]->GetYaxis()->SetLabelSize(30);
+
+    hObs[icent]->GetYaxis()->SetTitleFont(43);
+    hFinalUnfoldSys[icent]->GetYaxis()->SetTitleFont(43);
+    hFinalUnf[icent]->GetYaxis()->SetTitleFont(43);
+
+    hObs[icent]->GetYaxis()->SetTitleSize(40);
+    hFinalUnfoldSys[icent]->GetYaxis()->SetTitleSize(40);
+    hFinalUnf[icent]->GetYaxis()->SetTitleSize(40);
+
+    hObs[icent]->GetYaxis()->SetTitleOffset(1.8);
+    hFinalUnfoldSys[icent]->GetYaxis()->SetTitleOffset(1.8);
+    hFinalUnf[icent]->GetYaxis()->SetTitleOffset(1.8);
+
+    //-- Colors/Cosmetics
+    hObs[icent]->Scale(1./hObs[icent]->Integral());
+    hObs[icent]->SetLineColor(1);
+    hObs[icent]->SetMarkerColor(1);
+    hObs[icent]->SetMarkerStyle(24);
+
+    hFinalUnfoldSys[icent]->SetLineColor(4);
+    hFinalUnfoldSys[icent]->SetMarkerColor(4);
+    hFinalUnfoldSys[icent]->SetFillColorAlpha(kBlue-7, 0.6);
+
+    hFinalUnf[icent]->SetLineColor(4);
+    hFinalUnf[icent]->SetMarkerColor(4);
+
+    if(drawObs){
+      hFinalUnfoldSys[icent]->Draw("e2");
+      hFinalUnf[icent]->Draw("same");
+      hObs[icent]->Draw("same");
+
+      //-- Add legend
+      if(icent == 0){
+	legUnfObs->AddEntry(hObs[icent],      "Observed p(v_{2})", "lp");
+	legUnfObs->AddEntry(hFinalUnf[icent], "Unfold p(v_{2})",   "lp");
+	legUnfObs->Draw("same");
+	legUnfObs->SetTextFont(43);
+	legUnfObs->SetTextSize(26);
+      }
+    }
+    else{
+      hFinalUnfoldSys[icent]->Draw("e2");
+      hFinalUnf[icent]->Draw("same");
+    }
+
+    //-- Centrality tags
+    if(icent == 0)      latex3.DrawLatex(0.21, 0.06, Form("#bf{Cent. %i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent < 6)  latex3.DrawLatex(0.05, 0.06, Form("#bf{Cent. %i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent == 6) latex3.DrawLatex(0.20, 0.27, Form("#bf{Cent. %i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent < 12) latex3.DrawLatex(0.05, 0.27, Form("#bf{Cent. %i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+
+    //-- CMS, lumi pt and eta tags
+    if(icent == 0){
+      latex4.DrawLatex(0.19, 0.95, "#bf{CMS}");
+      latex4.DrawLatex(0.65, 0.95, "PbPb 5.02 TeV");
+      latex3.DrawLatex(0.57, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+      latex3.DrawLatex(0.80, 0.76, Form("|#eta| < %.1f", tkEta));
+    }
+
+  }
+
+  cFinalUnfoldMerged->Update();
+  cFinalUnfoldMerged->SaveAs("../plots/skew/cFinalUnfoldMerged.pdf");
+  */
+
+  //-- 4 x 3
+  //-- Draw Final Unfolded distns on one plot
+  TLegend * legUnfObs = new TLegend(0.58, 0.06, 0.78, 0.26);
+  legInit(legUnfObs);
+
+  TH1D * hDummy = new TH1D("hDummy", "hDummy", 152, 0-binw, vnMax[norder_]);
+  hDummy->GetXaxis()->SetTitle("v_{2}");
+  hDummy->GetYaxis()->SetTitle("p(v_{2})");
+
+  TCanvas * cFinalUnfoldMerged = new TCanvas("cFinalUnfoldMerged", "cFinalUnfoldMerged", 2000, 1500);
+  cFinalUnfoldMerged->Divide(4,3,0,0);
+
+  for(int icent = 0; icent < NCENT; icent++){
+
+    cFinalUnfoldMerged->cd(icent+1);
+    cFinalUnfoldMerged->cd(icent+1)->SetLogy();
+    if(icent < 4) cFinalUnfoldMerged->cd(icent+1)->SetTopMargin(0.07);
+    if(icent > 7) cFinalUnfoldMerged->cd(icent+1)->SetBottomMargin(0.22);
+    //if(icent == 0 || icent == 6)  cFinalUnfoldMerged->cd(icent+1)->SetLeftMargin(0.17);
+    //if(icent == 5 || icent == 11) cFinalUnfoldMerged->cd(icent+1)->SetRightMargin(0.01);
+
+    //-- X axes 
+    double m = 0.37;
+    hDummy->GetXaxis()->SetRange(0, hFinalUnfoldSys[icent]->FindBin(m));
+    hDummy->GetXaxis()->SetNdivisions(507);
+    hDummy->GetXaxis()->SetLabelFont(43);
+    hDummy->GetXaxis()->SetLabelSize(34);
+    hDummy->GetXaxis()->SetTitleFont(43);
+    hDummy->GetXaxis()->SetTitleSize(45);
+    hDummy->GetXaxis()->SetTitleOffset(2.5);
+
+    //-- Y axes
+    hDummy->SetMaximum(0.5);
+    hDummy->SetMinimum(2e-5);
+    hDummy->GetYaxis()->SetLabelFont(43);
+    hDummy->GetYaxis()->SetLabelSize(34);
+    hDummy->GetYaxis()->SetTitleFont(43);
+    hDummy->GetYaxis()->SetTitleSize(40);
+    hDummy->GetYaxis()->SetTitleOffset(3.0);
+
+    //-- Colors/Cosmetics
+    hObs[icent]->Scale(1./hObs[icent]->Integral());
+    hObs[icent]->SetLineColor(1);
+    hObs[icent]->SetMarkerColor(1);
+    hObs[icent]->SetMarkerStyle(24);
+
+    hFinalUnfoldSys[icent]->SetLineColor(4);
+    hFinalUnfoldSys[icent]->SetMarkerColor(4);
+    hFinalUnfoldSys[icent]->SetFillColorAlpha(kBlue-7, 0.6);
+
+    hFinalUnf[icent]->SetLineColor(4);
+    hFinalUnf[icent]->SetMarkerColor(4);
+
+    if(drawObs){
+      hDummy->Draw();
+      hFinalUnfoldSys[icent]->Draw("e2same");
+      hFinalUnf[icent]->Draw("same");
+      hObs[icent]->Draw("same");
+
+      //-- Add legend
+      if(icent == 0){
+	legUnfObs->AddEntry(hObs[icent],      "Observed p(v_{2})", "lp");
+	legUnfObs->AddEntry(hFinalUnf[icent], "Unfold p(v_{2})",   "lp");
+	legUnfObs->Draw("same");
+	legUnfObs->SetTextFont(43);
+	legUnfObs->SetTextSize(30);
+      }
+    }
+    else{
+      hDummy->Draw();
+      hFinalUnfoldSys[icent]->Draw("e2same");
+      hFinalUnf[icent]->Draw("same");
+    }
+
+    //-- Centrality tags
+    if(icent == 0)                   latex4.DrawLatex(0.22, 0.06, Form("#bf{%i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent < 4)               latex4.DrawLatex(0.05, 0.06, Form("#bf{%i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent == 4)              latex4.DrawLatex(0.22, 0.06, Form("#bf{%i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent > 4 && icent < 8)  latex4.DrawLatex(0.05, 0.06, Form("#bf{%i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent == 8)              latex4.DrawLatex(0.22, 0.27, Form("#bf{%i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+    else if(icent > 8 && icent < 12) latex4.DrawLatex(0.05, 0.27, Form("#bf{%i - %i%s}", cent_min[icent], cent_max[icent], "%") );
+
+    //-- CMS, lumi pt and eta tags
+    if(icent == 0){
+      latex4.DrawLatex(0.19, 0.95, "#bf{CMS}");
+      latex4.DrawLatex(0.65, 0.95, "PbPb 5.02 TeV");
+      latex4.DrawLatex(0.5, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+      latex4.DrawLatex(0.78, 0.75, Form("|#eta| < %.1f", tkEta));
+    }
+
+  }
+
+  cFinalUnfoldMerged->Update();
+  cFinalUnfoldMerged->SaveAs("../plots/skew/cFinalUnfoldMerged.pdf");
+
+
 
 }

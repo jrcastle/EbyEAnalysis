@@ -169,9 +169,9 @@ void atlasPV2Fits(){
     //-- [0] = ecc0; [1] = Alpha; [2] = kn; [3] = Scale;
     fEllP[icent]->SetParLimits(0, 0., 1.);
     fEllP[icent]->SetParLimits(2, 0., 1.);
-    fEllP[icent]->SetParameters(e0Guess[icent], alGuess[icent], knGuess[icent], TMath::MaxElement(NATLAS[icent], ATLAS_PV2[icent]->GetY()));
+    fEllP[icent]->SetParameters(e0Guess[icent], alGuess[icent], knGuess[icent], TMath::MaxElement(NATLAS[icent], ATLASPV2_Stat[icent]->GetY()));
     fEllP[icent]->SetParNames("ecc0", "alpha", "kn", "Scale");
-    ATLAS_PV2[icent]->Fit( Form("fEllP_c%i", icent), "L0", "", 0.0, vnmax[icent]);
+    ATLASPV2_Stat[icent]->Fit( Form("fEllP_c%i", icent), "L0", "", 0.0, vnmax[icent]);
 
     fitKn[icent]    = fEllP[icent]->GetParameter(2);
     fitAlpha[icent] = fEllP[icent]->GetParameter(1);
@@ -181,9 +181,9 @@ void atlasPV2Fits(){
     fitAlpha_err[icent] = fEllP[icent]->GetParError(1);
     fitE0_err[icent]    = fEllP[icent]->GetParError(0);
 
-    ATLAS_PV2[icent]->GetXaxis()->SetNdivisions(508);
-    ATLAS_PV2[icent]->GetXaxis()->SetTitle("v_{2}");
-    ATLAS_PV2[icent]->GetYaxis()->SetTitle("p(v_{2}), p(#epsilon_{2})");
+    ATLASPV2_Stat[icent]->GetXaxis()->SetNdivisions(508);
+    ATLASPV2_Stat[icent]->GetXaxis()->SetTitle("v_{2}");
+    ATLASPV2_Stat[icent]->GetYaxis()->SetTitle("p(v_{2}), p(#epsilon_{2})");
 
   } // End cent loop
 
@@ -250,10 +250,10 @@ void atlasPV2Fits(){
 
   cUnfoldDistsBig->cd(1);
   cUnfoldDistsBig->cd(1)->SetLogy();
-  ATLAS_PV2[3]->Draw("ap");
+  ATLASPV2_Stat[3]->Draw("ap");
   fEllP[3]->Draw("same");
   cUnfoldDistsBig->Update();
-  ATLAS_PV2[3]->GetXaxis()->SetLimits(0, vnmax[3]);
+  ATLASPV2_Stat[3]->GetXaxis()->SetLimits(0, vnmax[3]);
   latex.DrawLatex(0.2, 0.2, Form("Cent %i - %i%s", cent_min[3], cent_max[3], "%"));
   double alpha3;
   double alpha3e;
@@ -276,7 +276,7 @@ void atlasPV2Fits(){
   cUnfoldDistsBig->cd(1)->SetTickx(0);
   double xmin3 = 0;
   double xmax3 = vnmax[3];
-  double ymax3 = 1.1*TMath::MaxElement(NATLAS[3], ATLAS_PV2[3]->GetY());
+  double ymax3 = 1.1*TMath::MaxElement(NATLAS[3], ATLASPV2_Stat[3]->GetY());
 
   TGaxis * axEcc3 = new TGaxis(xmin3, ymax3, xmax3, ymax3, xmin3/kn3, xmax3/kn3, 509, "-");
   axEcc3->SetLabelSize(0.055);
@@ -287,9 +287,9 @@ void atlasPV2Fits(){
 
   cUnfoldDistsBig->cd(2);
   cUnfoldDistsBig->cd(2)->SetLogy();
-  ATLAS_PV2[5]->Draw("ap");
+  ATLASPV2_Stat[5]->Draw("ap");
   fEllP[5]->Draw("same");
-  ATLAS_PV2[5]->GetXaxis()->SetLimits(0, vnmax[5]);
+  ATLASPV2_Stat[5]->GetXaxis()->SetLimits(0, vnmax[5]);
   latex.DrawLatex(0.2, 0.2, Form("Cent %i - %i%s", cent_min[5], cent_max[5], "%"));
   double alpha5;
   double alpha5e;
@@ -308,7 +308,7 @@ void atlasPV2Fits(){
   cUnfoldDistsBig->cd(2)->SetTopMargin(0.15);
   double xmin5 = 0;
   double xmax5 = vnmax[5];
-  double ymax5 = 1.1*TMath::MaxElement(NATLAS[5], ATLAS_PV2[5]->GetY());
+  double ymax5 = 1.1*TMath::MaxElement(NATLAS[5], ATLASPV2_Stat[5]->GetY());
 
   TGaxis * axEcc5 = new TGaxis(xmin5, ymax5, xmax5, ymax5, xmin5/kn5, xmax5/kn5, 509, "-");
   axEcc5->SetTitle("#epsilon_{2}");
@@ -320,9 +320,9 @@ void atlasPV2Fits(){
 
   cUnfoldDistsBig->cd(3);
   cUnfoldDistsBig->cd(3)->SetLogy();
-  ATLAS_PV2[7]->Draw("ap");
+  ATLASPV2_Stat[7]->Draw("ap");
   fEllP[7]->Draw("same");
-  ATLAS_PV2[7]->GetXaxis()->SetLimits(0, vnmax[7]);
+  ATLASPV2_Stat[7]->GetXaxis()->SetLimits(0, vnmax[7]);
   latex.DrawLatex(0.2, 0.2, Form("Cent %i - %i%s", cent_min[7], cent_max[7], "%"));
   double alpha7;
   double alpha7e;
@@ -341,7 +341,7 @@ void atlasPV2Fits(){
   cUnfoldDistsBig->cd(3)->SetTopMargin(0.15);
   double xmin7 = 0;
   double xmax7 = vnmax[7];
-  double ymax7 = 1.1*TMath::MaxElement(NATLAS[7], ATLAS_PV2[7]->GetY());
+  double ymax7 = 1.1*TMath::MaxElement(NATLAS[7], ATLASPV2_Stat[7]->GetY());
 
   TGaxis * axEcc7 = new TGaxis(xmin7, ymax7, xmax7, ymax7, xmin7/kn7, xmax7/kn7, 509, "-");
   axEcc7->SetTitle("#epsilon_{2}");
@@ -352,9 +352,9 @@ void atlasPV2Fits(){
 
   cUnfoldDistsBig->cd(4);
   cUnfoldDistsBig->cd(4)->SetLogy();
-  ATLAS_PV2[9]->Draw("ap");
+  ATLASPV2_Stat[9]->Draw("ap");
   fEllP[9]->Draw("same");
-  ATLAS_PV2[9]->GetXaxis()->SetLimits(0, vnmax[9]);
+  ATLASPV2_Stat[9]->GetXaxis()->SetLimits(0, vnmax[9]);
   latex.DrawLatex(0.2, 0.2, Form("Cent %i - %i%s", cent_min[9], cent_max[9], "%"));
   double alpha9;
   double alpha9e;
@@ -373,7 +373,7 @@ void atlasPV2Fits(){
   cUnfoldDistsBig->cd(4)->SetTopMargin(0.15);
   double xmin9 = 0;
   double xmax9 = vnmax[9];
-  double ymax9 = 1.1*TMath::MaxElement(NATLAS[9], ATLAS_PV2[9]->GetY());
+  double ymax9 = 1.1*TMath::MaxElement(NATLAS[9], ATLASPV2_Stat[9]->GetY());
 
   TGaxis * axEcc9 = new TGaxis(xmin9, ymax9, xmax9, ymax9, xmin9/kn9, xmax9/kn9, 509, "-");
   axEcc9->SetTitle("#epsilon_{2}");
@@ -386,7 +386,7 @@ void atlasPV2Fits(){
   cUnfoldDistsBig->cd(5)->SetLogy();
   hFinalUnfoldSys[11]->Draw("e2");
   setex2->Draw();
-  ATLAS_PV2[11]->Draw("same");
+  ATLASPV2_Stat[11]->Draw("same");
   fEllP[11]->Draw("same");
   latex.DrawLatex(0.2, 0.2, Form("Cent %i - %i%s", cent_min[11], cent_max[11], "%"));
   double alpha11;

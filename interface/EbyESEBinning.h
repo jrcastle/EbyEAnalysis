@@ -3,6 +3,7 @@
 
 #include "TGraphErrors.h"
 #include "TMatrixD.h"
+#include "TF1.h"
 #include "TH2D.h"
 #include "TH1D.h"
 #include "TAxis.h"
@@ -15,13 +16,17 @@ using namespace std;
 namespace ebyese{
 
   //-- Analyzer output tree
-  const TString fAnaTreeName          = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel.root";
-  const TString fAnaTreeNameNewCC     = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewCCTune_2pct.root";
-  const TString fAnaTreeNameTkQLoose  = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_loose.root";
-  const TString fAnaTreeNameTkQTight  = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_tight.root";
-  const TString fAnaTreeNameVtx3_15   = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx3_15.root";
-  const TString fAnaTreeNameVtx_leq_3 = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx_leq_3.root";
-  const TString fileSplit             = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/SplitTree.root";
+  const TString fAnaTreeName                = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel.root";
+  const TString fAnaTreeNameNewCC           = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewCCTune_2pct.root";
+  const TString fAnaTreeNameTkQLoose        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_loose.root";
+  const TString fAnaTreeNameTkQTight        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_tight.root";
+  const TString fAnaTreeNameVtx3_15         = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx3_15.root";
+  const TString fAnaTreeNameVtx_leq_3       = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx_leq_3.root";
+  const TString fAnaTreeNamePtRes           = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_SMEARpt.root";
+  const TString fAnaTreeNameHIJING          = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_HIJING.root";
+  const TString fAnaTreeNameHIJINGNoFlow    = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_HIJING_NoFlow.root";
+  const TString fAnaTreeNameHIJINGNoNonFlow = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_HIJING_NoNonFlow.root";
+  const TString fileSplit                   = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/SplitTree.root";
 
   //-- Analyzer pt binning
   static const int    nptbinsDefault = 2;
@@ -29,19 +34,19 @@ namespace ebyese{
     0.30,    1.00,    3.00
   };
 
-  //-- Analyzer eta binning
-  static const int    netabinsDefault = 4;
-  const double etabinsDefault[] = {
-    -2.4,    -1.0,    0.0,    1.0,    2.4
-  };
-
-  //-- Unfolding pt binning 
+  //-- Unfolding pt binning
   static const int NPT  = 2;
   const double pt_min[NPT] = {
     0.30,    1.00
   };
   const double pt_max[NPT] ={
     1.00,    3.00
+  };
+
+  //-- Analyzer eta binning
+  static const int    netabinsDefault = 4;
+  const double etabinsDefault[] = {
+    -2.4,    -1.0,    0.0,    1.0,    2.4
   };
 
   //-- Centrality binning, colors and markers
@@ -111,7 +116,9 @@ namespace ebyese{
   };
   */
   TH1D hCentBins("hCentBins", "hCentBins", NCENT, centbinsDefault);
-  const int centCol[]  = {kRed+2, kGreen+1, kBlue+2, kMagenta, kOrange-3, kRed, kCyan+2, kBlue, kMagenta+2, kCyan, kGreen+3, kOrange-2};
+  //const int centCol[]  = {kRed+2, kGreen+1, kBlue+2, kMagenta, kOrange-3, kRed, kCyan+2, kBlue, kMagenta+2, kCyan, kGreen+3, kOrange-2};
+  const int centCol[]  = {kBlack, 28, kRed,   kBlue,   kGreen+3, kMagenta+2, kOrange+2, kCyan+2, kBlue+2, kRed+3, kViolet-1, kGreen};
+  const int centCole[] = {15,     27, kRed-7, kBlue-7, kGreen,   kMagenta,   kOrange+1, kCyan,   kBlue,   kRed, kViolet,   kGreen-7};
   const int centMark[] = {24, 29, 27, 34, 25, 20, 26, 33, 28, 23, 32, 21};
 
   //-- File Splitting for getting a handle on statistical errors
@@ -164,6 +171,9 @@ namespace ebyese{
   const int NITER        = 11;
   const int iter[]       = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
   const double diter[]   = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+  //const int NITER        = 8; 
+  //const int iter[]       = {1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072};
+  //const double diter[]   = {1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072};
   const double iterErr[] = {0, 0, 0, 0,  0,  0,  0,   0,   0,   0,    0};
   const int col[]        = {kOrange-2, 38, 46, kGreen+3, kCyan, kMagenta, 30, kViolet-1, 28, kBlue, kRed};
 
@@ -286,7 +296,26 @@ namespace ebyese{
     l->SetFillStyle(0);
   }
 
+  void UpdateUnfoldBinErrors(TH1D * h, TH1D * he){
+    double nb  = h->GetNbinsX();
+    double nbe = he->GetNbinsX();
+    if( nb != nbe ) std::cout<< "NBins for Unfolding and Unfolding Errors do not match \n please fix and try again" << std::endl;
+    else{
+      for(int i = 0; i < nb; i++){
+	double be = sqrt( he->GetBinContent(i+1) );
+	h->SetBinError(i+1, be);
+	if(be == 0) h->SetBinContent(i+1, 0.);
+      }
+    }
+  }
 
+  //-- Impact parameter conversion function written by Steve for 2.76 TeV
+  //TF1 * fBConv = new TF1("fBConv","pol7", 0, 1);
+  //fBConv->SetParameters(0.469714, 84.373, -601.761, 2785.36, -7157.02,10113.6, -7353.77,2147.29);
+  //double BToCent(double b){
+  //  double cent = 100. * fBConv->Eval(b);
+  //  return cent;
+  //}
 
 }
 #endif
