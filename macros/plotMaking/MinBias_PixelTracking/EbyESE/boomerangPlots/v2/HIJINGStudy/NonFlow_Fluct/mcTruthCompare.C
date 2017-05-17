@@ -167,6 +167,9 @@ void mcTruthCompare(){
   double quanCumu[3]  = {quanV24,  quanV26,  quanV28};
   double quanCumue[3] = {quanV24e, quanV26e, quanV28e};
 
+  double rat = quanV26 / v26;
+  std::cout << "Ratio = " << rat << std::endl;
+
   TH1D * grEbyE = new TH1D("grEbyE", "grEbyE", 3, 1, 3);
   TH1D * grQuan = new TH1D("grQuan", "grQuan", 3, 1, 3);
   TH1D * grTrue = new TH1D("grTrue", "grTrue", 3, 1, 3);

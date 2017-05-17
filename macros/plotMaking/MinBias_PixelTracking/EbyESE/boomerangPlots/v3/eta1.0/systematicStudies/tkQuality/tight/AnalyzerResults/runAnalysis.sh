@@ -1,14 +1,19 @@
-echo "Job started on $(date)"
-rm *.root
+N="$1"
+E="$2"
+PMN="$3"
+PMX="$4"
+T="$5"
+
 root -l -b <<EOF
-.x makeVNDet.C++
+.L makeVNDet.C++ 
+makeVNDet($N, $E, $PMN, $PMX, $T)
 EOF
 root -l -b <<EOF
-.x ReadTree_normDet.C++
+.L ReadTree_normDet.C++
+ReadTree_normDet($N, $E, $PMN, $PMX, $T)
 EOF
 cd DDResp
 root -l -b <<EOF
-.x makeDDResp.C++
+.L makeDDResp.C++
+makeDDResp($N)
 EOF
-echo "Analysis complete!"
-echo "Job ended on $(date)"

@@ -18,10 +18,10 @@
 
 using namespace ebyese;
 
-void sysVtxCut(){
+void sysVtxCut(int n = 2, double e = 1.0){
 
-  int norder_ = 3;
-  double tkEta = 1.0;
+  int norder_  = n;
+  double tkEta = e;
 
   double vn2Min = 0.00;
   double vn2Max = 0.40;
@@ -62,6 +62,7 @@ void sysVtxCut(){
   TH1D * hVarianceOfMean_Vn6Vn4_Vtx3;
   TH1D * hVarianceOfMean_Vn8Vn4_Vtx3;
   TH1D * hVarianceOfMean_Vn8Vn6_Vtx3;
+  TH1D * hVarianceOfMean_Vn46_Vn68_Vtx3;
 
   TGraphErrors * grVn2Vtx3;
   TGraphErrors * grVn4Vtx3;
@@ -71,6 +72,7 @@ void sysVtxCut(){
   TGraphErrors * grVn6Vn4Vtx3;
   TGraphErrors * grVn8Vn4Vtx3;
   TGraphErrors * grVn8Vn6Vtx3;
+  TGraphErrors * grVn46_Vn68Vtx3;
 
   double vn2Vtx3[NCENT];
   double vn4Vtx3[NCENT];
@@ -80,6 +82,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3[NCENT];
   double vn8vn4Vtx3[NCENT];
   double vn8vn6Vtx3[NCENT];
+  double vn46_vn68Vtx3[NCENT];
 
   double vn2Vtx3_staterr[NCENT];
   double vn4Vtx3_staterr[NCENT];
@@ -89,6 +92,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3_staterr[NCENT];
   double vn8vn4Vtx3_staterr[NCENT];
   double vn8vn6Vtx3_staterr[NCENT];
+  double vn46_vn68Vtx3_staterr[NCENT];
 
   TGraphErrors * grVn2Vtx3_RatiotoVtx15;
   TGraphErrors * grVn4Vtx3_RatiotoVtx15;
@@ -98,6 +102,7 @@ void sysVtxCut(){
   TGraphErrors * grVn6Vn4Vtx3_RatiotoVtx15;
   TGraphErrors * grVn8Vn4Vtx3_RatiotoVtx15;
   TGraphErrors * grVn8Vn6Vtx3_RatiotoVtx15;
+  TGraphErrors * grVn46_Vn68Vtx3_RatiotoVtx15;
 
   double vn2Vtx3_RatiotoVtx15[NCENT];
   double vn4Vtx3_RatiotoVtx15[NCENT];
@@ -107,6 +112,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3_RatiotoVtx15[NCENT];
   double vn8vn4Vtx3_RatiotoVtx15[NCENT];
   double vn8vn6Vtx3_RatiotoVtx15[NCENT];
+  double vn46_vn68Vtx3_RatiotoVtx15[NCENT];
 
   double vn2Vtx3_RatiotoVtx15_staterr[NCENT];
   double vn4Vtx3_RatiotoVtx15_staterr[NCENT];
@@ -116,6 +122,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3_RatiotoVtx15_staterr[NCENT];
   double vn8vn4Vtx3_RatiotoVtx15_staterr[NCENT];
   double vn8vn6Vtx3_RatiotoVtx15_staterr[NCENT];
+  double vn46_vn68Vtx3_RatiotoVtx15_staterr[NCENT];
 
   int iterCutoffVtx3[NCENT];
 
@@ -135,6 +142,7 @@ void sysVtxCut(){
   TH1D * hVarianceOfMean_Vn6Vn4_Vtx3_15;
   TH1D * hVarianceOfMean_Vn8Vn4_Vtx3_15;
   TH1D * hVarianceOfMean_Vn8Vn6_Vtx3_15;
+  TH1D * hVarianceOfMean_Vn46_Vn68_Vtx3_15;
 
   TGraphErrors * grVn2Vtx3_15;
   TGraphErrors * grVn4Vtx3_15;
@@ -144,6 +152,7 @@ void sysVtxCut(){
   TGraphErrors * grVn6Vn4Vtx3_15;
   TGraphErrors * grVn8Vn4Vtx3_15;
   TGraphErrors * grVn8Vn6Vtx3_15;
+  TGraphErrors * grVn46_Vn68Vtx3_15;
 
   double vn2Vtx3_15[NCENT];
   double vn4Vtx3_15[NCENT];
@@ -153,6 +162,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3_15[NCENT];
   double vn8vn4Vtx3_15[NCENT];
   double vn8vn6Vtx3_15[NCENT];
+  double vn46_vn68Vtx3_15[NCENT];
 
   double vn2Vtx3_15_staterr[NCENT];
   double vn4Vtx3_15_staterr[NCENT];
@@ -162,6 +172,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3_15_staterr[NCENT];
   double vn8vn4Vtx3_15_staterr[NCENT];
   double vn8vn6Vtx3_15_staterr[NCENT];
+  double vn46_vn68Vtx3_15_staterr[NCENT];
 
   TGraphErrors * grVn2Vtx3_15_RatiotoVtx15;
   TGraphErrors * grVn4Vtx3_15_RatiotoVtx15;
@@ -171,6 +182,7 @@ void sysVtxCut(){
   TGraphErrors * grVn6Vn4Vtx3_15_RatiotoVtx15;
   TGraphErrors * grVn8Vn4Vtx3_15_RatiotoVtx15;
   TGraphErrors * grVn8Vn6Vtx3_15_RatiotoVtx15;
+  TGraphErrors * grVn46_Vn68Vtx3_15_RatiotoVtx15;
 
   double vn2Vtx3_15_RatiotoVtx15[NCENT];
   double vn4Vtx3_15_RatiotoVtx15[NCENT];
@@ -180,6 +192,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3_15_RatiotoVtx15[NCENT];
   double vn8vn4Vtx3_15_RatiotoVtx15[NCENT];
   double vn8vn6Vtx3_15_RatiotoVtx15[NCENT];
+  double vn46_vn68Vtx3_15_RatiotoVtx15[NCENT];
 
   double vn2Vtx3_15_RatiotoVtx15_staterr[NCENT];
   double vn4Vtx3_15_RatiotoVtx15_staterr[NCENT];
@@ -189,6 +202,7 @@ void sysVtxCut(){
   double vn6vn4Vtx3_15_RatiotoVtx15_staterr[NCENT];
   double vn8vn4Vtx3_15_RatiotoVtx15_staterr[NCENT];
   double vn8vn6Vtx3_15_RatiotoVtx15_staterr[NCENT];
+  double vn46_vn68Vtx3_15_RatiotoVtx15_staterr[NCENT];
 
   int iterCutoffVtx3_15[NCENT];
 
@@ -208,6 +222,7 @@ void sysVtxCut(){
   TH1D * hVarianceOfMean_Vn6Vn4_Vtx15;
   TH1D * hVarianceOfMean_Vn8Vn4_Vtx15;
   TH1D * hVarianceOfMean_Vn8Vn6_Vtx15;
+  TH1D * hVarianceOfMean_Vn46_Vn68_Vtx15;
 
   TGraphErrors * grVn2Vtx15;
   TGraphErrors * grVn4Vtx15;
@@ -217,6 +232,7 @@ void sysVtxCut(){
   TGraphErrors * grVn6Vn4Vtx15;
   TGraphErrors * grVn8Vn4Vtx15;
   TGraphErrors * grVn8Vn6Vtx15;
+  TGraphErrors * grVn46_Vn68Vtx15;
 
   double vn2Vtx15[NCENT];
   double vn4Vtx15[NCENT];
@@ -226,6 +242,7 @@ void sysVtxCut(){
   double vn6vn4Vtx15[NCENT];
   double vn8vn4Vtx15[NCENT];
   double vn8vn6Vtx15[NCENT];
+  double vn46_vn68Vtx15[NCENT];
 
   double vn2Vtx15_staterr[NCENT];
   double vn4Vtx15_staterr[NCENT];
@@ -235,6 +252,7 @@ void sysVtxCut(){
   double vn6vn4Vtx15_staterr[NCENT];
   double vn8vn4Vtx15_staterr[NCENT];
   double vn8vn6Vtx15_staterr[NCENT];
+  double vn46_vn68Vtx15_staterr[NCENT];
 
   int iterCutoffVtx15[NCENT];
 
@@ -267,6 +285,7 @@ void sysVtxCut(){
   hVarianceOfMean_Vn6Vn4_Vtx3    = (TH1D*) fStatVtx3->Get( "hVarianceOfMean_Vn6Vn4_Vtx_leq_3" );
   hVarianceOfMean_Vn8Vn4_Vtx3    = (TH1D*) fStatVtx3->Get( "hVarianceOfMean_Vn8Vn4_Vtx_leq_3" );
   hVarianceOfMean_Vn8Vn6_Vtx3    = (TH1D*) fStatVtx3->Get( "hVarianceOfMean_Vn8Vn6_Vtx_leq_3" );
+  hVarianceOfMean_Vn46_Vn68_Vtx3 = (TH1D*) fStatVtx3->Get( "hVarianceOfMean_Vn46_Vn68_Vtx_leq_3" );
 
   fStatVtx3_15 = new TFile( Form("../../../../statErrorHandle/v%i/eta%.1f/systematicStudies/vtxCut/vtx3_15/StatUncertVtx3_15_v%i.root", norder_, tkEta, norder_) );
   hVarianceOfMean_Vn2_Vtx3_15       = (TH1D*) fStatVtx3_15->Get( "hVarianceOfMean_Vn2_Vtx3_15" );
@@ -277,6 +296,7 @@ void sysVtxCut(){
   hVarianceOfMean_Vn6Vn4_Vtx3_15    = (TH1D*) fStatVtx3_15->Get( "hVarianceOfMean_Vn6Vn4_Vtx3_15" );
   hVarianceOfMean_Vn8Vn4_Vtx3_15    = (TH1D*) fStatVtx3_15->Get( "hVarianceOfMean_Vn8Vn4_Vtx3_15" );
   hVarianceOfMean_Vn8Vn6_Vtx3_15    = (TH1D*) fStatVtx3_15->Get( "hVarianceOfMean_Vn8Vn6_Vtx3_15" );
+  hVarianceOfMean_Vn46_Vn68_Vtx3_15 = (TH1D*) fStatVtx3_15->Get( "hVarianceOfMean_Vn46_Vn68_Vtx3_15" );
 
   fStatVtx15 = new TFile( Form("../../../../statErrorHandle/v%i/eta%.1f/StatisticalUncertainties_v%i.root", norder_, tkEta, norder_) );
   hVarianceOfMean_Vn2_Vtx15       = (TH1D*) fStatVtx15->Get( "hVarianceOfMean_Vn2" );
@@ -287,11 +307,21 @@ void sysVtxCut(){
   hVarianceOfMean_Vn6Vn4_Vtx15    = (TH1D*) fStatVtx15->Get( "hVarianceOfMean_Vn6Vn4" );
   hVarianceOfMean_Vn8Vn4_Vtx15    = (TH1D*) fStatVtx15->Get( "hVarianceOfMean_Vn8Vn4" );
   hVarianceOfMean_Vn8Vn6_Vtx15    = (TH1D*) fStatVtx15->Get( "hVarianceOfMean_Vn8Vn6" );
+  hVarianceOfMean_Vn46_Vn68_Vtx15 = (TH1D*) fStatVtx15->Get( "hVarianceOfMean_Vn8Vn6" );
+
+  if( !hVarianceOfMean_Vn2_Vtx3 || !hVarianceOfMean_Vn2_Vtx3_15 || !hVarianceOfMean_Vn2_Vtx15 ){
+    std::cout << "WARNING! Statistical resampling procedure not run!\n"
+              << "Please run the procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   for(int icent = 0; icent < NCENT; icent++){
 
     //-- -------------------- Vertex < 3.0 --------------------
     hObsVtx3[icent] = (TH1D*) fAnaVtx3->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObsVtx3[icent] ) break;
     hObsVtx3[icent]->SetName( Form("hVnFull_c%i_vtx3", icent) );
 
     //-- Iter loop
@@ -300,6 +330,7 @@ void sysVtxCut(){
 
       //-- Get the unfolded histograms
       hUnfoldVtx3[icent][i] = (TH1D*) fUnfVtx3->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfoldVtx3[icent][i] ) break;
       hUnfoldVtx3[icent][i]->SetName( Form("hreco%i_c%i_vtx3", iter[i], icent) );
       hUnfoldVtx3[icent][i]->SetLineColor(col[i]);
       hUnfoldVtx3[icent][i]->SetMarkerColor(col[i]);
@@ -312,7 +343,7 @@ void sysVtxCut(){
       hRefoldVtx3[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldVtx3[icent][i]->Chi2Test(hObsVtx3[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldVtx3[icent][i]->Chi2Test(hObsVtx3[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
 	iterCutoffVtx3[icent] = i;
@@ -334,6 +365,8 @@ void sysVtxCut(){
 	}
 	if( vn6Vtx3[icent] == 0 ) vn8vn6Vtx3[icent] = 0;
 	else                      vn8vn6Vtx3[icent] = vn8Vtx3[icent] / vn6Vtx3[icent];
+	if(vn4Vtx3[icent] == 0 || vn6Vtx3[icent] == 0 || vn8Vtx3[icent] == 0) vn46_vn68Vtx3[icent] = 0;
+	else                                                                  vn46_vn68Vtx3[icent] = (vn4Vtx3[icent] - vn6Vtx3[icent])/(vn6Vtx3[icent] - vn8Vtx3[icent]);
 
 	vn2Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx3->GetBinContent(icent+1) );
         vn4Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx3->GetBinContent(icent+1) );
@@ -343,6 +376,7 @@ void sysVtxCut(){
         vn6vn4Vtx3_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Vtx3->GetBinContent(icent+1) );
         vn8vn4Vtx3_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Vtx3->GetBinContent(icent+1) );
         vn8vn6Vtx3_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Vtx3->GetBinContent(icent+1) );
+	vn46_vn68Vtx3_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Vtx3->GetBinContent(icent+1) );
 
 	break;
       }
@@ -367,15 +401,18 @@ void sysVtxCut(){
 	}
         if( vn6Vtx3[icent] == 0 ) vn8vn6Vtx3[icent] = 0;
         else                      vn8vn6Vtx3[icent] = vn8Vtx3[icent] / vn6Vtx3[icent];
+	if(vn4Vtx3[icent] == 0 || vn6Vtx3[icent] == 0 || vn8Vtx3[icent] == 0) vn46_vn68Vtx3[icent] = 0;
+        else                                                                  vn46_vn68Vtx3[icent] = (vn4Vtx3[icent] - vn6Vtx3[icent])/(vn6Vtx3[icent] - vn8Vtx3[icent]);
 
-	vn2Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx3->GetBinContent(icent+1) );
-	vn4Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx3->GetBinContent(icent+1) );
+        vn2Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx3->GetBinContent(icent+1) );
+        vn4Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx3->GetBinContent(icent+1) );
         vn6Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Vtx3->GetBinContent(icent+1) );
         vn8Vtx3_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Vtx3->GetBinContent(icent+1) );
         gamma1expVtx3_staterr[icent] = sqrt( hVarianceOfMean_Gamma1Exp_Vtx3->GetBinContent(icent+1) );
         vn6vn4Vtx3_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Vtx3->GetBinContent(icent+1) );
         vn8vn4Vtx3_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Vtx3->GetBinContent(icent+1) );
         vn8vn6Vtx3_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Vtx3->GetBinContent(icent+1) );
+	vn46_vn68Vtx3_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Vtx3->GetBinContent(icent+1) );
 
         break;
       }
@@ -384,6 +421,7 @@ void sysVtxCut(){
 
     //-- -------------------- 3.0 < Vertex < 15.0 --------------------
     hObsVtx3_15[icent] = (TH1D*) fAnaVtx3_15->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObsVtx3_15[icent] ) break;
     hObsVtx3_15[icent]->SetName( Form("hVnFull_c%i_vtx3", icent) );
 
     //-- Iter loop
@@ -392,6 +430,7 @@ void sysVtxCut(){
 
       //-- Get the unfolded histograms
       hUnfoldVtx3_15[icent][i] = (TH1D*) fUnfVtx3_15->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfoldVtx3_15[icent][i] ) break;
       hUnfoldVtx3_15[icent][i]->SetName( Form("hreco%i_c%i_vtx3", iter[i], icent) );
       hUnfoldVtx3_15[icent][i]->SetLineColor(col[i]);
       hUnfoldVtx3_15[icent][i]->SetMarkerColor(col[i]);
@@ -404,7 +443,7 @@ void sysVtxCut(){
       hRefoldVtx3_15[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldVtx3_15[icent][i]->Chi2Test(hObsVtx3_15[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldVtx3_15[icent][i]->Chi2Test(hObsVtx3_15[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffVtx3_15[icent] = i;
@@ -427,15 +466,18 @@ void sysVtxCut(){
 	}
         if( vn6Vtx3_15[icent] == 0 ) vn8vn6Vtx3_15[icent] = 0;
         else                      vn8vn6Vtx3_15[icent] = vn8Vtx3_15[icent] / vn6Vtx3_15[icent];
+	if(vn4Vtx3_15[icent] == 0 || vn6Vtx3_15[icent] == 0 || vn8Vtx3_15[icent] == 0) vn46_vn68Vtx3_15[icent] = 0;
+        else                                                                           vn46_vn68Vtx3_15[icent] = (vn4Vtx3_15[icent] - vn6Vtx3_15[icent])/(vn6Vtx3_15[icent] - vn8Vtx3_15[icent]);
 
-	vn2Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx3_15->GetBinContent(icent+1) );
-	vn4Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx3_15->GetBinContent(icent+1) );
+        vn2Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx3_15->GetBinContent(icent+1) );
+        vn4Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx3_15->GetBinContent(icent+1) );
         vn6Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Vtx3_15->GetBinContent(icent+1) );
         vn8Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Vtx3_15->GetBinContent(icent+1) );
         gamma1expVtx3_15_staterr[icent] = sqrt( hVarianceOfMean_Gamma1Exp_Vtx3_15->GetBinContent(icent+1) );
         vn6vn4Vtx3_15_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Vtx3_15->GetBinContent(icent+1) );
         vn8vn4Vtx3_15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Vtx3_15->GetBinContent(icent+1) );
         vn8vn6Vtx3_15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Vtx3_15->GetBinContent(icent+1) );
+	vn46_vn68Vtx3_15_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Vtx3_15->GetBinContent(icent+1) );
 
         break;
       }
@@ -460,15 +502,18 @@ void sysVtxCut(){
         }
         if( vn6Vtx3_15[icent] == 0 ) vn8vn6Vtx3_15[icent] = 0;
         else                      vn8vn6Vtx3_15[icent] = vn8Vtx3_15[icent] / vn6Vtx3_15[icent];
+	if(vn4Vtx3_15[icent] == 0 || vn6Vtx3_15[icent] == 0 || vn8Vtx3_15[icent] == 0) vn46_vn68Vtx3_15[icent] = 0;
+        else                                                                           vn46_vn68Vtx3_15[icent] = (vn4Vtx3_15[icent] - vn6Vtx3_15[icent])/(vn6Vtx3_15[icent] - vn8Vtx3_15[icent]);
 
-	vn2Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx3_15->GetBinContent(icent+1) );
-	vn4Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx3_15->GetBinContent(icent+1) );
+        vn2Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx3_15->GetBinContent(icent+1) );
+        vn4Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx3_15->GetBinContent(icent+1) );
         vn6Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Vtx3_15->GetBinContent(icent+1) );
         vn8Vtx3_15_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Vtx3_15->GetBinContent(icent+1) );
         gamma1expVtx3_15_staterr[icent] = sqrt( hVarianceOfMean_Gamma1Exp_Vtx3_15->GetBinContent(icent+1) );
         vn6vn4Vtx3_15_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Vtx3_15->GetBinContent(icent+1) );
         vn8vn4Vtx3_15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Vtx3_15->GetBinContent(icent+1) );
         vn8vn6Vtx3_15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Vtx3_15->GetBinContent(icent+1) );
+        vn46_vn68Vtx3_15_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Vtx3_15->GetBinContent(icent+1) );
 
         break;
       }
@@ -477,6 +522,7 @@ void sysVtxCut(){
 
     //-- -------------------- Vertex < 15.0 --------------------
     hObsVtx15[icent] = (TH1D*) fAnaVtx15->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObsVtx15[icent] ) break;
     hObsVtx15[icent]->SetName( Form("hVnFull_c%i_vtx3", icent) );
 
     //-- Iter loop
@@ -485,6 +531,7 @@ void sysVtxCut(){
 
       //-- Get the unfolded histograms
       hUnfoldVtx15[icent][i] = (TH1D*) fUnfVtx15->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfoldVtx15[icent][i] ) break;
       hUnfoldVtx15[icent][i]->SetName( Form("hreco%i_c%i_vtx3", iter[i], icent) );
       hUnfoldVtx15[icent][i]->SetLineColor(col[i]);
       hUnfoldVtx15[icent][i]->SetMarkerColor(col[i]);
@@ -497,7 +544,7 @@ void sysVtxCut(){
       hRefoldVtx15[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldVtx15[icent][i]->Chi2Test(hObsVtx15[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldVtx15[icent][i]->Chi2Test(hObsVtx15[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffVtx15[icent] = i;
@@ -520,15 +567,18 @@ void sysVtxCut(){
 	}
         if( vn6Vtx15[icent] == 0 ) vn8vn6Vtx15[icent] = 0;
         else                vn8vn6Vtx15[icent] = vn8Vtx15[icent] / vn6Vtx15[icent];
+	if(vn4Vtx15[icent] == 0 || vn6Vtx15[icent] == 0 || vn8Vtx15[icent] == 0) vn46_vn68Vtx15[icent] = 0;
+        else                                                                     vn46_vn68Vtx15[icent] = (vn4Vtx15[icent] - vn6Vtx15[icent])/(vn6Vtx15[icent] - vn8Vtx15[icent]);
 
-	vn2Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx15->GetBinContent(icent+1) );
-	vn4Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx15->GetBinContent(icent+1) );
+        vn2Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx15->GetBinContent(icent+1) );
+        vn4Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx15->GetBinContent(icent+1) );
         vn6Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Vtx15->GetBinContent(icent+1) );
         vn8Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Vtx15->GetBinContent(icent+1) );
         gamma1expVtx15_staterr[icent] = sqrt( hVarianceOfMean_Gamma1Exp_Vtx15->GetBinContent(icent+1) );
         vn6vn4Vtx15_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Vtx15->GetBinContent(icent+1) );
         vn8vn4Vtx15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Vtx15->GetBinContent(icent+1) );
         vn8vn6Vtx15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Vtx15->GetBinContent(icent+1) );
+        vn46_vn68Vtx15_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Vtx15->GetBinContent(icent+1) );
 
         break;
       }
@@ -553,8 +603,10 @@ void sysVtxCut(){
         }
         if( vn6Vtx15[icent] == 0 ) vn8vn6Vtx15[icent] = 0;
         else                      vn8vn6Vtx15[icent] = vn8Vtx15[icent] / vn6Vtx15[icent];
+	if(vn4Vtx15[icent] == 0 || vn6Vtx15[icent] == 0 || vn8Vtx15[icent] == 0) vn46_vn68Vtx15[icent] = 0;
+        else                                                                     vn46_vn68Vtx15[icent] = (vn4Vtx15[icent] - vn6Vtx15[icent])/(vn6Vtx15[icent] - vn8Vtx15[icent]);
 
-	vn2Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx15->GetBinContent(icent+1) );
+        vn2Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Vtx15->GetBinContent(icent+1) );
         vn4Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Vtx15->GetBinContent(icent+1) );
         vn6Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Vtx15->GetBinContent(icent+1) );
         vn8Vtx15_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Vtx15->GetBinContent(icent+1) );
@@ -562,6 +614,7 @@ void sysVtxCut(){
         vn6vn4Vtx15_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Vtx15->GetBinContent(icent+1) );
         vn8vn4Vtx15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Vtx15->GetBinContent(icent+1) );
         vn8vn6Vtx15_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Vtx15->GetBinContent(icent+1) );
+        vn46_vn68Vtx15_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Vtx15->GetBinContent(icent+1) );
 
         break;
       }
@@ -569,6 +622,14 @@ void sysVtxCut(){
     } //-- End iter loop
 
   } //-- End Cent loop
+
+  if( !hObsVtx3[0] || !hUnfoldVtx3[0][0] || !hObsVtx3_15[0] || !hUnfoldVtx3_15[0][0] || !hObsVtx15[0] || !hUnfoldVtx15[0][0] ){
+    std::cout << "WARNING! Unfolding procedure not run!\n"
+              << "Please run the unfolding procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   //-- Calculate ratios to the vtx < 15 case
   for(int icent = 0; icent < NCENT; icent++){
@@ -581,6 +642,7 @@ void sysVtxCut(){
     double vn6vn43     = vn6vn4Vtx3[icent];
     double vn8vn43     = vn8vn4Vtx3[icent];
     double vn8vn63     = vn8vn6Vtx3[icent];
+    double vn46_vn683  = vn46_vn68Vtx3[icent];
 
     double vn23_e       = vn2Vtx3_staterr[icent];
     double vn43_e       = vn4Vtx3_staterr[icent];
@@ -590,6 +652,7 @@ void sysVtxCut(){
     double vn6vn43_e    = vn6vn4Vtx3_staterr[icent];
     double vn8vn43_e    = vn8vn4Vtx3_staterr[icent];
     double vn8vn63_e    = vn8vn6Vtx3_staterr[icent];
+    double vn46_vn683_e = vn46_vn68Vtx3_staterr[icent];
 
     double vn23_15        = vn2Vtx3_15[icent];
     double vn43_15        = vn4Vtx3_15[icent];
@@ -599,6 +662,7 @@ void sysVtxCut(){
     double vn6vn43_15     = vn6vn4Vtx3_15[icent];
     double vn8vn43_15     = vn8vn4Vtx3_15[icent];
     double vn8vn63_15     = vn8vn6Vtx3_15[icent];
+    double vn46_vn683_15  = vn46_vn68Vtx3_15[icent];
 
     double vn23_15_e       = vn2Vtx3_15_staterr[icent];
     double vn43_15_e       = vn4Vtx3_15_staterr[icent];
@@ -608,6 +672,7 @@ void sysVtxCut(){
     double vn6vn43_15_e    = vn6vn4Vtx3_15_staterr[icent];
     double vn8vn43_15_e    = vn8vn4Vtx3_15_staterr[icent];
     double vn8vn63_15_e    = vn8vn6Vtx3_15_staterr[icent];
+    double vn46_vn683_15_e = vn46_vn68Vtx3_15_staterr[icent];
 
     double vn215        = vn2Vtx15[icent];
     double vn415        = vn4Vtx15[icent];
@@ -617,6 +682,7 @@ void sysVtxCut(){
     double vn6vn415     = vn6vn4Vtx15[icent];
     double vn8vn415     = vn8vn4Vtx15[icent];
     double vn8vn615     = vn8vn6Vtx15[icent];
+    double vn46_vn6815  = vn46_vn68Vtx15[icent];
 
     double vn215_e       = vn2Vtx15_staterr[icent];
     double vn415_e       = vn4Vtx15_staterr[icent];
@@ -626,6 +692,7 @@ void sysVtxCut(){
     double vn6vn415_e    = vn6vn4Vtx15_staterr[icent];
     double vn8vn415_e    = vn8vn4Vtx15_staterr[icent];
     double vn8vn615_e    = vn8vn6Vtx15_staterr[icent];
+    double vn46_vn6815_e = vn46_vn68Vtx15_staterr[icent];
 
     double r23         = vn23 / vn215;
     double r43         = vn43 / vn415;
@@ -635,6 +702,7 @@ void sysVtxCut(){
     double r643        = vn6vn43 / vn6vn415;
     double r843        = vn8vn43 / vn8vn415;
     double r863        = vn8vn63 / vn8vn615;
+    double r46683      = vn46_vn683 / vn46_vn6815;
 
     double r23_e         = sqrt( pow(vn23_e/vn215, 2) + pow(vn23*vn215_e/vn215/vn215, 2) );
     double r43_e         = sqrt( pow(vn43_e/vn415, 2) + pow(vn43*vn415_e/vn415/vn415, 2) );
@@ -644,6 +712,7 @@ void sysVtxCut(){
     double r643_e        = sqrt( pow(vn6vn43_e/vn6vn415, 2) + pow(vn6vn43*vn6vn415_e/vn6vn415/vn6vn415, 2) );
     double r843_e        = sqrt( pow(vn8vn43_e/vn8vn415, 2) + pow(vn8vn43*vn8vn415_e/vn8vn415/vn8vn415, 2) );
     double r863_e        = sqrt( pow(vn8vn63_e/vn8vn615, 2) + pow(vn8vn63*vn8vn615_e/vn8vn615/vn8vn615, 2) );
+    double r46683_e      = sqrt( pow(vn46_vn683_e/vn46_vn6815, 2) + pow(vn46_vn683*vn46_vn6815_e/vn46_vn6815/vn46_vn6815, 2) );
 
     double r23_15         = vn23_15 / vn215;
     double r43_15         = vn43_15 / vn415;
@@ -653,6 +722,7 @@ void sysVtxCut(){
     double r643_15        = vn6vn43_15 / vn6vn415;
     double r843_15        = vn8vn43_15 / vn8vn415;
     double r863_15        = vn8vn63_15 / vn8vn615;
+    double r46683_15      = vn46_vn683_15 / vn46_vn6815;
 
     double r23_15_e         = sqrt( pow(vn23_15_e/vn215, 2) + pow(vn23_15*vn215_e/vn215/vn215, 2) );
     double r43_15_e         = sqrt( pow(vn43_15_e/vn415, 2) + pow(vn43_15*vn415_e/vn415/vn415, 2) );
@@ -662,6 +732,7 @@ void sysVtxCut(){
     double r643_15_e        = sqrt( pow(vn6vn43_15_e/vn6vn415, 2) + pow(vn6vn43_15*vn6vn415_e/vn6vn415/vn6vn415, 2) );
     double r843_15_e        = sqrt( pow(vn8vn43_15_e/vn8vn415, 2) + pow(vn8vn43_15*vn8vn415_e/vn8vn415/vn8vn415, 2) );
     double r863_15_e        = sqrt( pow(vn8vn63_15_e/vn8vn615, 2) + pow(vn8vn63_15*vn8vn615_e/vn8vn615/vn8vn615, 2) );
+    double r46683_15_e      = sqrt( pow(vn46_vn683_15_e/vn46_vn6815, 2) + pow(vn46_vn683_15*vn46_vn6815_e/vn46_vn6815/vn46_vn6815, 2) );
 
     vn2Vtx3_RatiotoVtx15[icent]       = r23;
     vn4Vtx3_RatiotoVtx15[icent]       = r43;
@@ -671,6 +742,7 @@ void sysVtxCut(){
     vn6vn4Vtx3_RatiotoVtx15[icent]    = r643;
     vn8vn4Vtx3_RatiotoVtx15[icent]    = r843;
     vn8vn6Vtx3_RatiotoVtx15[icent]    = r863;
+    vn46_vn68Vtx3_RatiotoVtx15[icent] = r46683;
 
     vn2Vtx3_RatiotoVtx15_staterr[icent]       = r23_e;
     vn4Vtx3_RatiotoVtx15_staterr[icent]       = r43_e;
@@ -680,6 +752,7 @@ void sysVtxCut(){
     vn6vn4Vtx3_RatiotoVtx15_staterr[icent]    = r643_e;
     vn8vn4Vtx3_RatiotoVtx15_staterr[icent]    = r843_e;
     vn8vn6Vtx3_RatiotoVtx15_staterr[icent]    = r863_e;
+    vn46_vn68Vtx3_RatiotoVtx15_staterr[icent] = r46683_e;
 
     vn2Vtx3_15_RatiotoVtx15[icent]       = r23_15;
     vn4Vtx3_15_RatiotoVtx15[icent]       = r43_15;
@@ -689,6 +762,7 @@ void sysVtxCut(){
     vn6vn4Vtx3_15_RatiotoVtx15[icent]    = r643_15;
     vn8vn4Vtx3_15_RatiotoVtx15[icent]    = r843_15;
     vn8vn6Vtx3_15_RatiotoVtx15[icent]    = r863_15;
+    vn46_vn68Vtx3_15_RatiotoVtx15[icent] = r46683_15;
 
     vn2Vtx3_15_RatiotoVtx15_staterr[icent]       = r23_15_e;
     vn4Vtx3_15_RatiotoVtx15_staterr[icent]       = r43_15_e;
@@ -698,6 +772,7 @@ void sysVtxCut(){
     vn6vn4Vtx3_15_RatiotoVtx15_staterr[icent]    = r643_15_e;
     vn8vn4Vtx3_15_RatiotoVtx15_staterr[icent]    = r843_15_e;
     vn8vn6Vtx3_15_RatiotoVtx15_staterr[icent]    = r863_15_e;
+    vn46_vn68Vtx3_15_RatiotoVtx15_staterr[icent] = r46683_15_e;
 
   }
 
@@ -714,6 +789,7 @@ void sysVtxCut(){
   grVn6Vn4Vtx3_RatiotoVtx15    = new TGraphErrors(NCENT, centBinCenter, vn6vn4Vtx3_RatiotoVtx15,    cErr, vn6vn4Vtx3_RatiotoVtx15_staterr);
   grVn8Vn4Vtx3_RatiotoVtx15    = new TGraphErrors(NCENT, centBinCenter, vn8vn4Vtx3_RatiotoVtx15,    cErr, vn6vn4Vtx3_RatiotoVtx15_staterr);
   grVn8Vn6Vtx3_RatiotoVtx15    = new TGraphErrors(NCENT, centBinCenter, vn8vn6Vtx3_RatiotoVtx15,    cErr, vn8vn6Vtx3_RatiotoVtx15_staterr);
+  grVn46_Vn68Vtx3_RatiotoVtx15 = new TGraphErrors(NCENT, centBinCenter, vn46_vn68Vtx3_RatiotoVtx15, cErr, vn46_vn68Vtx3_RatiotoVtx15_staterr);
 
   grVn2Vtx3_15_RatiotoVtx15       = new TGraphErrors(NCENT, centBinCenter, vn2Vtx3_15_RatiotoVtx15,       cErr, vn2Vtx3_15_RatiotoVtx15_staterr);
   grVn4Vtx3_15_RatiotoVtx15       = new TGraphErrors(NCENT, centBinCenter, vn4Vtx3_15_RatiotoVtx15,       cErr, vn4Vtx3_15_RatiotoVtx15_staterr);
@@ -723,6 +799,7 @@ void sysVtxCut(){
   grVn6Vn4Vtx3_15_RatiotoVtx15    = new TGraphErrors(NCENT, centBinCenter, vn6vn4Vtx3_15_RatiotoVtx15,    cErr, vn6vn4Vtx3_15_RatiotoVtx15_staterr);
   grVn8Vn4Vtx3_15_RatiotoVtx15    = new TGraphErrors(NCENT, centBinCenter, vn8vn4Vtx3_15_RatiotoVtx15,    cErr, vn8vn4Vtx3_15_RatiotoVtx15_staterr);
   grVn8Vn6Vtx3_15_RatiotoVtx15    = new TGraphErrors(NCENT, centBinCenter, vn8vn6Vtx3_15_RatiotoVtx15,    cErr, vn8vn6Vtx3_15_RatiotoVtx15_staterr);
+  grVn46_Vn68Vtx3_15_RatiotoVtx15 = new TGraphErrors(NCENT, centBinCenter, vn46_vn68Vtx3_15_RatiotoVtx15, cErr, vn46_vn68Vtx3_15_RatiotoVtx15_staterr);
 
   //-- Cumu Ratio Plots
   TLine * line = new TLine(cent_min[0], 1.0, grVn2Vtx3_RatiotoVtx15->GetXaxis()->GetXmax(), 1.0);
@@ -756,8 +833,8 @@ void sysVtxCut(){
   formatGraph(grVn2Vtx3_RatiotoVtx15,    "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} Ratio", norder_), 1, 24, "grVn2Vtx3_RatiotoVtx15");
   formatGraph(grVn2Vtx3_15_RatiotoVtx15, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} Ratio", norder_), kCyan+2, 24, "grVn2Vtx3_15_RatiotoVtx15");
 
-  formatGraph(grVn4Vtx3_RatiotoVtx15,    "Centrality %", 0.75, 1.25, Form("v_{%i}{4} Ratio", norder_), kSpring+4, 25, "grVn4Vtx3_RatiotoVtx15");
-  formatGraph(grVn4Vtx3_15_RatiotoVtx15, "Centrality %", 0.75, 1.25, Form("v_{%i}{4} Ratio", norder_), kViolet-1, 25, "grVn4Vtx3_15_RatiotoVtx15");
+  formatGraph(grVn4Vtx3_RatiotoVtx15,    "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} Ratio", norder_), kSpring+4, 25, "grVn4Vtx3_RatiotoVtx15");
+  formatGraph(grVn4Vtx3_15_RatiotoVtx15, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} Ratio", norder_), kViolet-1, 25, "grVn4Vtx3_15_RatiotoVtx15");
 
   formatGraph(grVn6Vtx3_RatiotoVtx15,    "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} Ratio", norder_), 6, 28, "grVn6Vtx3_RatiotoVtx15");
   formatGraph(grVn6Vtx3_15_RatiotoVtx15, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} Ratio", norder_), 4, 28, "grVn6Vtx3_15_RatiotoVtx15");
@@ -877,6 +954,27 @@ void sysVtxCut(){
   cCumuRatioSys->Update();
   cCumuRatioSys->SaveAs("../../plots/systematicStudies/SysVtx_CumuRatioCent.pdf");
 
+  //-- Vn{8} Vn{6} Splitting Ratio Plot
+  TCanvas * cVn46_Vn68 = new TCanvas("cVn46_Vn68", "cVn46_Vn68", 500, 500);
+  cVn46_Vn68->cd();
+  grVn46_Vn68Vtx3_RatiotoVtx15->Draw("ap");
+  grVn46_Vn68Vtx3_15_RatiotoVtx15->Draw("psame");
+  line->Draw("same");
+
+  formatGraph(grVn46_Vn68Vtx3_RatiotoVtx15, "Centrality %", 0.80, 1.20, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) Ratio", norder_, norder_, norder_, norder_), 46, 22, "grVn46_Vn68Vtx3_RatiotoVtx15");
+  formatGraph(grVn46_Vn68Vtx3_15_RatiotoVtx15, "Centrality %", 0.80, 1.20, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) Ratio", norder_, norder_, norder_, norder_), 28, 22, "grVn46_Vn68Vtx3_15_RatiotoVtx15");
+
+  TLegend * leg6 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  leg6->SetFillStyle(0);
+  leg6->SetBorderSize(0);
+  leg6->AddEntry(grVn46_Vn68Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}",        "lp");
+  leg6->AddEntry(grVn46_Vn68Vtx3_15_RatiotoVtx15, "#frac{3.0 < |v_{z}| < 15.0}{|v_{z}| < 15.0}", "lp");
+  leg6->Draw("same");
+
+  cVn46_Vn68->Update();
+  cVn46_Vn68->SaveAs("../../plots/systematicStudies/SysVtxVn46_Vn68Cent.pdf");
+
+
   //---------------------------------------------------------------------------------------------------- 
   //-- Save plots for smoothing
   TFile * fSave = new TFile("SysVtx.root", "recreate");
@@ -897,6 +995,8 @@ void sysVtxCut(){
   grVn8Vn4Vtx3_15_RatiotoVtx15->Write("grVn8Vn4Vtx3_15_RatiotoVtx15");
   grVn8Vn6Vtx3_RatiotoVtx15->Write("grVn8Vn6Vtx3_RatiotoVtx15");
   grVn8Vn6Vtx3_15_RatiotoVtx15->Write("grVn8Vn6Vtx3_15_RatiotoVtx15");
+  grVn46_Vn68Vtx3_RatiotoVtx15->Write("grVn46_Vn68Vtx3_RatiotoVtx15");
+  grVn46_Vn68Vtx3_15_RatiotoVtx15->Write("grVn46_Vn68Vtx3_15_RatiotoVtx15");
 
   grGamma1ExpVtx3_RatiotoVtx15->Write("grGamma1ExpVtx3_RatiotoVtx15");
   grGamma1ExpVtx3_15_RatiotoVtx15->Write("grGamma1ExpVtx3_15_RatiotoVtx15");

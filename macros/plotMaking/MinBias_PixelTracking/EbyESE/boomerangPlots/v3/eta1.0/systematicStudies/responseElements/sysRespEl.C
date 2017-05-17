@@ -19,10 +19,10 @@
 
 using namespace ebyese;
 
-void sysRespEl(){
+void sysRespEl(int n = 2, double e = 1.0){
 
-  int norder_ = 3;
-  double tkEta = 1.0;
+  int norder_  = n;
+  double tkEta = e;
 
   double ratioMin = 0.95;
   double ratioMax = 1.05;
@@ -64,6 +64,7 @@ void sysRespEl(){
   double vn6vn4DoSys_RatioToNominal[NCENT];
   double vn8vn4DoSys_RatioToNominal[NCENT];
   double vn8vn6DoSys_RatioToNominal[NCENT];
+  double vn46_vn68DoSys_RatioToNominal[NCENT];
 
   double vn2DoSys_RatioToNominal_staterr[NCENT];
   double vn4DoSys_RatioToNominal_staterr[NCENT];
@@ -73,6 +74,7 @@ void sysRespEl(){
   double vn6vn4DoSys_RatioToNominal_staterr[NCENT];
   double vn8vn4DoSys_RatioToNominal_staterr[NCENT];
   double vn8vn6DoSys_RatioToNominal_staterr[NCENT];
+  double vn46_vn68DoSys_RatioToNominal_staterr[NCENT];
 
   double vn2DoSys_PctDiffToNominal[NCENT];
   double vn4DoSys_PctDiffToNominal[NCENT];
@@ -82,6 +84,7 @@ void sysRespEl(){
   double vn6vn4DoSys_PctDiffToNominal[NCENT];
   double vn8vn4DoSys_PctDiffToNominal[NCENT];
   double vn8vn6DoSys_PctDiffToNominal[NCENT];
+  double vn46_vn68DoSys_PctDiffToNominal[NCENT];
 
   //-- Systematic Performance Plots
   TGraphErrors * grVn2DoSys_RatioToNominal;
@@ -92,6 +95,7 @@ void sysRespEl(){
   TGraphErrors * grVn6Vn4DoSys_RatioToNominal;
   TGraphErrors * grVn8Vn4DoSys_RatioToNominal;
   TGraphErrors * grVn8Vn6DoSys_RatioToNominal;
+  TGraphErrors * grVn46_Vn68DoSys_RatioToNominal;
 
   //-- Stat Errors
   TFile * fStat_Nominal;
@@ -103,6 +107,7 @@ void sysRespEl(){
   TH1D * hVarianceOfMean_Vn6Vn4_Nominal;
   TH1D * hVarianceOfMean_Vn8Vn4_Nominal;
   TH1D * hVarianceOfMean_Vn8Vn6_Nominal;
+  TH1D * hVarianceOfMean_Vn46_Vn68_Nominal;
 
   TFile * fStat_DoSys;
   TH1D * hVarianceOfMean_Vn2_DoSys;
@@ -113,6 +118,7 @@ void sysRespEl(){
   TH1D * hVarianceOfMean_Vn6Vn4_DoSys;
   TH1D * hVarianceOfMean_Vn8Vn4_DoSys;
   TH1D * hVarianceOfMean_Vn8Vn6_DoSys;
+  TH1D * hVarianceOfMean_Vn46_Vn68_DoSys;
 
   //
   //-- MAIN
@@ -120,7 +126,6 @@ void sysRespEl(){
 
   setTDRStyle();
   latex.SetNDC();
-  gErrorIgnoreLevel = kWarning;
 
   fAna      = new TFile( "../../AnalyzerResults/CastleEbyE.root" );
   fUnf      = new TFile( Form("../../UnfoldResults/dataResp/data%i.root", norder_) );
@@ -136,6 +141,15 @@ void sysRespEl(){
   hVarianceOfMean_Vn6Vn4_Nominal    = (TH1D*) fStat_Nominal->Get( "hVarianceOfMean_Vn6Vn4" );
   hVarianceOfMean_Vn8Vn4_Nominal    = (TH1D*) fStat_Nominal->Get( "hVarianceOfMean_Vn8Vn4" );
   hVarianceOfMean_Vn8Vn6_Nominal    = (TH1D*) fStat_Nominal->Get( "hVarianceOfMean_Vn8Vn6" );
+  hVarianceOfMean_Vn46_Vn68_Nominal = (TH1D*) fStat_Nominal->Get( "hVarianceOfMean_Vn46_Vn68" );
+
+  if( !hVarianceOfMean_Vn2_Nominal ){
+    std::cout << "WARNING! Statistical resampling procedure not run!\n"
+              << "Please run the procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   fStat_DoSys = new TFile( Form("../../../../statErrorHandle/v%i/eta%.1f/systematicStudies/responseElements/StatUncertRespEl_v%i.root", norder_, tkEta, norder_) );
   hVarianceOfMean_Vn2_DoSys       = (TH1D*) fStat_DoSys->Get( "hVarianceOfMean_Vn2_RespEl" );
@@ -146,11 +160,21 @@ void sysRespEl(){
   hVarianceOfMean_Vn6Vn4_DoSys    = (TH1D*) fStat_DoSys->Get( "hVarianceOfMean_Vn6Vn4_RespEl" );
   hVarianceOfMean_Vn8Vn4_DoSys    = (TH1D*) fStat_DoSys->Get( "hVarianceOfMean_Vn8Vn4_RespEl" );
   hVarianceOfMean_Vn8Vn6_DoSys    = (TH1D*) fStat_DoSys->Get( "hVarianceOfMean_Vn8Vn6_RespEl" );
+  hVarianceOfMean_Vn46_Vn68_DoSys = (TH1D*) fStat_DoSys->Get( "hVarianceOfMean_Vn46_Vn68_RespEl" );
+
+  if( !hVarianceOfMean_Vn2_DoSys ){
+    std::cout << "WARNING! Statistical resampling procedure not run!\n"
+              << "Please run the procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   for(int icent = 0; icent < NCENT; icent++){
 
     //-- Get the VN observed histogram
     hObs[icent] = (TH1D*) fAna->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObs[icent] ) break;
     hObs[icent]->SetMaximum( 10.*hObs[icent]->GetMaximum() );
 
     //-- Initialize iteration cutoff values/booleans
@@ -164,6 +188,7 @@ void sysRespEl(){
 
       //-- Get the unfolded histograms
       hUnfold[icent][i] = (TH1D*) fUnf->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfold[icent][i] ) break;
       hUnfold[icent][i]->SetLineColor(col[i]);
       hUnfold[icent][i]->SetMarkerColor(col[i]);
 
@@ -175,6 +200,7 @@ void sysRespEl(){
 
       //-- Get the DoSys unfolded histograms
       hUnfoldDoSys[icent][i] = (TH1D*) fUnfDoSys->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfoldDoSys[icent][i] ) break;
       hUnfoldDoSys[icent][i]->SetLineColor(col[i]);
       hUnfoldDoSys[icent][i]->SetMarkerColor(col[i]);
 
@@ -184,8 +210,9 @@ void sysRespEl(){
       hRefoldDoSys[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold       = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
-      double chi2NDF_Refold_DoSys = hRefoldDoSys[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
+      double chi2NDF_Refold       = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
+      double chi2NDF_Refold_DoSys = hRefoldDoSys[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
+      std::cout << "chi2NDF_Refold_DoSys  = " << chi2NDF_Refold_DoSys << std::endl;
 
       //-- Normal unfolding chi2 check
       if( chi2NDF_Refold < 1.2 && !iterStopFound[icent] ){
@@ -210,6 +237,14 @@ void sysRespEl(){
     } //-- End iter loop
 
   } //-- End cent loop
+
+  if( !hObs[0] || !hUnfold[0][0] || !hUnfoldDoSys[0][0] ){
+    std::cout << "WARNING! Unfolding procedure not run!\n"
+              << "Please run the unfolding procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   //-- Figure out the response matrix uncertainty component
   for(int icent = 0; icent < NCENT; icent++){
@@ -270,12 +305,21 @@ void sysRespEl(){
     if( vn8DoSys == 0 || vn6DoSys == 0) vn8vn6DoSys = 0;
     else                                vn8vn6DoSys = vn8DoSys / vn6DoSys;
 
-    double vn6vn4_staterr      = sqrt( hVarianceOfMean_Vn6Vn4_Nominal->GetBinContent(icent+1) );
-    double vn6vn4DoSys_staterr = sqrt( hVarianceOfMean_Vn6Vn4_DoSys->GetBinContent(icent+1) );
-    double vn8vn4_staterr      = sqrt( hVarianceOfMean_Vn8Vn4_Nominal->GetBinContent(icent+1) );
-    double vn8vn4DoSys_staterr = sqrt( hVarianceOfMean_Vn8Vn4_DoSys->GetBinContent(icent+1) );
-    double vn8vn6_staterr      = sqrt( hVarianceOfMean_Vn8Vn6_Nominal->GetBinContent(icent+1) );
-    double vn8vn6DoSys_staterr = sqrt( hVarianceOfMean_Vn8Vn6_DoSys->GetBinContent(icent+1) );
+    double vn46_vn68;
+    double vn46_vn68DoSys;
+    if( vn8 == 0 || vn6 == 0 ) vn46_vn68 = 0;
+    else                       vn46_vn68 = (vn4 - vn6)/(vn6 - vn8);
+    if( vn8DoSys == 0 || vn6DoSys == 0) vn46_vn68DoSys = 0;
+    else                                vn46_vn68DoSys = (vn4DoSys - vn6DoSys)/(vn6DoSys - vn8DoSys);
+
+    double vn6vn4_staterr         = sqrt( hVarianceOfMean_Vn6Vn4_Nominal->GetBinContent(icent+1) );
+    double vn6vn4DoSys_staterr    = sqrt( hVarianceOfMean_Vn6Vn4_DoSys->GetBinContent(icent+1) );
+    double vn8vn4_staterr         = sqrt( hVarianceOfMean_Vn8Vn4_Nominal->GetBinContent(icent+1) );
+    double vn8vn4DoSys_staterr    = sqrt( hVarianceOfMean_Vn8Vn4_DoSys->GetBinContent(icent+1) );
+    double vn8vn6_staterr         = sqrt( hVarianceOfMean_Vn8Vn6_Nominal->GetBinContent(icent+1) );
+    double vn8vn6DoSys_staterr    = sqrt( hVarianceOfMean_Vn8Vn6_DoSys->GetBinContent(icent+1) );
+    double vn46_vn68_staterr      = sqrt( hVarianceOfMean_Vn46_Vn68_Nominal->GetBinContent(icent+1) );
+    double vn46_vn68DoSys_staterr = sqrt( hVarianceOfMean_Vn46_Vn68_DoSys->GetBinContent(icent+1) );
 
     //-- Calculate ratios
     if( vn2 == 0 || vn2DoSys == 0 ) vn2DoSys_RatioToNominal[icent] = 0;
@@ -283,8 +327,6 @@ void sysRespEl(){
 
     if( vn4 == 0 || vn4DoSys == 0 ) vn4DoSys_RatioToNominal[icent] = 0;
     else                            vn4DoSys_RatioToNominal[icent] = vn4DoSys / vn4;
-
-    std::cout << "Vn4 Ratio \t"<<vn4DoSys_RatioToNominal[icent] << std::endl;
 
     if( vn6 == 0 || vn6DoSys == 0 ) vn6DoSys_RatioToNominal[icent] = 0;
     else                            vn6DoSys_RatioToNominal[icent] = vn6DoSys / vn6;
@@ -294,7 +336,7 @@ void sysRespEl(){
 
     if( gamma1exp == 0 || gamma1expDoSys == 0 ) gamma1expDoSys_RatioToNominal[icent] = 0;
     else                                        gamma1expDoSys_RatioToNominal[icent] = fabs( 1. - gamma1expDoSys / gamma1exp );
-
+    std::cout<<gamma1expDoSys_RatioToNominal[icent]<<std::endl;
     if( vn6vn4 == 0 || vn6vn4DoSys == 0 ) vn6vn4DoSys_RatioToNominal[icent] = 0;
     else                                  vn6vn4DoSys_RatioToNominal[icent] = vn6vn4DoSys / vn6vn4;
 
@@ -303,6 +345,11 @@ void sysRespEl(){
 
     if( vn8vn6 == 0 || vn8vn6DoSys == 0 ) vn8vn6DoSys_RatioToNominal[icent] = 0;
     else                                  vn8vn6DoSys_RatioToNominal[icent] = vn8vn6DoSys / vn8vn6;
+
+    if( vn46_vn68 == 0 || vn46_vn68DoSys == 0 ) vn46_vn68DoSys_RatioToNominal[icent] = 0;
+    else                                        vn46_vn68DoSys_RatioToNominal[icent] = vn46_vn68DoSys / vn46_vn68;
+
+    std::cout<<vn46_vn68DoSys_RatioToNominal[icent]<<std::endl;
 
     //-- Ratio errors
     vn2DoSys_RatioToNominal_staterr[icent]       = sqrt( pow( vn2DoSys_staterr/vn2,2) + pow(vn2DoSys*vn2_staterr/vn2/vn2,2) );
@@ -313,6 +360,7 @@ void sysRespEl(){
     vn6vn4DoSys_RatioToNominal_staterr[icent]    = sqrt( pow( vn6vn4DoSys_staterr/vn6vn4,2) + pow(vn6vn4DoSys*vn6vn4_staterr/vn6vn4/vn6vn4,2) );
     vn8vn4DoSys_RatioToNominal_staterr[icent]    = sqrt( pow( vn8vn4DoSys_staterr/vn8vn4,2) + pow(vn8vn4DoSys*vn8vn4_staterr/vn8vn4/vn8vn4,2) );
     vn8vn6DoSys_RatioToNominal_staterr[icent]    = sqrt( pow( vn8vn6DoSys_staterr/vn8vn6,2) + pow(vn8vn6DoSys*vn8vn6_staterr/vn8vn6/vn8vn6,2) );
+    vn46_vn68DoSys_RatioToNominal_staterr[icent] = sqrt( pow( vn46_vn68DoSys_staterr/vn46_vn68,2) + pow(vn46_vn68DoSys*vn46_vn68_staterr/vn46_vn68/vn46_vn68,2) );
 
     //-- Calculate pct difference relative to nominal
     if( vn2 == 0 || vn2DoSys == 0 || compatibleWithOne(vn2DoSys_RatioToNominal[icent], vn2DoSys_RatioToNominal_staterr[icent]) ) vn2DoSys_PctDiffToNominal[icent] = 0;
@@ -339,8 +387,10 @@ void sysRespEl(){
     if( vn8vn6 == 0 || vn8vn6DoSys == 0 || compatibleWithOne(vn8vn6DoSys_RatioToNominal[icent], vn8vn6DoSys_RatioToNominal_staterr[icent]) ) vn8vn6DoSys_PctDiffToNominal[icent] = 0;
     else                                  vn8vn6DoSys_PctDiffToNominal[icent] = fabs( vn8vn6DoSys - vn8vn6 ) / fabs( vn8vn6 );
 
+    if( vn46_vn68 == 0 || vn46_vn68DoSys == 0 || compatibleWithOne(vn46_vn68DoSys_RatioToNominal[icent], vn46_vn68DoSys_RatioToNominal_staterr[icent]) ) vn46_vn68DoSys_PctDiffToNominal[icent] = 0;
+    else                               vn46_vn68DoSys_PctDiffToNominal[icent] = fabs( vn46_vn68DoSys - vn46_vn68 ) / fabs( vn46_vn68 );
+
   } //-- End cent loop
-  gErrorIgnoreLevel = kError;
 
   //-- Make sweet, sweet TGraphErrors
   double cErr[NCENT];
@@ -348,7 +398,7 @@ void sysRespEl(){
   grVn2DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn2DoSys_RatioToNominal, cErr, vn2DoSys_RatioToNominal_staterr);
   formatGraph(grVn2DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} [RespErr] / [Nominal]", norder_), 1, 24, "grVn2DoSys_RatioToNominal");
   grVn4DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn4DoSys_RatioToNominal, cErr, vn4DoSys_RatioToNominal_staterr);
-  formatGraph(grVn4DoSys_RatioToNominal, "Centrality %", 0.4, 1.1, Form("v_{%i}{4} [RespErr] / [Nominal]", norder_), kSpring+4, 25, "grVn4DoSys_RatioToNominal");
+  formatGraph(grVn4DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} [RespErr] / [Nominal]", norder_), kSpring+4, 25, "grVn4DoSys_RatioToNominal");
   grVn6DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn6DoSys_RatioToNominal, cErr, vn6DoSys_RatioToNominal_staterr);
   formatGraph(grVn6DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} [RespErr] / [Nominal]", norder_), 6, 28, "grVn6DoSys_RatioToNominal");
   grVn8DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn8DoSys_RatioToNominal, cErr, vn8DoSys_RatioToNominal_staterr);
@@ -361,6 +411,8 @@ void sysRespEl(){
   formatGraph(grVn8Vn4DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{8}/v_{%i}{4} [RespErr] / [Nominal]", norder_, norder_), kGreen+2, 34, "grVn8Vn4DoSys_RatioToNominal");
   grVn8Vn6DoSys_RatioToNominal    = new TGraphErrors(NCENT, centBinCenter, vn8vn6DoSys_RatioToNominal, cErr, vn8vn6DoSys_RatioToNominal_staterr);
   formatGraph(grVn8Vn6DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{8}/v_{%i}{6} [RespErr] / [Nominal]", norder_, norder_), kViolet-1, 33, "grVn8Vn6DoSys_RatioToNominal");
+  grVn46_Vn68DoSys_RatioToNominal    = new TGraphErrors(NCENT, centBinCenter, vn46_vn68DoSys_RatioToNominal, cErr, vn46_vn68DoSys_RatioToNominal_staterr);
+  formatGraph(grVn46_Vn68DoSys_RatioToNominal, "Centrality %", 0.75, 1.25, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) [RespErr] / [Nominal]", norder_, norder_, norder_, norder_), kGray+2, 22, "grVn46_Vn68DoSys_RatioToNominal");
 
 
   TLine * line = new TLine(grVn2DoSys_RatioToNominal->GetXaxis()->GetXmin(), 1.0, grVn2DoSys_RatioToNominal->GetXaxis()->GetXmax(), 1.0);
@@ -406,6 +458,12 @@ void sysRespEl(){
   line->Draw("same");
   cCumuRatioSys->SaveAs("../../plots/systematicStudies/cSysResp_CumuRatioCent.pdf");
 
+  TCanvas * cVn46_Vn68 = new TCanvas("cVn46_Vn68", "cVn46_Vn68", 500, 500);
+  cVn46_Vn68->cd();
+  grVn46_Vn68DoSys_RatioToNominal->Draw("ap");
+  line->Draw("same");
+  cVn46_Vn68->SaveAs("../../plots/systematicStudies/cSysResp_Vn46_Vn68.pdf");
+
   //----------------------------------------------------------------------------------------------------
   //-- Save plots for smoothing
   TFile * fSave = new TFile("SysResp.root", "recreate");
@@ -417,11 +475,14 @@ void sysRespEl(){
   grVn6Vn4DoSys_RatioToNominal->Write("grVn6Vn4DoSys_RatioToNominal");
   grVn8Vn4DoSys_RatioToNominal->Write("grVn8Vn4DoSys_RatioToNominal");
   grVn8Vn6DoSys_RatioToNominal->Write("grVn8Vn6DoSys_RatioToNominal");
+  grVn46_Vn68DoSys_RatioToNominal->Write("grVn46_Vn68DoSys_RatioToNominal");
   grGamma1ExpDoSys_RatioToNominal->Write("grGamma1ExpDoSys_RatioToNominal");
+
 
   //-- Save the unfolded distns for when the cutoff is chi2=2.
   for(int icent = 0; icent < NCENT; icent++){
     int i = iterCutoffDoSys[icent];
+    std::cout<<i<<std::endl;
     hUnfoldDoSys[icent][i]->SetLineColor(1);
     hUnfoldDoSys[icent][i]->SetMarkerColor(1);
     hUnfoldDoSys[icent][i]->Write( Form("hFinalUnfold_SysResp_c%i", icent) );

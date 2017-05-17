@@ -18,10 +18,10 @@
 
 using namespace ebyese;
 
-void sysTkQuality(){
+void sysTkQuality(int n = 2, double e = 1.0){
 
-  int norder_ = 3;
-  double tkEta = 1.0;
+  int norder_  = n;
+  double tkEta = e;
 
   double vn2Min = 0.00;
   double vn2Max = 0.40;
@@ -62,6 +62,7 @@ void sysTkQuality(){
   TH1D * hVarianceOfMean_Vn6Vn4_Loose;
   TH1D * hVarianceOfMean_Vn8Vn4_Loose;
   TH1D * hVarianceOfMean_Vn8Vn6_Loose;
+  TH1D * hVarianceOfMean_Vn46_Vn68_Loose;
 
   TGraphErrors * grVn2Loose;
   TGraphErrors * grVn4Loose;
@@ -71,6 +72,7 @@ void sysTkQuality(){
   TGraphErrors * grVn6Vn4Loose;
   TGraphErrors * grVn8Vn4Loose;
   TGraphErrors * grVn8Vn6Loose;
+  TGraphErrors * grVn46_Vn68Loose;
 
   double vn2Loose[NCENT];
   double vn4Loose[NCENT];
@@ -80,6 +82,7 @@ void sysTkQuality(){
   double vn6vn4Loose[NCENT];
   double vn8vn4Loose[NCENT];
   double vn8vn6Loose[NCENT];
+  double vn46_vn68Loose[NCENT];
 
   double vn2Loose_staterr[NCENT];
   double vn4Loose_staterr[NCENT];
@@ -89,6 +92,7 @@ void sysTkQuality(){
   double vn6vn4Loose_staterr[NCENT];
   double vn8vn4Loose_staterr[NCENT];
   double vn8vn6Loose_staterr[NCENT];
+  double vn46_vn68Loose_staterr[NCENT];
 
   TGraphErrors * grVn2Loose_RatiotoNominal;
   TGraphErrors * grVn4Loose_RatiotoNominal;
@@ -98,6 +102,7 @@ void sysTkQuality(){
   TGraphErrors * grVn6Vn4Loose_RatiotoNominal;
   TGraphErrors * grVn8Vn4Loose_RatiotoNominal;
   TGraphErrors * grVn8Vn6Loose_RatiotoNominal;
+  TGraphErrors * grVn46_Vn68Loose_RatiotoNominal;
 
   double vn2Loose_RatiotoNominal[NCENT];
   double vn4Loose_RatiotoNominal[NCENT];
@@ -107,6 +112,7 @@ void sysTkQuality(){
   double vn6vn4Loose_RatiotoNominal[NCENT];
   double vn8vn4Loose_RatiotoNominal[NCENT];
   double vn8vn6Loose_RatiotoNominal[NCENT];
+  double vn46_vn68Loose_RatiotoNominal[NCENT];
 
   double vn2Loose_RatiotoNominal_staterr[NCENT];
   double vn4Loose_RatiotoNominal_staterr[NCENT];
@@ -116,6 +122,7 @@ void sysTkQuality(){
   double vn6vn4Loose_RatiotoNominal_staterr[NCENT];
   double vn8vn4Loose_RatiotoNominal_staterr[NCENT];
   double vn8vn6Loose_RatiotoNominal_staterr[NCENT];
+  double vn46_vn68Loose_RatiotoNominal_staterr[NCENT];
 
   int iterCutoffLoose[NCENT];
 
@@ -135,6 +142,7 @@ void sysTkQuality(){
   TH1D * hVarianceOfMean_Vn6Vn4_Tight;
   TH1D * hVarianceOfMean_Vn8Vn4_Tight;
   TH1D * hVarianceOfMean_Vn8Vn6_Tight;
+  TH1D * hVarianceOfMean_Vn46_Vn68_Tight;
 
   TGraphErrors * grVn2Tight;
   TGraphErrors * grVn4Tight;
@@ -144,6 +152,7 @@ void sysTkQuality(){
   TGraphErrors * grVn6Vn4Tight;
   TGraphErrors * grVn8Vn4Tight;
   TGraphErrors * grVn8Vn6Tight;
+  TGraphErrors * grVn46_Vn68Tight;
 
   double vn2Tight[NCENT];
   double vn4Tight[NCENT];
@@ -153,6 +162,7 @@ void sysTkQuality(){
   double vn6vn4Tight[NCENT];
   double vn8vn4Tight[NCENT];
   double vn8vn6Tight[NCENT];
+  double vn46_vn68Tight[NCENT];
 
   double vn2Tight_staterr[NCENT];
   double vn4Tight_staterr[NCENT];
@@ -162,6 +172,7 @@ void sysTkQuality(){
   double vn6vn4Tight_staterr[NCENT];
   double vn8vn4Tight_staterr[NCENT];
   double vn8vn6Tight_staterr[NCENT];
+  double vn46_vn68Tight_staterr[NCENT];
 
   TGraphErrors * grVn2Tight_RatiotoNominal;
   TGraphErrors * grVn4Tight_RatiotoNominal;
@@ -171,6 +182,7 @@ void sysTkQuality(){
   TGraphErrors * grVn6Vn4Tight_RatiotoNominal;
   TGraphErrors * grVn8Vn4Tight_RatiotoNominal;
   TGraphErrors * grVn8Vn6Tight_RatiotoNominal;
+  TGraphErrors * grVn46_Vn68Tight_RatiotoNominal;
 
   double vn2Tight_RatiotoNominal[NCENT];
   double vn4Tight_RatiotoNominal[NCENT];
@@ -180,6 +192,7 @@ void sysTkQuality(){
   double vn6vn4Tight_RatiotoNominal[NCENT];
   double vn8vn4Tight_RatiotoNominal[NCENT];
   double vn8vn6Tight_RatiotoNominal[NCENT];
+  double vn46_vn68Tight_RatiotoNominal[NCENT];
 
   double vn2Tight_RatiotoNominal_staterr[NCENT];
   double vn4Tight_RatiotoNominal_staterr[NCENT];
@@ -189,6 +202,7 @@ void sysTkQuality(){
   double vn6vn4Tight_RatiotoNominal_staterr[NCENT];
   double vn8vn4Tight_RatiotoNominal_staterr[NCENT];
   double vn8vn6Tight_RatiotoNominal_staterr[NCENT];
+  double vn46_vn68Tight_RatiotoNominal_staterr[NCENT];
 
   int iterCutoffTight[NCENT];
 
@@ -208,6 +222,7 @@ void sysTkQuality(){
   TH1D * hVarianceOfMean_Vn6Vn4_Nominal;
   TH1D * hVarianceOfMean_Vn8Vn4_Nominal;
   TH1D * hVarianceOfMean_Vn8Vn6_Nominal;
+  TH1D * hVarianceOfMean_Vn46_Vn68_Nominal;
 
   TGraphErrors * grVn2Nominal;
   TGraphErrors * grVn4Nominal;
@@ -217,6 +232,7 @@ void sysTkQuality(){
   TGraphErrors * grVn6Vn4Nominal;
   TGraphErrors * grVn8Vn4Nominal;
   TGraphErrors * grVn8Vn6Nominal;
+  TGraphErrors * grVn46_Vn68Nominal;
 
   double vn2Nominal[NCENT];
   double vn4Nominal[NCENT];
@@ -226,6 +242,7 @@ void sysTkQuality(){
   double vn6vn4Nominal[NCENT];
   double vn8vn4Nominal[NCENT];
   double vn8vn6Nominal[NCENT];
+  double vn46_vn68Nominal[NCENT];
 
   double vn2Nominal_staterr[NCENT];
   double vn4Nominal_staterr[NCENT];
@@ -235,6 +252,7 @@ void sysTkQuality(){
   double vn6vn4Nominal_staterr[NCENT];
   double vn8vn4Nominal_staterr[NCENT];
   double vn8vn6Nominal_staterr[NCENT];
+  double vn46_vn68Nominal_staterr[NCENT];
 
   int iterCutoffNominal[NCENT];
 
@@ -267,6 +285,7 @@ void sysTkQuality(){
   hVarianceOfMean_Vn6Vn4_Loose    = (TH1D*) fStatLoose->Get( "hVarianceOfMean_Vn6Vn4_TkQualityLoose" );
   hVarianceOfMean_Vn8Vn4_Loose    = (TH1D*) fStatLoose->Get( "hVarianceOfMean_Vn8Vn4_TkQualityLoose" );
   hVarianceOfMean_Vn8Vn6_Loose    = (TH1D*) fStatLoose->Get( "hVarianceOfMean_Vn8Vn6_TkQualityLoose" );
+  hVarianceOfMean_Vn46_Vn68_Loose = (TH1D*) fStatLoose->Get( "hVarianceOfMean_Vn46_Vn68_TkQualityLoose" );
 
   fStatTight = new TFile( Form("../../../../statErrorHandle/v%i/eta%.1f/systematicStudies/tkQuality/tight/StatUncertTkQualityTight_v%i.root", norder_, tkEta, norder_) );
   hVarianceOfMean_Vn2_Tight       = (TH1D*) fStatTight->Get( "hVarianceOfMean_Vn2_TkQualityTight" );
@@ -277,6 +296,7 @@ void sysTkQuality(){
   hVarianceOfMean_Vn6Vn4_Tight    = (TH1D*) fStatTight->Get( "hVarianceOfMean_Vn6Vn4_TkQualityTight" );
   hVarianceOfMean_Vn8Vn4_Tight    = (TH1D*) fStatTight->Get( "hVarianceOfMean_Vn8Vn4_TkQualityTight" );
   hVarianceOfMean_Vn8Vn6_Tight    = (TH1D*) fStatTight->Get( "hVarianceOfMean_Vn8Vn6_TkQualityTight" );
+  hVarianceOfMean_Vn46_Vn68_Tight = (TH1D*) fStatTight->Get( "hVarianceOfMean_Vn46_Vn68_TkQualityTight" );
 
   fStatNominal = new TFile( Form("../../../../statErrorHandle/v%i/eta%.1f/StatisticalUncertainties_v%i.root", norder_, tkEta, norder_) );
   hVarianceOfMean_Vn2_Nominal       = (TH1D*) fStatNominal->Get( "hVarianceOfMean_Vn2" );
@@ -287,11 +307,21 @@ void sysTkQuality(){
   hVarianceOfMean_Vn6Vn4_Nominal    = (TH1D*) fStatNominal->Get( "hVarianceOfMean_Vn6Vn4" );
   hVarianceOfMean_Vn8Vn4_Nominal    = (TH1D*) fStatNominal->Get( "hVarianceOfMean_Vn8Vn4" );
   hVarianceOfMean_Vn8Vn6_Nominal    = (TH1D*) fStatNominal->Get( "hVarianceOfMean_Vn8Vn6" );
+  hVarianceOfMean_Vn46_Vn68_Nominal = (TH1D*) fStatNominal->Get( "hVarianceOfMean_Vn46_Vn68" );
+
+  if( !hVarianceOfMean_Vn2_Loose || !hVarianceOfMean_Vn2_Tight || hVarianceOfMean_Vn2_Nominal ){
+    std::cout << "WARNING! Statistical resampling procedure not run!\n"
+              << "Please run the procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   for(int icent = 0; icent < NCENT; icent++){
 
     //-- -------------------- Loose --------------------
     hObsLoose[icent] = (TH1D*) fAnaLoose->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObsLoose[icent] ) break;
     hObsLoose[icent]->SetName( Form("hVnFull_c%i_loose", icent) );
 
     //-- Iter loop
@@ -300,6 +330,7 @@ void sysTkQuality(){
 
       //-- Get the unfolded histograms
       hUnfoldLoose[icent][i] = (TH1D*) fUnfLoose->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfoldLoose[icent][i] ) break;
       hUnfoldLoose[icent][i]->SetName( Form("hreco%i_c%i_loose", iter[i], icent) );
       hUnfoldLoose[icent][i]->SetLineColor(col[i]);
       hUnfoldLoose[icent][i]->SetMarkerColor(col[i]);
@@ -312,7 +343,7 @@ void sysTkQuality(){
       hRefoldLoose[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldLoose[icent][i]->Chi2Test(hObsLoose[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldLoose[icent][i]->Chi2Test(hObsLoose[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
 	iterCutoffLoose[icent] = i;
@@ -334,7 +365,10 @@ void sysTkQuality(){
 	  vn8vn4Loose[icent] = vn8Loose[icent] / vn4Loose[icent];
 	}
 	if( vn6Loose[icent] == 0 ) vn8vn6Loose[icent] = 0;
-	else                      vn8vn6Loose[icent] = vn8Loose[icent] / vn6Loose[icent];
+	else                       vn8vn6Loose[icent] = vn8Loose[icent] / vn6Loose[icent];
+	if(vn4Loose[icent] == 0 || vn6Loose[icent] == 0 || vn8Loose[icent] == 0) vn46_vn68Loose[icent] = 0;
+	else                                                                     vn46_vn68Loose[icent] = (vn4Loose[icent] - vn6Loose[icent])/(vn6Loose[icent] - vn8Loose[icent]);
+
 
 	vn2Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Loose->GetBinContent(icent+1) );
 	vn4Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Loose->GetBinContent(icent+1) );
@@ -344,6 +378,7 @@ void sysTkQuality(){
 	vn6vn4Loose_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Loose->GetBinContent(icent+1) );
 	vn8vn4Loose_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Loose->GetBinContent(icent+1) );
 	vn8vn6Loose_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Loose->GetBinContent(icent+1) );
+	vn46_vn68Loose_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Loose->GetBinContent(icent+1) );
 
 	break;
       }
@@ -367,16 +402,20 @@ void sysTkQuality(){
           vn8vn4Loose[icent] = vn8Loose[icent] / vn4Loose[icent];
 	}
         if( vn6Loose[icent] == 0 ) vn8vn6Loose[icent] = 0;
-        else                      vn8vn6Loose[icent] = vn8Loose[icent] / vn6Loose[icent];
+        else                       vn8vn6Loose[icent] = vn8Loose[icent] / vn6Loose[icent];
+	if(vn4Loose[icent] == 0 || vn6Loose[icent] == 0 || vn8Loose[icent] == 0) vn46_vn68Loose[icent] = 0;
+        else                                                                     vn46_vn68Loose[icent] = (vn4Loose[icent] - vn6Loose[icent])/(vn6Loose[icent] -vn8Loose[icent]);
 
-	vn2Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Loose->GetBinContent(icent+1) );
-        vn4Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Loose->GetBinContent(icent+1) );
+
+        vn2Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Loose->GetBinContent(icent+1) );
+	vn4Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Loose->GetBinContent(icent+1) );
         vn6Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Loose->GetBinContent(icent+1) );
         vn8Loose_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Loose->GetBinContent(icent+1) );
         gamma1expLoose_staterr[icent] = sqrt( hVarianceOfMean_Gamma1Exp_Loose->GetBinContent(icent+1) );
         vn6vn4Loose_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Loose->GetBinContent(icent+1) );
         vn8vn4Loose_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Loose->GetBinContent(icent+1) );
         vn8vn6Loose_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Loose->GetBinContent(icent+1) );
+	vn46_vn68Loose_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Loose->GetBinContent(icent+1) );
 
         break;
       }
@@ -385,6 +424,7 @@ void sysTkQuality(){
 
     //-- -------------------- Tight --------------------
     hObsTight[icent] = (TH1D*) fAnaTight->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObsTight[icent] ) break;
     hObsTight[icent]->SetName( Form("hVnFull_c%i_tight", icent) );
 
     //-- Iter loop
@@ -393,6 +433,7 @@ void sysTkQuality(){
 
       //-- Get the unfolded histograms
       hUnfoldTight[icent][i] = (TH1D*) fUnfTight->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfoldTight[icent][i] ) break;
       hUnfoldTight[icent][i]->SetName( Form("hreco%i_c%i_tight", iter[i], icent) );
       hUnfoldTight[icent][i]->SetLineColor(col[i]);
       hUnfoldTight[icent][i]->SetMarkerColor(col[i]);
@@ -405,7 +446,7 @@ void sysTkQuality(){
       hRefoldTight[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldTight[icent][i]->Chi2Test(hObsTight[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldTight[icent][i]->Chi2Test(hObsTight[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffTight[icent] = i;
@@ -428,8 +469,10 @@ void sysTkQuality(){
 	}
         if( vn6Tight[icent] == 0 ) vn8vn6Tight[icent] = 0;
         else                      vn8vn6Tight[icent] = vn8Tight[icent] / vn6Tight[icent];
+	if(vn4Tight[icent] == 0 || vn6Tight[icent] == 0 || vn8Tight[icent] == 0) vn46_vn68Tight[icent] = 0;
+	else                                                                     vn46_vn68Tight[icent] = (vn4Tight[icent] - vn6Tight[icent])/(vn6Tight[icent] -vn8Tight[icent]);
 
-	vn2Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Tight->GetBinContent(icent+1) );
+        vn2Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Tight->GetBinContent(icent+1) );
         vn4Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Tight->GetBinContent(icent+1) );
         vn6Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Tight->GetBinContent(icent+1) );
         vn8Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Tight->GetBinContent(icent+1) );
@@ -437,6 +480,7 @@ void sysTkQuality(){
         vn6vn4Tight_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Tight->GetBinContent(icent+1) );
         vn8vn4Tight_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Tight->GetBinContent(icent+1) );
         vn8vn6Tight_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Tight->GetBinContent(icent+1) );
+        vn46_vn68Tight_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Tight->GetBinContent(icent+1) );
 
         break;
       }
@@ -461,8 +505,10 @@ void sysTkQuality(){
         }
         if( vn6Tight[icent] == 0 ) vn8vn6Tight[icent] = 0;
         else                      vn8vn6Tight[icent] = vn8Tight[icent] / vn6Tight[icent];
+	if(vn4Tight[icent] == 0 || vn6Tight[icent] == 0 || vn8Tight[icent] == 0) vn46_vn68Tight[icent] = 0;
+        else                                                                     vn46_vn68Tight[icent] = (vn4Tight[icent] - vn6Tight[icent])/(vn6Tight[icent] -vn8Tight[icent]);
 
-	vn2Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Tight->GetBinContent(icent+1) );
+        vn2Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Tight->GetBinContent(icent+1) );
         vn4Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Tight->GetBinContent(icent+1) );
         vn6Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Tight->GetBinContent(icent+1) );
         vn8Tight_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Tight->GetBinContent(icent+1) );
@@ -470,6 +516,7 @@ void sysTkQuality(){
         vn6vn4Tight_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Tight->GetBinContent(icent+1) );
         vn8vn4Tight_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Tight->GetBinContent(icent+1) );
         vn8vn6Tight_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Tight->GetBinContent(icent+1) );
+        vn46_vn68Tight_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Tight->GetBinContent(icent+1) );
 
         break;
       }
@@ -478,6 +525,7 @@ void sysTkQuality(){
 
     //-- -------------------- Nominal --------------------
     hObsNominal[icent] = (TH1D*) fAnaNominal->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObsNominal[icent] ) break;
     hObsNominal[icent]->SetName( Form("hVnFull_c%i_nominal", icent) );
 
     //-- Iter loop
@@ -486,6 +534,7 @@ void sysTkQuality(){
 
       //-- Get the unfolded histograms
       hUnfoldNominal[icent][i] = (TH1D*) fUnfNominal->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfoldNominal[icent][i] ) break;
       hUnfoldNominal[icent][i]->SetName( Form("hreco%i_c%i_nominal", iter[i], icent) );
       hUnfoldNominal[icent][i]->SetLineColor(col[i]);
       hUnfoldNominal[icent][i]->SetMarkerColor(col[i]);
@@ -498,7 +547,7 @@ void sysTkQuality(){
       hRefoldNominal[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldNominal[icent][i]->Chi2Test(hObsNominal[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldNominal[icent][i]->Chi2Test(hObsNominal[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffNominal[icent] = i;
@@ -521,8 +570,10 @@ void sysTkQuality(){
 	}
         if( vn6Nominal[icent] == 0 ) vn8vn6Nominal[icent] = 0;
         else                vn8vn6Nominal[icent] = vn8Nominal[icent] / vn6Nominal[icent];
+	if(vn4Nominal[icent] == 0 || vn6Nominal[icent] == 0 || vn8Nominal[icent] == 0) vn46_vn68Nominal[icent] = 0;
+        else                                                                     vn46_vn68Nominal[icent] = (vn4Nominal[icent] - vn6Nominal[icent])/(vn6Nominal[icent] -vn8Nominal[icent]);
 
-	vn2Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Nominal->GetBinContent(icent+1) );
+        vn2Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Nominal->GetBinContent(icent+1) );
         vn4Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Nominal->GetBinContent(icent+1) );
         vn6Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Nominal->GetBinContent(icent+1) );
         vn8Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Nominal->GetBinContent(icent+1) );
@@ -530,6 +581,7 @@ void sysTkQuality(){
         vn6vn4Nominal_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Nominal->GetBinContent(icent+1) );
         vn8vn4Nominal_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Nominal->GetBinContent(icent+1) );
         vn8vn6Nominal_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Nominal->GetBinContent(icent+1) );
+        vn46_vn68Nominal_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Nominal->GetBinContent(icent+1) );
 
         break;
       }
@@ -554,15 +606,18 @@ void sysTkQuality(){
         }
         if( vn6Nominal[icent] == 0 ) vn8vn6Nominal[icent] = 0;
         else                      vn8vn6Nominal[icent] = vn8Nominal[icent] / vn6Nominal[icent];
+	if(vn4Nominal[icent] == 0 || vn6Nominal[icent] == 0 || vn8Nominal[icent] == 0) vn46_vn68Nominal[icent] = 0;
+	else                                                                     vn46_vn68Nominal[icent] = (vn4Nominal[icent] - vn6Nominal[icent])/(vn6Nominal[icent] -vn8Nominal[icent]);
 
-	vn2Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Nominal->GetBinContent(icent+1) );
+        vn2Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn2_Nominal->GetBinContent(icent+1) );
         vn4Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn4_Nominal->GetBinContent(icent+1) );
-        vn6Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Nominal->GetBinContent(icent+1) );
+	vn6Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn6_Nominal->GetBinContent(icent+1) );
         vn8Nominal_staterr[icent]       = sqrt( hVarianceOfMean_Vn8_Nominal->GetBinContent(icent+1) );
         gamma1expNominal_staterr[icent] = sqrt( hVarianceOfMean_Gamma1Exp_Nominal->GetBinContent(icent+1) );
         vn6vn4Nominal_staterr[icent]    = sqrt( hVarianceOfMean_Vn6Vn4_Nominal->GetBinContent(icent+1) );
         vn8vn4Nominal_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn4_Nominal->GetBinContent(icent+1) );
         vn8vn6Nominal_staterr[icent]    = sqrt( hVarianceOfMean_Vn8Vn6_Nominal->GetBinContent(icent+1) );
+        vn46_vn68Nominal_staterr[icent] = sqrt( hVarianceOfMean_Vn46_Vn68_Nominal->GetBinContent(icent+1) );
 
         break;
       }
@@ -570,6 +625,14 @@ void sysTkQuality(){
     } //-- End iter loop
 
   } //-- End Cent loop
+
+  if( !hObsLoose[0] || !hUnfoldLoose[0][0] || !hObsTight[0] || !hUnfoldTight[0][0] || !hObsNominal[0] || !hUnfoldNominal[0][0] ){
+    std::cout << "WARNING! Unfolding procedure not run!\n"
+              << "Please run the unfolding procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   //-- Calculate ratios to the nominal case
   for(int icent = 0; icent < NCENT; icent++){
@@ -582,6 +645,7 @@ void sysTkQuality(){
     double vn6vn4L     = vn6vn4Loose[icent];
     double vn8vn4L     = vn8vn4Loose[icent];
     double vn8vn6L     = vn8vn6Loose[icent];
+    double vn46_vn68L  = vn46_vn68Loose[icent];
 
     double vn2L_e       = vn2Loose_staterr[icent];
     double vn4L_e       = vn4Loose_staterr[icent];
@@ -591,6 +655,7 @@ void sysTkQuality(){
     double vn6vn4L_e    = vn6vn4Loose_staterr[icent];
     double vn8vn4L_e    = vn8vn4Loose_staterr[icent];
     double vn8vn6L_e    = vn8vn6Loose_staterr[icent];
+    double vn46_vn68L_e = vn46_vn68Loose_staterr[icent];
 
     double vn2T        = vn2Tight[icent];
     double vn4T        = vn4Tight[icent];
@@ -600,6 +665,7 @@ void sysTkQuality(){
     double vn6vn4T     = vn6vn4Tight[icent];
     double vn8vn4T     = vn8vn4Tight[icent];
     double vn8vn6T     = vn8vn6Tight[icent];
+    double vn46_vn68T  = vn46_vn68Tight[icent];
 
     double vn2T_e       = vn2Tight_staterr[icent];
     double vn4T_e       = vn4Tight_staterr[icent];
@@ -609,6 +675,7 @@ void sysTkQuality(){
     double vn6vn4T_e    = vn6vn4Tight_staterr[icent];
     double vn8vn4T_e    = vn8vn4Tight_staterr[icent];
     double vn8vn6T_e    = vn8vn6Tight_staterr[icent];
+    double vn46_vn68T_e = vn46_vn68Tight_staterr[icent];
 
     double vn2N        = vn2Nominal[icent];
     double vn4N        = vn4Nominal[icent];
@@ -618,6 +685,7 @@ void sysTkQuality(){
     double vn6vn4N     = vn6vn4Nominal[icent];
     double vn8vn4N     = vn8vn4Nominal[icent];
     double vn8vn6N     = vn8vn6Nominal[icent];
+    double vn46_vn68N  = vn46_vn68Nominal[icent];
 
     double vn2N_e       = vn2Nominal_staterr[icent];
     double vn4N_e       = vn4Nominal_staterr[icent];
@@ -627,6 +695,7 @@ void sysTkQuality(){
     double vn6vn4N_e    = vn6vn4Nominal_staterr[icent];
     double vn8vn4N_e    = vn8vn4Nominal_staterr[icent];
     double vn8vn6N_e    = vn8vn6Nominal_staterr[icent];
+    double vn46_vn68N_e = vn46_vn68Nominal_staterr[icent];
 
     double r2L         = vn2L / vn2N;
     double r4L         = vn4L / vn4N;
@@ -636,6 +705,7 @@ void sysTkQuality(){
     double r64L        = vn6vn4L / vn6vn4N;
     double r84L        = vn8vn4L / vn8vn4N;
     double r86L        = vn8vn6L / vn8vn6N;
+    double r4668L      = vn46_vn68L / vn46_vn68N;
 
     double r2L_e         = sqrt( pow(vn2L_e/vn2N, 2) + pow(vn2L*vn2N_e/vn2N/vn2N, 2) );
     double r4L_e         = sqrt( pow(vn4L_e/vn4N, 2) + pow(vn4L*vn4N_e/vn4N/vn4N, 2) );
@@ -645,6 +715,7 @@ void sysTkQuality(){
     double r64L_e        = sqrt( pow(vn6vn4L_e/vn6vn4N, 2) + pow(vn6vn4L*vn6vn4N_e/vn6vn4N/vn6vn4N, 2) );
     double r84L_e        = sqrt( pow(vn8vn4L_e/vn8vn4N, 2) + pow(vn8vn4L*vn8vn4N_e/vn8vn4N/vn8vn4N, 2) );
     double r86L_e        = sqrt( pow(vn8vn6L_e/vn8vn6N, 2) + pow(vn8vn6L*vn8vn6N_e/vn8vn6N/vn8vn6N, 2) );
+    double r4668L_e      = sqrt( pow(vn46_vn68L_e/vn46_vn68N, 2) + pow(vn46_vn68L*vn46_vn68N_e/vn46_vn68N/vn46_vn68N, 2) );
 
     double r2T         = vn2T / vn2N;
     double r4T         = vn4T / vn4N;
@@ -654,6 +725,7 @@ void sysTkQuality(){
     double r64T        = vn6vn4T / vn6vn4N;
     double r84T        = vn8vn4T / vn8vn4N;
     double r86T        = vn8vn6T / vn8vn6N;
+    double r4668T      = vn46_vn68T / vn46_vn68N;
 
     double r2T_e         = sqrt( pow(vn2T_e/vn2N, 2) + pow(vn2T*vn2N_e/vn2N/vn2N, 2) );
     double r4T_e         = sqrt( pow(vn4T_e/vn4N, 2) + pow(vn4T*vn4N_e/vn4N/vn4N, 2) );
@@ -663,6 +735,7 @@ void sysTkQuality(){
     double r64T_e        = sqrt( pow(vn6vn4T_e/vn6vn4N, 2) + pow(vn6vn4T*vn6vn4N_e/vn6vn4N/vn6vn4N, 2) );
     double r84T_e        = sqrt( pow(vn8vn4T_e/vn8vn4N, 2) + pow(vn8vn4T*vn8vn4N_e/vn8vn4N/vn8vn4N, 2) );
     double r86T_e        = sqrt( pow(vn8vn6T_e/vn8vn6N, 2) + pow(vn8vn6T*vn8vn6N_e/vn8vn6N/vn8vn6N, 2) );
+    double r4668T_e      = sqrt( pow(vn46_vn68T_e/vn46_vn68N, 2) + pow(vn46_vn68T*vn46_vn68N_e/vn46_vn68N/vn46_vn68N, 2) );
 
     vn2Loose_RatiotoNominal[icent]       = r2L;
     vn4Loose_RatiotoNominal[icent]       = r4L;
@@ -672,6 +745,7 @@ void sysTkQuality(){
     vn6vn4Loose_RatiotoNominal[icent]    = r64L;
     vn8vn4Loose_RatiotoNominal[icent]    = r84L;
     vn8vn6Loose_RatiotoNominal[icent]    = r86L;
+    vn46_vn68Loose_RatiotoNominal[icent] = r4668L;
 
     vn2Loose_RatiotoNominal_staterr[icent]       = r2L_e;
     vn4Loose_RatiotoNominal_staterr[icent]       = r4L_e;
@@ -681,6 +755,7 @@ void sysTkQuality(){
     vn6vn4Loose_RatiotoNominal_staterr[icent]    = r64L_e;
     vn8vn4Loose_RatiotoNominal_staterr[icent]    = r84L_e;
     vn8vn6Loose_RatiotoNominal_staterr[icent]    = r86L_e;
+    vn46_vn68Loose_RatiotoNominal_staterr[icent] = r4668L_e;
 
     vn2Tight_RatiotoNominal[icent]       = r2T;
     vn4Tight_RatiotoNominal[icent]       = r4T;
@@ -690,6 +765,7 @@ void sysTkQuality(){
     vn6vn4Tight_RatiotoNominal[icent]    = r64T;
     vn8vn4Tight_RatiotoNominal[icent]    = r84T;
     vn8vn6Tight_RatiotoNominal[icent]    = r86T;
+    vn46_vn68Tight_RatiotoNominal[icent] = r4668T;
 
     vn2Tight_RatiotoNominal_staterr[icent]       = r2T_e;
     vn4Tight_RatiotoNominal_staterr[icent]       = r4T_e;
@@ -699,6 +775,7 @@ void sysTkQuality(){
     vn6vn4Tight_RatiotoNominal_staterr[icent]    = r64T_e;
     vn8vn4Tight_RatiotoNominal_staterr[icent]    = r84T_e;
     vn8vn6Tight_RatiotoNominal_staterr[icent]    = r86T_e;
+    vn46_vn68Tight_RatiotoNominal_staterr[icent] = r4668T_e;
 
   }
 
@@ -715,6 +792,7 @@ void sysTkQuality(){
   grVn6Vn4Loose_RatiotoNominal    = new TGraphErrors(NCENT, centBinCenter, vn6vn4Loose_RatiotoNominal,    cErr, vn6vn4Loose_RatiotoNominal_staterr);
   grVn8Vn4Loose_RatiotoNominal    = new TGraphErrors(NCENT, centBinCenter, vn8vn4Loose_RatiotoNominal,    cErr, vn6vn4Loose_RatiotoNominal_staterr);
   grVn8Vn6Loose_RatiotoNominal    = new TGraphErrors(NCENT, centBinCenter, vn8vn6Loose_RatiotoNominal,    cErr, vn8vn6Loose_RatiotoNominal_staterr);
+  grVn46_Vn68Loose_RatiotoNominal = new TGraphErrors(NCENT, centBinCenter, vn46_vn68Loose_RatiotoNominal, cErr, vn46_vn68Loose_RatiotoNominal_staterr);
 
   grVn2Tight_RatiotoNominal       = new TGraphErrors(NCENT, centBinCenter, vn2Tight_RatiotoNominal,       cErr, vn2Tight_RatiotoNominal_staterr);
   grVn4Tight_RatiotoNominal       = new TGraphErrors(NCENT, centBinCenter, vn4Tight_RatiotoNominal,       cErr, vn4Tight_RatiotoNominal_staterr);
@@ -724,6 +802,7 @@ void sysTkQuality(){
   grVn6Vn4Tight_RatiotoNominal    = new TGraphErrors(NCENT, centBinCenter, vn6vn4Tight_RatiotoNominal,    cErr, vn6vn4Tight_RatiotoNominal_staterr);
   grVn8Vn4Tight_RatiotoNominal    = new TGraphErrors(NCENT, centBinCenter, vn8vn4Tight_RatiotoNominal,    cErr, vn8vn4Tight_RatiotoNominal_staterr);
   grVn8Vn6Tight_RatiotoNominal    = new TGraphErrors(NCENT, centBinCenter, vn8vn6Tight_RatiotoNominal,    cErr, vn8vn6Tight_RatiotoNominal_staterr);
+  grVn46_Vn68Tight_RatiotoNominal = new TGraphErrors(NCENT, centBinCenter, vn46_vn68Tight_RatiotoNominal, cErr, vn46_vn68Tight_RatiotoNominal_staterr);
 
   //-- Cumu Ratio Plots
   TLine * line = new TLine(cent_min[0], 1.0, grVn2Loose_RatiotoNominal->GetXaxis()->GetXmax(), 1.0);
@@ -757,8 +836,8 @@ void sysTkQuality(){
   formatGraph(grVn2Loose_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} Ratio", norder_), 1, 24, "grVn2Loose_RatiotoNominal");
   formatGraph(grVn2Tight_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} Ratio", norder_), kCyan+2, 24, "grVn2Tight_RatiotoNominal");
 
-  formatGraph(grVn4Loose_RatiotoNominal, "Centrality %", 0.90, 1.10, Form("v_{%i}{4} Ratio", norder_), kSpring+4, 25, "grVn4Loose_RatiotoNominal");
-  formatGraph(grVn4Tight_RatiotoNominal, "Centrality %", 0.90, 1.10, Form("v_{%i}{4} Ratio", norder_), kViolet-1, 25, "grVn4Tight_RatiotoNominal");
+  formatGraph(grVn4Loose_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} Ratio", norder_), kSpring+4, 25, "grVn4Loose_RatiotoNominal");
+  formatGraph(grVn4Tight_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} Ratio", norder_), kViolet-1, 25, "grVn4Tight_RatiotoNominal");
 
   formatGraph(grVn6Loose_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} Ratio", norder_), 6, 28, "grVn6Loose_RatiotoNominal");
   formatGraph(grVn6Tight_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} Ratio", norder_), 4, 28, "grVn6Tight_RatiotoNominal");
@@ -877,6 +956,27 @@ void sysTkQuality(){
   cCumuRatioSys->Update();
   cCumuRatioSys->SaveAs("../../plots/systematicStudies/SysTkQuality_CumuRatioCent.pdf");
 
+  //-- Vn{8} Vn{6} Splitting Ratio Plot
+  TCanvas * cVn46_Vn68 = new TCanvas("cVn46_Vn68", "cVn46_Vn68", 500, 500);
+  cVn46_Vn68->cd();
+  grVn46_Vn68Loose_RatiotoNominal->Draw("ap");
+  grVn46_Vn68Tight_RatiotoNominal->Draw("psame");
+  line->Draw("same");
+
+  formatGraph(grVn46_Vn68Loose_RatiotoNominal, "Centrality %", 0.80, 1.20, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) Ratio", norder_, norder_, norder_, norder_), 46, 22, "grVn46_Vn68Loose_RatiotoNominal");
+  formatGraph(grVn46_Vn68Tight_RatiotoNominal, "Centrality %", 0.80, 1.20, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) Ratio", norder_, norder_, norder_, norder_), 28, 22, "grVn46_Vn68Tight_RatiotoNominal");
+
+  TLegend * leg6 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  leg6->SetFillStyle(0);
+  leg6->SetBorderSize(0);
+  leg6->AddEntry(grVn46_Vn68Loose_RatiotoNominal, "loose/nominal", "lp");
+  leg6->AddEntry(grVn46_Vn68Tight_RatiotoNominal, "tight/nominal", "lp");
+  leg6->Draw("same");
+
+  cVn46_Vn68->Update();
+  cVn46_Vn68->SaveAs("../../plots/systematicStudies/SysTkQualityVn46_Vn68Cent.pdf");
+
+
   //---------------------------------------------------------------------------------------------------- 
   //-- Save plots for smoothing
   TFile * fSave = new TFile("SysTkQuality.root", "recreate");
@@ -897,6 +997,8 @@ void sysTkQuality(){
   grVn8Vn4Tight_RatiotoNominal->Write("grVn8Vn4Tight_RatiotoNominal");
   grVn8Vn6Loose_RatiotoNominal->Write("grVn8Vn6Loose_RatiotoNominal");
   grVn8Vn6Tight_RatiotoNominal->Write("grVn8Vn6Tight_RatiotoNominal");
+  grVn46_Vn68Loose_RatiotoNominal->Write("grVn46_Vn68Loose_RatiotoNominal");
+  grVn46_Vn68Tight_RatiotoNominal->Write("grVn46_Vn68Tight_RatiotoNominal");
 
   grGamma1ExpLoose_RatiotoNominal->Write("grGamma1ExpLoose_RatiotoNominal");
   grGamma1ExpTight_RatiotoNominal->Write("grGamma1ExpTight_RatiotoNominal");

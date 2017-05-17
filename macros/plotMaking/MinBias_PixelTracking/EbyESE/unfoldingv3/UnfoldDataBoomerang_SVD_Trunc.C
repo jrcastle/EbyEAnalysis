@@ -98,14 +98,14 @@ void UnfoldDataBoomerang_SVD_Trunc( int nord ){
   TH1D * hdi[NCENT];
   RooUnfoldResponse * response[NCENT];
   RooUnfoldSvd * unfold0[NCENT];
-  RooUnfoldSvd * unfoldkreg[9][NCENT];
+  RooUnfoldSvd * unfoldkreg[NKREG][NCENT];
   TSVDUnfold * svdUnf[NCENT];
-  TH2D * hCovMat[NCENT][9];
+  TH2D * hCovMat[NCENT][NKREG];
 
   TH1D * hreco0[NCENT];
-  TH1D * hrecokreg[9][NCENT];
+  TH1D * hrecokreg[NKREG][NCENT];
 
-  TH1D * hrefold[NCENT][9];
+  TH1D * hrefold[NCENT][NKREG];
   TH1D * hKreg;
 
   setTDRStyle();
@@ -288,6 +288,20 @@ void UnfoldDataBoomerang_SVD_Trunc( int nord ){
     }
 
     //-- Unfold!
+    if( smoothResp ) hresp[c]->Smooth(1, "kb5");
+
+    //-- Kill all bins with < 10 events
+    for ( int i = 1; i <= NBinsV2[c]; i++ ) {
+      for ( int j = 1; j <= NBinsV2[c]; j++ ) {
+	double binc = hresp[c]->GetBinContent(i,j);
+	if(binc < 10){
+	  hresp[c]->SetBinContent(i,j,0);
+	  hresp[c]->SetBinError(i,j,0);
+	}
+      }
+    }
+
+
     response[c] = new RooUnfoldResponse( 0, 0, hresp[c], Form("response_c%i", c) );
 
     /////////////////////////////////////////////////////////////////////////////
@@ -309,7 +323,7 @@ void UnfoldDataBoomerang_SVD_Trunc( int nord ){
     }
 
     hKreg->SetBinContent(c+1, kreg);
-
+    /*
     int dummy = 0;
     for(int ik = kreg-4; ik <= kreg+4; ik++){
       unfoldkreg[dummy][c] = new RooUnfoldSvd( response[c], h1D[c], ik );
@@ -326,6 +340,22 @@ void UnfoldDataBoomerang_SVD_Trunc( int nord ){
 
       dummy++;
     }
+    */
+    for(int ik = 1; ik <= NKREG; ik++){
+      unfoldkreg[ik-1][c] = new RooUnfoldSvd( response[c], h1D[c], ik );
+      hrecokreg[ik-1][c] = (TH1D*) unfoldkreg[ik-1][c]->Hreco();
+      hrecokreg[ik-1][c]->SetName(Form("hrecokreg%i_c%i", ik, c));
+      //FixUnfold( hrecokreg[ik-1][c] );
+      hrefold[ik-1][c] = (TH1D*) response[c]->ApplyToTruth( hrecokreg[ik-1][c], Form("hrefoldkreg%i_c%i", ik, c) );
+
+      TMatrixD covMat = unfoldkreg[ik-1][c]->Ereco();
+      hCovMat[c][ik-1] = new TH2D(Form("hCovMatkreg%i_c%i", ik, c), Form("hCovMatkreg%i_c%i", ik, c), NBinsV2[c], 0., v2Max[c], NBinsV2[c], 0., v2Max[c]);
+      hCovMat[c][ik-1]->GetXaxis()->SetTitle( Form("v_{%i}^{Unfold}", norder_) );
+      hCovMat[c][ik-1]->GetYaxis()->SetTitle( Form("v_{%i}^{Unfold}", norder_) );
+      hCovMat[c][ik-1]->SetOption("colz");
+      M2H(covMat, hCovMat[c][ik-1]);
+    }
+
     /////////////////////////////////////////////////////////////////////////////
 
     //-- Save Files
@@ -348,7 +378,7 @@ void UnfoldDataBoomerang_SVD_Trunc( int nord ){
     
     hdi[c]->Write();
     hreco0[c]->Write();
-    for(int i=0; i<9; i++){
+    for(int i=0; i<NKREG; i++){
       hrecokreg[i][c]->Write();
       hrefold[i][c]->Write();
       hCovMat[c][i]->Write();

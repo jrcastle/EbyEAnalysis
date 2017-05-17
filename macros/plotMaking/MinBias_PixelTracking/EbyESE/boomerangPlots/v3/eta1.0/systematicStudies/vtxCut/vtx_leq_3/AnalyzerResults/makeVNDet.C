@@ -13,14 +13,22 @@
 
 using namespace ebyese;
 
-void makeVNDet(){
+void makeVNDet(int n = 2, double e = 1.0, double pmn = 0.3, double pmx = 3.0, bool t = 0){
 
-  bool testrun          = 0;
-  const int norder_     = 3;
+  std::cout << "\nMaking recentering vectors for:\n"
+            << Form("n = %i \n", n)
+            << Form("%.1f < pT < %.1f \n", pmn, pmx)
+            << Form("|eta| < %.1f \n", e)
+            << "testrun is set to " << t << "\n"
+            << std::endl;
 
-  const double ptMin = 0.3;
-  const double ptMax = 3.00;
-  const double etaMax = 1.0;
+  bool testrun        = t;
+  const int norder_   = n;
+  const double vtxCut = 15.;
+
+  const double ptMin  = pmn;
+  const double ptMax  = pmx;
+  const double etaMax = e;
 
   static const int ptBinMin  = 0;
   static const int ptBinMax  = nptbinsDefault-1;
@@ -79,7 +87,7 @@ void makeVNDet(){
 
 
   //-- Set up the analyzer objects
-  fAna = new TFile("/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx_leq_3.root");
+  fAna = new TFile( fAnaTreeNameVtx_leq_3 );
 
   tree = (TTree*) fAna->Get("ebyeana/tree");
   sumwqx = new TH2D(Form("sumwqx%i", norder_), Form("sumwqx%i", norder_), nptbinsDefault, ptbinsDefault, netabinsDefault, etabinsDefault);

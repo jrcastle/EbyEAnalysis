@@ -20,9 +20,9 @@
 using namespace hi;
 using namespace ebyese;
 
-void statUncertAssess(){
+void statUncertAssess(int n = 2){
 
-  int norder_ = 3;
+  int norder_ = n;
 
   //-- Analyzer Output
   TFile * fAna[NSPLIT];
@@ -33,7 +33,7 @@ void statUncertAssess(){
   TH1D * hUnfold[NCENT][NSPLIT][NITER];
   TH1D * hRefold[NCENT][NSPLIT][NITER];
 
-  bool iterCutoff[NCENT][NSPLIT];
+  int iterCutoff[NCENT][NSPLIT];
 
   //-- Stat Uncert Output
   TFile * fOut;
@@ -45,6 +45,8 @@ void statUncertAssess(){
   TH1D * hVarianceOfMean_Vn6Vn4;
   TH1D * hVarianceOfMean_Vn8Vn4;
   TH1D * hVarianceOfMean_Vn8Vn6;
+  TH1D * hVarianceOfMean_Vn46_Vn68;
+  TH1D * hVarianceOfMean_Bin[NCENT];
 
   //
   // MAIN
@@ -59,35 +61,45 @@ void statUncertAssess(){
   fOut->cd();
   hVarianceOfMean_Vn2    = new TH1D("hVarianceOfMean_Vn2",    "hVarianceOfMean_Vn2",    NCENT, centbinsDefault);
   hVarianceOfMean_Vn2->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Vn2->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Vn2->GetYaxis()->SetTitle("#sigma^{2}");
 
   hVarianceOfMean_Vn4    = new TH1D("hVarianceOfMean_Vn4",    "hVarianceOfMean_Vn4",    NCENT, centbinsDefault);
   hVarianceOfMean_Vn4->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Vn4->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Vn4->GetYaxis()->SetTitle("#sigma^{2}");
 
   hVarianceOfMean_Vn6    = new TH1D("hVarianceOfMean_Vn6",    "hVarianceOfMean_Vn6",    NCENT, centbinsDefault);
   hVarianceOfMean_Vn6->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Vn6->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Vn6->GetYaxis()->SetTitle("#sigma^{2}");
 
   hVarianceOfMean_Vn8    = new TH1D("hVarianceOfMean_Vn8",    "hVarianceOfMean_Vn8",    NCENT, centbinsDefault);
   hVarianceOfMean_Vn8->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Vn8->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Vn8->GetYaxis()->SetTitle("#sigma^{2}");
 
   hVarianceOfMean_Gamma1Exp = new TH1D("hVarianceOfMean_Gamma1Exp", "hVarianceOfMean_Gamma1Exp", NCENT, centbinsDefault);
   hVarianceOfMean_Gamma1Exp->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Gamma1Exp->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Gamma1Exp->GetYaxis()->SetTitle("#sigma^{2}");
 
   hVarianceOfMean_Vn6Vn4    = new TH1D("hVarianceOfMean_Vn6Vn4",    "hVarianceOfMean_Vn6Vn4",    NCENT, centbinsDefault);
   hVarianceOfMean_Vn6Vn4->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Vn6Vn4->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Vn6Vn4->GetYaxis()->SetTitle("#sigma^{2}");
 
   hVarianceOfMean_Vn8Vn4    = new TH1D("hVarianceOfMean_Vn8Vn4",    "hVarianceOfMean_Vn8Vn4",    NCENT, centbinsDefault);
   hVarianceOfMean_Vn8Vn4->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Vn8Vn4->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Vn8Vn4->GetYaxis()->SetTitle("#sigma^{2}");
 
   hVarianceOfMean_Vn8Vn6    = new TH1D("hVarianceOfMean_Vn8Vn6",    "hVarianceOfMean_Vn8Vn6",    NCENT, centbinsDefault);
   hVarianceOfMean_Vn8Vn6->GetXaxis()->SetTitle("Centrality %");
-  hVarianceOfMean_Vn8Vn6->GetXaxis()->SetTitle("#sigma^{2}");
+  hVarianceOfMean_Vn8Vn6->GetYaxis()->SetTitle("#sigma^{2}");
+
+  hVarianceOfMean_Vn46_Vn68    = new TH1D("hVarianceOfMean_Vn46_Vn68",    "hVarianceOfMean_Vn46_Vn68",    NCENT, centbinsDefault);
+  hVarianceOfMean_Vn46_Vn68->GetXaxis()->SetTitle("Centrality %");
+  hVarianceOfMean_Vn46_Vn68->GetYaxis()->SetTitle("#sigma^{2}");
+
+  for(int icent = 0; icent < NCENT; icent++){
+    hVarianceOfMean_Bin[icent] = new TH1D(Form("hVarianceOfMean_Bin_c%i", icent), Form("hVarianceOfMean_Bin_c%i", icent), NBins, 0., vnMax[norder_]);
+    hVarianceOfMean_Bin[icent]->GetXaxis()->SetTitle( Form("v_{%i}", norder_) );
+    hVarianceOfMean_Bin[icent]->GetYaxis()->SetTitle("#sigma^{2}"); 
+  }
 
   for(int iS = 0; iS < NSPLIT; iS++){
 
@@ -109,8 +121,9 @@ void statUncertAssess(){
 	hUnfold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hreco%i_c%i",   iter[i], icent) );
 	hRefold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hrefold%i_c%i", iter[i], icent) );
 
+	if( !hObs[icent][iS] || !hUnfold[icent][iS][i] || hRefold[icent][iS][i] ) break;
 
-	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "CHI2/NDF");
+	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "UWCHI2/NDF");
 	if( chi2Refold < 1.2 ){
 	  iterCutoff[icent][iS] = i;
 	  break;
@@ -124,6 +137,13 @@ void statUncertAssess(){
     } //-- End cent loop
   } //-- End split loop
 
+  if( !hObs[0][0] ||!hUnfold[0][0][0] || hRefold[0][0][0] ){
+    std::cout << "WARNING! Unfolding procedure not run!\n"
+	      << "Please run the unfolding procedure first and then run this macro\n"
+	      << "Exiting now..."
+	      << std::endl;
+    exit(0);
+  }
 
   //-- Now that we have the distributions, let's figure out the scatter on the reported quantities
 
@@ -137,6 +157,8 @@ void statUncertAssess(){
   double sampleMean_Vn6Vn4[NCENT];
   double sampleMean_Vn8Vn4[NCENT];
   double sampleMean_Vn8Vn6[NCENT];
+  double sampleMean_Vn46_Vn68[NCENT];
+  double sampleMean_Bin[NCENT][NBins];
 
   double NSUCCESS_VN2[NCENT];
   double NSUCCESS_VN4[NCENT];
@@ -146,6 +168,9 @@ void statUncertAssess(){
   double NSUCCESS_VN6VN4[NCENT];
   double NSUCCESS_VN8VN4[NCENT];
   double NSUCCESS_VN8VN6[NCENT];
+  double NSUCCESS_VN46_VN68[NCENT];
+  double NSUCCESS_BIN[NCENT][NBins];
+
 
   for(int icent = 0; icent < NCENT; icent++){
 
@@ -157,15 +182,22 @@ void statUncertAssess(){
     sampleMean_Vn6Vn4[icent]    = 0.;
     sampleMean_Vn8Vn4[icent]    = 0.;
     sampleMean_Vn8Vn6[icent]    = 0.;
+    sampleMean_Vn46_Vn68[icent] = 0.;
 
-    NSUCCESS_VN2[icent]    = (double) NSPLIT;
-    NSUCCESS_VN4[icent]    = (double) NSPLIT;
-    NSUCCESS_VN6[icent]    = (double) NSPLIT;
-    NSUCCESS_VN8[icent]    = (double) NSPLIT;
-    NSUCCESS_G1E[icent]    = (double) NSPLIT;
-    NSUCCESS_VN6VN4[icent] = (double) NSPLIT;
-    NSUCCESS_VN8VN4[icent] = (double) NSPLIT;
-    NSUCCESS_VN8VN6[icent] = (double) NSPLIT;
+    NSUCCESS_VN2[icent]       = (double) NSPLIT;
+    NSUCCESS_VN4[icent]       = (double) NSPLIT;
+    NSUCCESS_VN6[icent]       = (double) NSPLIT;
+    NSUCCESS_VN8[icent]       = (double) NSPLIT;
+    NSUCCESS_G1E[icent]       = (double) NSPLIT;
+    NSUCCESS_VN6VN4[icent]    = (double) NSPLIT;
+    NSUCCESS_VN8VN4[icent]    = (double) NSPLIT;
+    NSUCCESS_VN8VN6[icent]    = (double) NSPLIT;
+    NSUCCESS_VN46_VN68[icent] = (double) NSPLIT;
+
+    for(int i = 0; i < NBins; i++){
+      sampleMean_Bin[icent][i] = 0.;
+      NSUCCESS_BIN[icent][i]   = (double) NSPLIT;
+    }
 
     for(int iS = 0; iS < NSPLIT; iS++){
 
@@ -203,18 +235,30 @@ void statUncertAssess(){
       if( vn8 == 0 || vn6 == 0 ) NSUCCESS_VN8VN6[icent]   -= 1;
       else                       sampleMean_Vn8Vn6[icent] += (vn8 / vn6);
 
+      if( vn4 == 0 || vn6 == 0 || vn8 == 0 ) NSUCCESS_VN46_VN68[icent]   -= 1;
+      else                                   sampleMean_Vn46_Vn68[icent] += (vn4 - vn6) / (vn6 - vn8);
 
+      for(int i = 0; i < NBins; i++){
+	double bc = hUnfold[icent][iS][iter]->GetBinContent(i+1);
+	if( bc == 0 ) NSUCCESS_BIN[icent][i]   -= 1;
+	else          sampleMean_Bin[icent][i] += bc;
+      }
 
     }
 
-    if( NSUCCESS_VN2[icent] > 0 )    sampleMean_Vn2[icent]       /= NSUCCESS_VN2[icent];
-    if( NSUCCESS_VN4[icent] > 0 )    sampleMean_Vn4[icent]       /= NSUCCESS_VN4[icent];
-    if( NSUCCESS_VN6[icent] > 0 )    sampleMean_Vn6[icent]       /= NSUCCESS_VN6[icent];
-    if( NSUCCESS_VN8[icent] > 0 )    sampleMean_Vn8[icent]       /= NSUCCESS_VN8[icent];
-    if( NSUCCESS_G1E[icent] > 0 )    sampleMean_Gamma1Exp[icent] /= NSUCCESS_G1E[icent];
-    if( NSUCCESS_VN6VN4[icent] > 0 ) sampleMean_Vn6Vn4[icent]    /= NSUCCESS_VN6VN4[icent];
-    if( NSUCCESS_VN8VN4[icent] > 0 ) sampleMean_Vn8Vn4[icent]    /= NSUCCESS_VN8VN4[icent];
-    if( NSUCCESS_VN8VN6[icent] > 0 ) sampleMean_Vn8Vn6[icent]    /= NSUCCESS_VN8VN6[icent];
+    if( NSUCCESS_VN2[icent] > 0 )       sampleMean_Vn2[icent]       /= NSUCCESS_VN2[icent];
+    if( NSUCCESS_VN4[icent] > 0 )       sampleMean_Vn4[icent]       /= NSUCCESS_VN4[icent];
+    if( NSUCCESS_VN6[icent] > 0 )       sampleMean_Vn6[icent]       /= NSUCCESS_VN6[icent];
+    if( NSUCCESS_VN8[icent] > 0 )       sampleMean_Vn8[icent]       /= NSUCCESS_VN8[icent];
+    if( NSUCCESS_G1E[icent] > 0 )       sampleMean_Gamma1Exp[icent] /= NSUCCESS_G1E[icent];
+    if( NSUCCESS_VN6VN4[icent] > 0 )    sampleMean_Vn6Vn4[icent]    /= NSUCCESS_VN6VN4[icent];
+    if( NSUCCESS_VN8VN4[icent] > 0 )    sampleMean_Vn8Vn4[icent]    /= NSUCCESS_VN8VN4[icent];
+    if( NSUCCESS_VN8VN6[icent] > 0 )    sampleMean_Vn8Vn6[icent]    /= NSUCCESS_VN8VN6[icent];
+    if( NSUCCESS_VN46_VN68[icent] > 0 ) sampleMean_Vn46_Vn68[icent] /= NSUCCESS_VN46_VN68[icent];
+
+    for(int i = 0; i < NBins; i++){
+      if( NSUCCESS_BIN[icent][i] > 0 ) sampleMean_Bin[icent][i] /= NSUCCESS_BIN[icent][i];
+    }
 
   }
 
@@ -227,6 +271,8 @@ void statUncertAssess(){
   double sampleVariance_Vn6Vn4[NCENT];
   double sampleVariance_Vn8Vn4[NCENT];
   double sampleVariance_Vn8Vn6[NCENT];
+  double sampleVariance_Vn46_Vn68[NCENT];
+  double sampleVariance_Bin[NCENT][NBins];
 
   double varianceOfMean_Vn2[NCENT];
   double varianceOfMean_Vn4[NCENT];
@@ -236,6 +282,8 @@ void statUncertAssess(){
   double varianceOfMean_Vn6Vn4[NCENT];
   double varianceOfMean_Vn8Vn4[NCENT];
   double varianceOfMean_Vn8Vn6[NCENT];
+  double varianceOfMean_Vn46_Vn68[NCENT];
+  double varianceOfMean_Bin[NCENT][NBins];
 
   for(int icent = 0; icent < NCENT; icent++){
 
@@ -247,6 +295,9 @@ void statUncertAssess(){
     sampleVariance_Vn6Vn4[icent]    = 0.;
     sampleVariance_Vn8Vn4[icent]    = 0.;
     sampleVariance_Vn8Vn6[icent]    = 0.;
+    sampleVariance_Vn46_Vn68[icent] = 0.;
+
+    for(int i = 0; i < NBins; i++) sampleVariance_Bin[icent][i] = 0.;
 
     for(int iS = 0; iS < NSPLIT; iS++){
 
@@ -258,33 +309,43 @@ void statUncertAssess(){
       double vn8       = cumu.GetCumu_vn8();
       double gamma1exp = cumu.GetGamma1Exp();
 
-      if( vn2 != 0 )             sampleVariance_Vn2[icent]       += pow( vn2 - sampleMean_Vn2[icent], 2);
-      if( vn4 != 0 )             sampleVariance_Vn4[icent]       += pow( vn4 - sampleMean_Vn4[icent], 2);
-      if( vn6 != 0 )             sampleVariance_Vn6[icent]       += pow( vn6 - sampleMean_Vn6[icent], 2);
-      if( vn8 != 0 )             sampleVariance_Vn8[icent]       += pow( vn8 - sampleMean_Vn8[icent], 2);
-      if( gamma1exp != 0 )       sampleVariance_Gamma1Exp[icent] += pow(gamma1exp - sampleMean_Gamma1Exp[icent], 2);
-      if( vn6 != 0 && vn4 != 0 ) sampleVariance_Vn6Vn4[icent]    += pow( (vn6/vn4) - sampleMean_Vn6Vn4[icent], 2);
-      if( vn8 != 0 && vn4 != 0 ) sampleVariance_Vn8Vn4[icent]    += pow( (vn8/vn4) - sampleMean_Vn8Vn4[icent], 2);
-      if( vn8 != 0 && vn6 != 0 ) sampleVariance_Vn8Vn6[icent]    += pow( (vn8/vn6) - sampleMean_Vn8Vn6[icent], 2);
+      if( vn2 != 0 )                        sampleVariance_Vn2[icent]       += pow( vn2 - sampleMean_Vn2[icent], 2);
+      if( vn4 != 0 )                        sampleVariance_Vn4[icent]       += pow( vn4 - sampleMean_Vn4[icent], 2);
+      if( vn6 != 0 )                        sampleVariance_Vn6[icent]       += pow( vn6 - sampleMean_Vn6[icent], 2);
+      if( vn8 != 0 )                        sampleVariance_Vn8[icent]       += pow( vn8 - sampleMean_Vn8[icent], 2);
+      if( gamma1exp != 0 )                  sampleVariance_Gamma1Exp[icent] += pow(gamma1exp - sampleMean_Gamma1Exp[icent], 2);
+      if( vn6 != 0 && vn4 != 0 )            sampleVariance_Vn6Vn4[icent]    += pow( (vn6/vn4) - sampleMean_Vn6Vn4[icent], 2);
+      if( vn8 != 0 && vn4 != 0 )            sampleVariance_Vn8Vn4[icent]    += pow( (vn8/vn4) - sampleMean_Vn8Vn4[icent], 2);
+      if( vn8 != 0 && vn6 != 0 )            sampleVariance_Vn8Vn6[icent]    += pow( (vn8/vn6) - sampleMean_Vn8Vn6[icent], 2);
+      if( vn4 != 0 && vn6 != 0 && vn8 != 0) sampleVariance_Vn46_Vn68[icent]    += pow( (vn4-vn6)/(vn6-vn8) - sampleMean_Vn46_Vn68[icent], 2);
+
+      for(int i = 0; i < NBins; i++){
+	double bc = hUnfold[icent][iS][iter]->GetBinContent(i+1);
+	sampleVariance_Bin[icent][i] += pow( bc - sampleMean_Bin[icent][i], 2);
+      }
+
     }
 
-    if( NSUCCESS_VN2[icent] > 1 )    sampleVariance_Vn2[icent]       /= (NSUCCESS_VN2[icent]-1);
-    if( NSUCCESS_VN4[icent] > 1 )    sampleVariance_Vn4[icent]       /= (NSUCCESS_VN4[icent]-1);
-    if( NSUCCESS_VN6[icent] > 1 )    sampleVariance_Vn6[icent]       /= (NSUCCESS_VN6[icent]-1);
-    if( NSUCCESS_VN8[icent] > 1 )    sampleVariance_Vn8[icent]       /= (NSUCCESS_VN8[icent]-1);
-    if( NSUCCESS_G1E[icent] > 1 )    sampleVariance_Gamma1Exp[icent] /= (NSUCCESS_G1E[icent]-1);
-    if( NSUCCESS_VN6VN4[icent] > 1 ) sampleVariance_Vn6Vn4[icent]    /= (NSUCCESS_VN6VN4[icent]-1);
-    if( NSUCCESS_VN8VN4[icent] > 1 ) sampleVariance_Vn8Vn4[icent]    /= (NSUCCESS_VN8VN4[icent]-1);
-    if( NSUCCESS_VN8VN6[icent] > 1 ) sampleVariance_Vn8Vn6[icent]    /= (NSUCCESS_VN8VN6[icent]-1);
+    if( NSUCCESS_VN2[icent] > 1 )       sampleVariance_Vn2[icent]       /= (NSUCCESS_VN2[icent]-1);
+    if( NSUCCESS_VN4[icent] > 1 )       sampleVariance_Vn4[icent]       /= (NSUCCESS_VN4[icent]-1);
+    if( NSUCCESS_VN6[icent] > 1 )       sampleVariance_Vn6[icent]       /= (NSUCCESS_VN6[icent]-1);
+    if( NSUCCESS_VN8[icent] > 1 )       sampleVariance_Vn8[icent]       /= (NSUCCESS_VN8[icent]-1);
+    if( NSUCCESS_G1E[icent] > 1 )       sampleVariance_Gamma1Exp[icent] /= (NSUCCESS_G1E[icent]-1);
+    if( NSUCCESS_VN6VN4[icent] > 1 )    sampleVariance_Vn6Vn4[icent]    /= (NSUCCESS_VN6VN4[icent]-1);
+    if( NSUCCESS_VN8VN4[icent] > 1 )    sampleVariance_Vn8Vn4[icent]    /= (NSUCCESS_VN8VN4[icent]-1);
+    if( NSUCCESS_VN8VN6[icent] > 1 )    sampleVariance_Vn8Vn6[icent]    /= (NSUCCESS_VN8VN6[icent]-1);
+    if( NSUCCESS_VN46_VN68[icent] > 1 ) sampleVariance_Vn46_Vn68[icent] /= (NSUCCESS_VN46_VN68[icent]-1);
 
-    if( NSUCCESS_VN2[icent] > 0 )    varianceOfMean_Vn2[icent]       = sampleVariance_Vn2[icent] / NSUCCESS_VN2[icent];
-    if( NSUCCESS_VN4[icent] > 0 )    varianceOfMean_Vn4[icent]       = sampleVariance_Vn4[icent] / NSUCCESS_VN4[icent];
-    if( NSUCCESS_VN6[icent] > 0 )    varianceOfMean_Vn6[icent]       = sampleVariance_Vn6[icent] / NSUCCESS_VN6[icent];
-    if( NSUCCESS_VN8[icent] > 0 )    varianceOfMean_Vn8[icent]       = sampleVariance_Vn8[icent] / NSUCCESS_VN8[icent];
-    if( NSUCCESS_G1E[icent] > 0 )    varianceOfMean_Gamma1Exp[icent] = sampleVariance_Gamma1Exp[icent] / NSUCCESS_G1E[icent];
-    if( NSUCCESS_VN6VN4[icent] > 0 ) varianceOfMean_Vn6Vn4[icent]    = sampleVariance_Vn6Vn4[icent] / NSUCCESS_VN6VN4[icent];
-    if( NSUCCESS_VN8VN4[icent] > 0 ) varianceOfMean_Vn8Vn4[icent]    = sampleVariance_Vn8Vn4[icent] / NSUCCESS_VN8VN4[icent];
-    if( NSUCCESS_VN8VN6[icent] > 0 ) varianceOfMean_Vn8Vn6[icent]    = sampleVariance_Vn8Vn6[icent] / NSUCCESS_VN8VN6[icent];
+    if( NSUCCESS_VN2[icent] > 0 )       varianceOfMean_Vn2[icent]       = sampleVariance_Vn2[icent] / NSUCCESS_VN2[icent];
+    if( NSUCCESS_VN4[icent] > 0 )       varianceOfMean_Vn4[icent]       = sampleVariance_Vn4[icent] / NSUCCESS_VN4[icent];
+    if( NSUCCESS_VN6[icent] > 0 )       varianceOfMean_Vn6[icent]       = sampleVariance_Vn6[icent] / NSUCCESS_VN6[icent];
+    if( NSUCCESS_VN8[icent] > 0 )       varianceOfMean_Vn8[icent]       = sampleVariance_Vn8[icent] / NSUCCESS_VN8[icent];
+    if( NSUCCESS_G1E[icent] > 0 )       varianceOfMean_Gamma1Exp[icent] = sampleVariance_Gamma1Exp[icent] / NSUCCESS_G1E[icent];
+    if( NSUCCESS_VN6VN4[icent] > 0 )    varianceOfMean_Vn6Vn4[icent]    = sampleVariance_Vn6Vn4[icent] / NSUCCESS_VN6VN4[icent];
+    if( NSUCCESS_VN8VN4[icent] > 0 )    varianceOfMean_Vn8Vn4[icent]    = sampleVariance_Vn8Vn4[icent] / NSUCCESS_VN8VN4[icent];
+    if( NSUCCESS_VN8VN6[icent] > 0 )    varianceOfMean_Vn8Vn6[icent]    = sampleVariance_Vn8Vn6[icent] / NSUCCESS_VN8VN6[icent];
+    if( NSUCCESS_VN46_VN68[icent] > 0 ) varianceOfMean_Vn46_Vn68[icent] = sampleVariance_Vn46_Vn68[icent] / NSUCCESS_VN46_VN68[icent];
+
 
     hVarianceOfMean_Vn2->SetBinContent(icent+1, varianceOfMean_Vn2[icent]);
     hVarianceOfMean_Vn4->SetBinContent(icent+1, varianceOfMean_Vn4[icent]);
@@ -294,6 +355,13 @@ void statUncertAssess(){
     hVarianceOfMean_Vn6Vn4->SetBinContent(icent+1, varianceOfMean_Vn6Vn4[icent]);
     hVarianceOfMean_Vn8Vn4->SetBinContent(icent+1, varianceOfMean_Vn8Vn4[icent]);
     hVarianceOfMean_Vn8Vn6->SetBinContent(icent+1, varianceOfMean_Vn8Vn6[icent]);
+    hVarianceOfMean_Vn46_Vn68->SetBinContent(icent+1, varianceOfMean_Vn46_Vn68[icent]);
+
+    for(int i = 0; i < NBins; i++){
+      if( NSUCCESS_BIN[icent][i] > 1 ) sampleVariance_Bin[icent][i] /= (NSUCCESS_BIN[icent][i]-1);
+      if( NSUCCESS_BIN[icent][i] > 0 ) varianceOfMean_Bin[icent][i] = sampleVariance_Bin[icent][i] / NSUCCESS_BIN[icent][i];
+      hVarianceOfMean_Bin[icent]->SetBinContent(i+1, varianceOfMean_Bin[icent][i]);
+    }
 
   }
 
@@ -313,6 +381,8 @@ void statUncertAssess(){
   for(int icent = 0; icent < NCENT; icent++) std::cout << Form("Cent Bin = %i", icent) << "\t<Vn8 / Vn4> = " << sampleMean_Vn8Vn4[icent] << " +/- " << sqrt( varianceOfMean_Vn8Vn4[icent] ) << std::endl;
   std::cout << "\n\n" << std::endl;
   for(int icent = 0; icent < NCENT; icent++) std::cout << Form("Cent Bin = %i", icent) << "\t<Vn8 / Vn6> = " << sampleMean_Vn8Vn6[icent] << " +/- " << sqrt( varianceOfMean_Vn8Vn6[icent] ) << std::endl;
+  std::cout << "\n\n" << std::endl;
+  for(int icent = 0; icent < NCENT; icent++) std::cout << Form("Cent Bin = %i", icent) << "\t<(Vn4-Vn6)/(Vn6-Vn8)> = " << sampleMean_Vn46_Vn68[icent] << " +/- " << sqrt( varianceOfMean_Vn46_Vn68[icent] ) << std::endl;
 
   fOut->Write();
 

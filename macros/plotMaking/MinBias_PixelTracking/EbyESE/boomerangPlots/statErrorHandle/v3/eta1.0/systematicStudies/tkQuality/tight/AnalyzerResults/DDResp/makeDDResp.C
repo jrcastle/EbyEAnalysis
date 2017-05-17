@@ -10,10 +10,10 @@
 
 using namespace ebyese;
 
-void makeDDResp(){
+void makeDDResp(int n = 2){
 
   bool vnObsPrior   = 1;
-  const int norder_ = 3;
+  const int norder_ = n;
 
   TFile * fAna[NSPLIT];
   TH1D * hVnObs[NCENT][NSPLIT];

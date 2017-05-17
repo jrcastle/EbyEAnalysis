@@ -20,9 +20,9 @@
 using namespace hi;
 using namespace ebyese;
 
-void statChi2Cutoff(){
+void statChi2Cutoff(int n = 2){
 
-  int norder_ = 3;
+  int norder_ = n;
 
   //-- Analyzer Output
   TFile * fAna[NSPLIT];
@@ -46,6 +46,7 @@ void statChi2Cutoff(){
   TH1D * hVarianceOfMean_Vn6Vn4[NCHI2];
   TH1D * hVarianceOfMean_Vn8Vn4[NCHI2];
   TH1D * hVarianceOfMean_Vn8Vn6[NCHI2];
+  TH1D * hVarianceOfMean_Vn46_Vn68[NCHI2];
 
   //
   // MAIN
@@ -92,6 +93,10 @@ void statChi2Cutoff(){
     hVarianceOfMean_Vn8Vn6[ichi]->GetXaxis()->SetTitle("Centrality %");
     hVarianceOfMean_Vn8Vn6[ichi]->GetXaxis()->SetTitle("#sigma^{2}");
 
+    hVarianceOfMean_Vn46_Vn68[ichi]    = new TH1D( Form("hVarianceOfMean_Vn46_Vn68_chi2Cut%.1f", chi2Cutoff[ichi]),    Form("hVarianceOfMean_Vn46_Vn68_chi2Cut%.1f", chi2Cutoff[ichi]),    NCENT, centbinsDefault);
+    hVarianceOfMean_Vn46_Vn68[ichi]->GetXaxis()->SetTitle("Centrality %");
+    hVarianceOfMean_Vn46_Vn68[ichi]->GetXaxis()->SetTitle("#sigma^{2}");
+
   }
 
   for(int iS = 0; iS < NSPLIT; iS++){
@@ -116,8 +121,9 @@ void statChi2Cutoff(){
 	hUnfold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hreco%i_c%i",   iter[i], icent) );
 	hRefold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hrefold%i_c%i", iter[i], icent) );
 
+	if( !hObs[icent][iS] || !hUnfold[icent][iS][i] || hRefold[icent][iS][i] ) break;
 
-	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "CHI2/NDF");
+	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "UWCHI2/NDF");
 
 	//-- loop over the scenarios and choose the iteration for each
 	for(int ichi = 0; ichi < NCHI2; ichi++){
@@ -137,6 +143,13 @@ void statChi2Cutoff(){
     } //-- End cent loop
   } //-- End split loop
 
+  if( !hObs[0][0] ||!hUnfold[0][0][0] || hRefold[0][0][0] ){
+    std::cout << "WARNING! Unfolding procedure not run!\n"
+              << "Please run the unfolding procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   //-- Now that we have the distributions, let's figure out the scatter on the reported quantities
 
@@ -150,6 +163,7 @@ void statChi2Cutoff(){
   double sampleMean_Vn6Vn4[NCHI2][NCENT];
   double sampleMean_Vn8Vn4[NCHI2][NCENT];
   double sampleMean_Vn8Vn6[NCHI2][NCENT];
+  double sampleMean_Vn46_Vn68[NCHI2][NCENT];
 
   double NSUCCESS_VN2[NCHI2][NCENT];
   double NSUCCESS_VN4[NCHI2][NCENT];
@@ -159,27 +173,30 @@ void statChi2Cutoff(){
   double NSUCCESS_VN6VN4[NCHI2][NCENT];
   double NSUCCESS_VN8VN4[NCHI2][NCENT];
   double NSUCCESS_VN8VN6[NCHI2][NCENT];
+  double NSUCCESS_VN46_VN68[NCHI2][NCENT];
 
   for(int icent = 0; icent < NCENT; icent++){
     for(int ichi = 0; ichi < NCHI2; ichi++){
 
-      sampleMean_Vn2[ichi][icent]       = 0.;
-      sampleMean_Vn4[ichi][icent]       = 0.;
-      sampleMean_Vn6[ichi][icent]       = 0.;
-      sampleMean_Vn8[ichi][icent]       = 0.;
-      sampleMean_Gamma1Exp[ichi][icent] = 0.;
-      sampleMean_Vn6Vn4[ichi][icent]    = 0.;
-      sampleMean_Vn8Vn4[ichi][icent]    = 0.;
-      sampleMean_Vn8Vn6[ichi][icent]    = 0.;
+      sampleMean_Vn2[ichi][icent]          = 0.;
+      sampleMean_Vn4[ichi][icent]          = 0.;
+      sampleMean_Vn6[ichi][icent]          = 0.;
+      sampleMean_Vn8[ichi][icent]          = 0.;
+      sampleMean_Gamma1Exp[ichi][icent]    = 0.;
+      sampleMean_Vn6Vn4[ichi][icent]       = 0.;
+      sampleMean_Vn8Vn4[ichi][icent]       = 0.;
+      sampleMean_Vn8Vn6[ichi][icent]       = 0.;
+      sampleMean_Vn46_Vn68[ichi][icent]    = 0.;
 
-      NSUCCESS_VN2[ichi][icent]    = (double) NSPLIT;
-      NSUCCESS_VN4[ichi][icent]    = (double) NSPLIT;
-      NSUCCESS_VN6[ichi][icent]    = (double) NSPLIT;
-      NSUCCESS_VN8[ichi][icent]    = (double) NSPLIT;
-      NSUCCESS_G1E[ichi][icent]    = (double) NSPLIT;
-      NSUCCESS_VN6VN4[ichi][icent] = (double) NSPLIT;
-      NSUCCESS_VN8VN4[ichi][icent] = (double) NSPLIT;
-      NSUCCESS_VN8VN6[ichi][icent] = (double) NSPLIT;
+      NSUCCESS_VN2[ichi][icent]       = (double) NSPLIT;
+      NSUCCESS_VN4[ichi][icent]       = (double) NSPLIT;
+      NSUCCESS_VN6[ichi][icent]       = (double) NSPLIT;
+      NSUCCESS_VN8[ichi][icent]       = (double) NSPLIT;
+      NSUCCESS_G1E[ichi][icent]       = (double) NSPLIT;
+      NSUCCESS_VN6VN4[ichi][icent]    = (double) NSPLIT;
+      NSUCCESS_VN8VN4[ichi][icent]    = (double) NSPLIT;
+      NSUCCESS_VN8VN6[ichi][icent]    = (double) NSPLIT;
+      NSUCCESS_VN46_VN68[ichi][icent] = (double) NSPLIT;
 
       for(int iS = 0; iS < NSPLIT; iS++){
 
@@ -217,18 +234,20 @@ void statChi2Cutoff(){
 	if( vn8 == 0 || vn6 == 0 ) NSUCCESS_VN8VN6[ichi][icent]   -= 1;
 	else                       sampleMean_Vn8Vn6[ichi][icent] += (vn8 / vn6);
 
-
+	if( vn4 == 0 || vn6 == 0 || vn8 == 0) NSUCCESS_VN46_VN68[ichi][icent]   -= 1;
+        else                                  sampleMean_Vn46_Vn68[ichi][icent] += (vn4 - vn6) / (vn6 - vn8);
 
       }
 
-      if( NSUCCESS_VN2[ichi][icent] > 0 )    sampleMean_Vn2[ichi][icent]       /= NSUCCESS_VN2[ichi][icent];
-      if( NSUCCESS_VN4[ichi][icent] > 0 )    sampleMean_Vn4[ichi][icent]       /= NSUCCESS_VN4[ichi][icent];
-      if( NSUCCESS_VN6[ichi][icent] > 0 )    sampleMean_Vn6[ichi][icent]       /= NSUCCESS_VN6[ichi][icent];
-      if( NSUCCESS_VN8[ichi][icent] > 0 )    sampleMean_Vn8[ichi][icent]       /= NSUCCESS_VN8[ichi][icent];
-      if( NSUCCESS_G1E[ichi][icent] > 0 )    sampleMean_Gamma1Exp[ichi][icent] /= NSUCCESS_G1E[ichi][icent];
-      if( NSUCCESS_VN6VN4[ichi][icent] > 0 ) sampleMean_Vn6Vn4[ichi][icent]    /= NSUCCESS_VN6VN4[ichi][icent];
-      if( NSUCCESS_VN8VN4[ichi][icent] > 0 ) sampleMean_Vn8Vn4[ichi][icent]    /= NSUCCESS_VN8VN4[ichi][icent];
-      if( NSUCCESS_VN8VN6[ichi][icent] > 0 ) sampleMean_Vn8Vn6[ichi][icent]    /= NSUCCESS_VN8VN6[ichi][icent];
+      if( NSUCCESS_VN2[ichi][icent] > 0 )       sampleMean_Vn2[ichi][icent]       /= NSUCCESS_VN2[ichi][icent];
+      if( NSUCCESS_VN4[ichi][icent] > 0 )       sampleMean_Vn4[ichi][icent]       /= NSUCCESS_VN4[ichi][icent];
+      if( NSUCCESS_VN6[ichi][icent] > 0 )       sampleMean_Vn6[ichi][icent]       /= NSUCCESS_VN6[ichi][icent];
+      if( NSUCCESS_VN8[ichi][icent] > 0 )       sampleMean_Vn8[ichi][icent]       /= NSUCCESS_VN8[ichi][icent];
+      if( NSUCCESS_G1E[ichi][icent] > 0 )       sampleMean_Gamma1Exp[ichi][icent] /= NSUCCESS_G1E[ichi][icent];
+      if( NSUCCESS_VN6VN4[ichi][icent] > 0 )    sampleMean_Vn6Vn4[ichi][icent]    /= NSUCCESS_VN6VN4[ichi][icent];
+      if( NSUCCESS_VN8VN4[ichi][icent] > 0 )    sampleMean_Vn8Vn4[ichi][icent]    /= NSUCCESS_VN8VN4[ichi][icent];
+      if( NSUCCESS_VN8VN6[ichi][icent] > 0 )    sampleMean_Vn8Vn6[ichi][icent]    /= NSUCCESS_VN8VN6[ichi][icent];
+      if( NSUCCESS_VN46_VN68[ichi][icent] > 0 ) sampleMean_Vn46_Vn68[ichi][icent] /= NSUCCESS_VN46_VN68[ichi][icent];
 
     }
   }
@@ -242,6 +261,7 @@ void statChi2Cutoff(){
   double sampleVariance_Vn6Vn4[NCHI2][NCENT];
   double sampleVariance_Vn8Vn4[NCHI2][NCENT];
   double sampleVariance_Vn8Vn6[NCHI2][NCENT];
+  double sampleVariance_Vn46_Vn68[NCHI2][NCENT];
 
   double varianceOfMean_Vn2[NCHI2][NCENT];
   double varianceOfMean_Vn4[NCHI2][NCENT];
@@ -251,6 +271,7 @@ void statChi2Cutoff(){
   double varianceOfMean_Vn6Vn4[NCHI2][NCENT];
   double varianceOfMean_Vn8Vn4[NCHI2][NCENT];
   double varianceOfMean_Vn8Vn6[NCHI2][NCENT];
+  double varianceOfMean_Vn46_Vn68[NCHI2][NCENT];
 
   for(int icent = 0; icent < NCENT; icent++){
     for(int ichi = 0; ichi < NCHI2; ichi++){
@@ -263,15 +284,7 @@ void statChi2Cutoff(){
       sampleVariance_Vn6Vn4[ichi][icent]    = 0.;
       sampleVariance_Vn8Vn4[ichi][icent]    = 0.;
       sampleVariance_Vn8Vn6[ichi][icent]    = 0.;
-
-      varianceOfMean_Vn2[ichi][icent]       = 0.;
-      varianceOfMean_Vn4[ichi][icent]       = 0.;
-      varianceOfMean_Vn6[ichi][icent]       = 0.;
-      varianceOfMean_Vn8[ichi][icent]       = 0.;
-      varianceOfMean_Gamma1Exp[ichi][icent] = 0.;
-      varianceOfMean_Vn6Vn4[ichi][icent]    = 0.;
-      varianceOfMean_Vn8Vn4[ichi][icent]    = 0.;
-      varianceOfMean_Vn8Vn6[ichi][icent]    = 0.;
+      sampleVariance_Vn46_Vn68[ichi][icent]    = 0.;
 
       for(int iS = 0; iS < NSPLIT; iS++){
 
@@ -283,33 +296,36 @@ void statChi2Cutoff(){
 	double vn8       = cumu.GetCumu_vn8();
 	double gamma1exp = cumu.GetGamma1Exp();
 
-	if( vn2 != 0 )             sampleVariance_Vn2[ichi][icent]       += pow( vn2 - sampleMean_Vn2[ichi][icent], 2);
-	if( vn4 != 0 )             sampleVariance_Vn4[ichi][icent]       += pow( vn4 - sampleMean_Vn4[ichi][icent], 2);
-	if( vn6 != 0 )             sampleVariance_Vn6[ichi][icent]       += pow( vn6 - sampleMean_Vn6[ichi][icent], 2);
-	if( vn8 != 0 )             sampleVariance_Vn8[ichi][icent]       += pow( vn8 - sampleMean_Vn8[ichi][icent], 2);
-	if( gamma1exp != 0 )       sampleVariance_Gamma1Exp[ichi][icent] += pow(gamma1exp - sampleMean_Gamma1Exp[ichi][icent], 2);
-	if( vn6 != 0 && vn4 != 0 ) sampleVariance_Vn6Vn4[ichi][icent]    += pow( (vn6/vn4) - sampleMean_Vn6Vn4[ichi][icent], 2);
-	if( vn8 != 0 && vn4 != 0 ) sampleVariance_Vn8Vn4[ichi][icent]    += pow( (vn8/vn4) - sampleMean_Vn8Vn4[ichi][icent], 2);
-	if( vn8 != 0 && vn6 != 0 ) sampleVariance_Vn8Vn6[ichi][icent]    += pow( (vn8/vn6) - sampleMean_Vn8Vn6[ichi][icent], 2);
+	if( vn2 != 0 )                         sampleVariance_Vn2[ichi][icent]       += pow( vn2 - sampleMean_Vn2[ichi][icent], 2);
+	if( vn4 != 0 )                         sampleVariance_Vn4[ichi][icent]       += pow( vn4 - sampleMean_Vn4[ichi][icent], 2);
+	if( vn6 != 0 )                         sampleVariance_Vn6[ichi][icent]       += pow( vn6 - sampleMean_Vn6[ichi][icent], 2);
+	if( vn8 != 0 )                         sampleVariance_Vn8[ichi][icent]       += pow( vn8 - sampleMean_Vn8[ichi][icent], 2);
+	if( gamma1exp != 0 )                   sampleVariance_Gamma1Exp[ichi][icent] += pow(gamma1exp - sampleMean_Gamma1Exp[ichi][icent], 2);
+	if( vn6 != 0 && vn4 != 0 )             sampleVariance_Vn6Vn4[ichi][icent]    += pow( (vn6/vn4) - sampleMean_Vn6Vn4[ichi][icent], 2);
+	if( vn8 != 0 && vn4 != 0 )             sampleVariance_Vn8Vn4[ichi][icent]    += pow( (vn8/vn4) - sampleMean_Vn8Vn4[ichi][icent], 2);
+	if( vn8 != 0 && vn6 != 0 )             sampleVariance_Vn8Vn6[ichi][icent]    += pow( (vn8/vn6) - sampleMean_Vn8Vn6[ichi][icent], 2);
+	if( vn4 != 0 && vn6 != 0 && vn8 != 0 ) sampleVariance_Vn46_Vn68[ichi][icent] += pow( (vn4-vn6)/(vn6-vn8) - sampleMean_Vn46_Vn68[ichi][icent], 2);
     }
 
-      if( NSUCCESS_VN2[ichi][icent] > 1 )    sampleVariance_Vn2[ichi][icent]       /= (NSUCCESS_VN2[ichi][icent]-1);
-      if( NSUCCESS_VN4[ichi][icent] > 1 )    sampleVariance_Vn4[ichi][icent]       /= (NSUCCESS_VN4[ichi][icent]-1);
-      if( NSUCCESS_VN6[ichi][icent] > 1 )    sampleVariance_Vn6[ichi][icent]       /= (NSUCCESS_VN6[ichi][icent]-1);
-      if( NSUCCESS_VN8[ichi][icent] > 1 )    sampleVariance_Vn8[ichi][icent]       /= (NSUCCESS_VN8[ichi][icent]-1);
-      if( NSUCCESS_G1E[ichi][icent] > 1 )    sampleVariance_Gamma1Exp[ichi][icent] /= (NSUCCESS_G1E[ichi][icent]-1);
-      if( NSUCCESS_VN6VN4[ichi][icent] > 1 ) sampleVariance_Vn6Vn4[ichi][icent]    /= (NSUCCESS_VN6VN4[ichi][icent]-1);
-      if( NSUCCESS_VN8VN4[ichi][icent] > 1 ) sampleVariance_Vn8Vn4[ichi][icent]    /= (NSUCCESS_VN8VN4[ichi][icent]-1);
-      if( NSUCCESS_VN8VN6[ichi][icent] > 1 ) sampleVariance_Vn8Vn6[ichi][icent]    /= (NSUCCESS_VN8VN6[ichi][icent]-1);
+      if( NSUCCESS_VN2[ichi][icent] > 1 )       sampleVariance_Vn2[ichi][icent]       /= (NSUCCESS_VN2[ichi][icent]-1);
+      if( NSUCCESS_VN4[ichi][icent] > 1 )       sampleVariance_Vn4[ichi][icent]       /= (NSUCCESS_VN4[ichi][icent]-1);
+      if( NSUCCESS_VN6[ichi][icent] > 1 )       sampleVariance_Vn6[ichi][icent]       /= (NSUCCESS_VN6[ichi][icent]-1);
+      if( NSUCCESS_VN8[ichi][icent] > 1 )       sampleVariance_Vn8[ichi][icent]       /= (NSUCCESS_VN8[ichi][icent]-1);
+      if( NSUCCESS_G1E[ichi][icent] > 1 )       sampleVariance_Gamma1Exp[ichi][icent] /= (NSUCCESS_G1E[ichi][icent]-1);
+      if( NSUCCESS_VN6VN4[ichi][icent] > 1 )    sampleVariance_Vn6Vn4[ichi][icent]    /= (NSUCCESS_VN6VN4[ichi][icent]-1);
+      if( NSUCCESS_VN8VN4[ichi][icent] > 1 )    sampleVariance_Vn8Vn4[ichi][icent]    /= (NSUCCESS_VN8VN4[ichi][icent]-1);
+      if( NSUCCESS_VN8VN6[ichi][icent] > 1 )    sampleVariance_Vn8Vn6[ichi][icent]    /= (NSUCCESS_VN8VN6[ichi][icent]-1);
+      if( NSUCCESS_VN46_VN68[ichi][icent] > 1 ) sampleVariance_Vn46_Vn68[ichi][icent] /= (NSUCCESS_VN46_VN68[ichi][icent]-1);
 
-      if( NSUCCESS_VN2[ichi][icent] > 0 )    varianceOfMean_Vn2[ichi][icent]       = sampleVariance_Vn2[ichi][icent] / NSUCCESS_VN2[ichi][icent];
-      if( NSUCCESS_VN4[ichi][icent] > 0 )    varianceOfMean_Vn4[ichi][icent]       = sampleVariance_Vn4[ichi][icent] / NSUCCESS_VN4[ichi][icent];
-      if( NSUCCESS_VN6[ichi][icent] > 0 )    varianceOfMean_Vn6[ichi][icent]       = sampleVariance_Vn6[ichi][icent] / NSUCCESS_VN6[ichi][icent];
-      if( NSUCCESS_VN8[ichi][icent] > 0 )    varianceOfMean_Vn8[ichi][icent]       = sampleVariance_Vn8[ichi][icent] / NSUCCESS_VN8[ichi][icent];
-      if( NSUCCESS_G1E[ichi][icent] > 0 )    varianceOfMean_Gamma1Exp[ichi][icent] = sampleVariance_Gamma1Exp[ichi][icent] / NSUCCESS_G1E[ichi][icent];
-      if( NSUCCESS_VN6VN4[ichi][icent] > 0 ) varianceOfMean_Vn6Vn4[ichi][icent]    = sampleVariance_Vn6Vn4[ichi][icent] / NSUCCESS_VN6VN4[ichi][icent];
-      if( NSUCCESS_VN8VN4[ichi][icent] > 0 ) varianceOfMean_Vn8Vn4[ichi][icent]    = sampleVariance_Vn8Vn4[ichi][icent] / NSUCCESS_VN8VN4[ichi][icent];
-      if( NSUCCESS_VN8VN6[ichi][icent] > 0 ) varianceOfMean_Vn8Vn6[ichi][icent]    = sampleVariance_Vn8Vn6[ichi][icent] / NSUCCESS_VN8VN6[ichi][icent];
+      if( NSUCCESS_VN2[ichi][icent] > 0 )       varianceOfMean_Vn2[ichi][icent]       = sampleVariance_Vn2[ichi][icent] / NSUCCESS_VN2[ichi][icent];
+      if( NSUCCESS_VN4[ichi][icent] > 0 )       varianceOfMean_Vn4[ichi][icent]       = sampleVariance_Vn4[ichi][icent] / NSUCCESS_VN4[ichi][icent];
+      if( NSUCCESS_VN6[ichi][icent] > 0 )       varianceOfMean_Vn6[ichi][icent]       = sampleVariance_Vn6[ichi][icent] / NSUCCESS_VN6[ichi][icent];
+      if( NSUCCESS_VN8[ichi][icent] > 0 )       varianceOfMean_Vn8[ichi][icent]       = sampleVariance_Vn8[ichi][icent] / NSUCCESS_VN8[ichi][icent];
+      if( NSUCCESS_G1E[ichi][icent] > 0 )       varianceOfMean_Gamma1Exp[ichi][icent] = sampleVariance_Gamma1Exp[ichi][icent] / NSUCCESS_G1E[ichi][icent];
+      if( NSUCCESS_VN6VN4[ichi][icent] > 0 )    varianceOfMean_Vn6Vn4[ichi][icent]    = sampleVariance_Vn6Vn4[ichi][icent] / NSUCCESS_VN6VN4[ichi][icent];
+      if( NSUCCESS_VN8VN4[ichi][icent] > 0 )    varianceOfMean_Vn8Vn4[ichi][icent]    = sampleVariance_Vn8Vn4[ichi][icent] / NSUCCESS_VN8VN4[ichi][icent];
+      if( NSUCCESS_VN8VN6[ichi][icent] > 0 )    varianceOfMean_Vn8Vn6[ichi][icent]    = sampleVariance_Vn8Vn6[ichi][icent] / NSUCCESS_VN8VN6[ichi][icent];
+      if( NSUCCESS_VN46_VN68[ichi][icent] > 0 ) varianceOfMean_Vn46_Vn68[ichi][icent] = sampleVariance_Vn46_Vn68[ichi][icent] / NSUCCESS_VN46_VN68[ichi][icent];
 
       hVarianceOfMean_Vn2[ichi]->SetBinContent(icent+1, varianceOfMean_Vn2[ichi][icent]);
       hVarianceOfMean_Vn4[ichi]->SetBinContent(icent+1, varianceOfMean_Vn4[ichi][icent]);
@@ -319,6 +335,7 @@ void statChi2Cutoff(){
       hVarianceOfMean_Vn6Vn4[ichi]->SetBinContent(icent+1, varianceOfMean_Vn6Vn4[ichi][icent]);
       hVarianceOfMean_Vn8Vn4[ichi]->SetBinContent(icent+1, varianceOfMean_Vn8Vn4[ichi][icent]);
       hVarianceOfMean_Vn8Vn6[ichi]->SetBinContent(icent+1, varianceOfMean_Vn8Vn6[ichi][icent]);
+      hVarianceOfMean_Vn46_Vn68[ichi]->SetBinContent(icent+1, varianceOfMean_Vn46_Vn68[ichi][icent]);
 
     }
   }

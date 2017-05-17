@@ -1,4 +1,4 @@
-N="3"
+N="2"
 EBYESE="/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/plotMaking/MinBias_PixelTracking/EbyESE"
 
 cd $EBYESE/unfoldingv3

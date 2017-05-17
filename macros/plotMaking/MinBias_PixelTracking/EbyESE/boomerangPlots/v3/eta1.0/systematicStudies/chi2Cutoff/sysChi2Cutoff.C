@@ -19,15 +19,10 @@
 
 using namespace ebyese;
 
-void sysChi2Cutoff(){
+void sysChi2Cutoff(int n = 2, double e = 1.0){
 
-  int norder_     = 3;
-  double tkEta    = 1.0;
-
-  bool dosys     = 0;
-  bool gaussResp = 0;
-  bool studTResp = 0;
-  bool dataResp  = 1;
+  int norder_  = n;
+  double tkEta = e;
 
   double ratioGamma1ExpMin = 0.0;
   double ratioGamma1ExpMax = 0.5;
@@ -69,6 +64,7 @@ void sysChi2Cutoff(){
   TH1D * hVarianceOfMean_Vn6Vn4[NCHI2];
   TH1D * hVarianceOfMean_Vn8Vn4[NCHI2];
   TH1D * hVarianceOfMean_Vn8Vn6[NCHI2];
+  TH1D * hVarianceOfMean_Vn46_Vn68[NCHI2];
 
   //-- Cumu vs chi2 Cutoff
   double unfold_Vn2VSChi2Cut[NCENT][NCHI2];
@@ -79,6 +75,7 @@ void sysChi2Cutoff(){
   double unfold_Vn6Vn4VSChi2Cut[NCENT][NCHI2];
   double unfold_Vn8Vn4VSChi2Cut[NCENT][NCHI2];
   double unfold_Vn8Vn6VSChi2Cut[NCENT][NCHI2];
+  double unfold_Vn46_Vn68VSChi2Cut[NCENT][NCHI2];
 
   double unfold_Vn2VSChi2Cut_staterr[NCENT][NCHI2];
   double unfold_Vn4VSChi2Cut_staterr[NCENT][NCHI2];
@@ -88,6 +85,7 @@ void sysChi2Cutoff(){
   double unfold_Vn6Vn4VSChi2Cut_staterr[NCENT][NCHI2];
   double unfold_Vn8Vn4VSChi2Cut_staterr[NCENT][NCHI2];
   double unfold_Vn8Vn6VSChi2Cut_staterr[NCENT][NCHI2];
+  double unfold_Vn46_Vn68VSChi2Cut_staterr[NCENT][NCHI2];
 
   //-- Ratio to the Chi2=1 cutoff scenario
   double unfoldVn2_RatioToChi21[NCENT][NCHI2];
@@ -98,6 +96,7 @@ void sysChi2Cutoff(){
   double unfoldVn6Vn4_RatioToChi21[NCENT][NCHI2];
   double unfoldVn8Vn4_RatioToChi21[NCENT][NCHI2];
   double unfoldVn8Vn6_RatioToChi21[NCENT][NCHI2];
+  double unfoldVn46_Vn68_RatioToChi21[NCENT][NCHI2];
 
   double unfoldVn2_RatioToChi21_staterr[NCENT][NCHI2];
   double unfoldVn4_RatioToChi21_staterr[NCENT][NCHI2];
@@ -107,6 +106,7 @@ void sysChi2Cutoff(){
   double unfoldVn6Vn4_RatioToChi21_staterr[NCENT][NCHI2];
   double unfoldVn8Vn4_RatioToChi21_staterr[NCENT][NCHI2];
   double unfoldVn8Vn6_RatioToChi21_staterr[NCENT][NCHI2];
+  double unfoldVn46_Vn68_RatioToChi21_staterr[NCENT][NCHI2];
 
   bool iterCutoff[NCHI2];
 
@@ -119,6 +119,7 @@ void sysChi2Cutoff(){
   double ratioChi2_21_vn6vn4[NCENT];
   double ratioChi2_21_vn8vn4[NCENT];
   double ratioChi2_21_vn8vn6[NCENT];
+  double ratioChi2_21_vn46_vn68[NCENT];
 
   double ratioChi2_21_vn2_staterr[NCENT];
   double ratioChi2_21_vn4_staterr[NCENT];
@@ -128,6 +129,7 @@ void sysChi2Cutoff(){
   double ratioChi2_21_vn6vn4_staterr[NCENT];
   double ratioChi2_21_vn8vn4_staterr[NCENT];
   double ratioChi2_21_vn8vn6_staterr[NCENT];
+  double ratioChi2_21_vn46_vn68_staterr[NCENT];
 
   TGraphErrors * grRatioChi2_21_vn2;
   TGraphErrors * grRatioChi2_21_vn4;
@@ -137,6 +139,7 @@ void sysChi2Cutoff(){
   TGraphErrors * grRatioChi2_21_vn6vn4;
   TGraphErrors * grRatioChi2_21_vn8vn4;
   TGraphErrors * grRatioChi2_21_vn8vn6;
+  TGraphErrors * grRatioChi2_21_vn46_vn68;
 
   int finalIteration[NCENT][NCHI2];
 
@@ -150,32 +153,7 @@ void sysChi2Cutoff(){
 
   //-- Get the Analyzer output file
   fAna = new TFile( "../../AnalyzerResults/CastleEbyE.root" );
-
-  //-- Get the unfolding output file
-  bool R1 = dataResp && studTResp && gaussResp;
-  bool R2 = dataResp && studTResp;
-  bool R3 = dataResp && gaussResp;
-  bool R4 = studTResp && gaussResp;
-
-  if( R1 || R2 || R3 || R4){
-    std::cout<<"WARNING! More than one response function defined for unfolding.  Check the flags at the beginning of this macro and fix your mistake."<<std::endl;
-    std::cout<<"Exiting macro now...  Have a nice day!"<<std::endl;
-    exit(0);
-  }
-
-  fUnfold = 0;
-  if( gaussResp ){
-    if( !dosys ) fUnfold = new TFile( Form("../../UnfoldResults/gaussResp/data%i.root", norder_) );
-    else         fUnfold = new TFile( Form("../../UnfoldResults/gaussResp/data%i_dosys.root", norder_) );
-  }
-  if( studTResp ){
-    if( !dosys ) fUnfold = new TFile( Form("../../UnfoldResults/studTResp/data%i.root", norder_) );
-    else         fUnfold = new TFile( Form("../../UnfoldResults/studTResp/data%i_dosys.root", norder_) );
-  }
-  if( dataResp ){
-    if( !dosys ) fUnfold = new TFile( Form("../../UnfoldResults/dataResp/data%i.root", norder_) );
-    else         fUnfold = new TFile( Form("../../UnfoldResults/dataResp/data%i_dosys.root", norder_) );
-  }
+  fUnfold = new TFile( Form("../../UnfoldResults/dataResp/data%i.root", norder_) );
 
   //-- Grab the statistical errors
   fStat = new TFile( Form("../../../../statErrorHandle/v%i/eta%.1f/systematicStudies/chi2Cutoff/StatUncertChi2Cutoff_v%i.root", norder_, tkEta, norder_) );
@@ -188,6 +166,9 @@ void sysChi2Cutoff(){
     hVarianceOfMean_Vn6Vn4[ichi]    = (TH1D*) fStat->Get( Form("hVarianceOfMean_Vn6Vn4_chi2Cut%.1f", chi2Cutoff[ichi]) );
     hVarianceOfMean_Vn8Vn4[ichi]    = (TH1D*) fStat->Get( Form("hVarianceOfMean_Vn8Vn4_chi2Cut%.1f", chi2Cutoff[ichi]) );
     hVarianceOfMean_Vn8Vn6[ichi]    = (TH1D*) fStat->Get( Form("hVarianceOfMean_Vn8Vn6_chi2Cut%.1f", chi2Cutoff[ichi]) );
+    hVarianceOfMean_Vn46_Vn68[ichi] = (TH1D*) fStat->Get( Form("hVarianceOfMean_Vn46_Vn68_chi2Cut%.1f", chi2Cutoff[ichi]) );
+
+    if( !hVarianceOfMean_Vn2[ichi] ) break;
 
     for(int icent = 0; icent < NCENT; icent++){
       unfold_Vn2VSChi2Cut_staterr[icent][ichi]       = sqrt( hVarianceOfMean_Vn2[ichi]->GetBinContent(icent+1) );
@@ -198,7 +179,16 @@ void sysChi2Cutoff(){
       unfold_Vn6Vn4VSChi2Cut_staterr[icent][ichi]    = sqrt( hVarianceOfMean_Vn6Vn4[ichi]->GetBinContent(icent+1) );
       unfold_Vn8Vn4VSChi2Cut_staterr[icent][ichi]    = sqrt( hVarianceOfMean_Vn8Vn4[ichi]->GetBinContent(icent+1) );
       unfold_Vn8Vn6VSChi2Cut_staterr[icent][ichi]    = sqrt( hVarianceOfMean_Vn8Vn6[ichi]->GetBinContent(icent+1) );
+      unfold_Vn46_Vn68VSChi2Cut_staterr[icent][ichi] = sqrt( hVarianceOfMean_Vn46_Vn68[ichi]->GetBinContent(icent+1) );
     }
+  }
+
+  if( !hVarianceOfMean_Vn2[0] ) {
+    std::cout << "WARNING! Statistical resampling procedure not run!\n"
+              << "Please run the procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
   }
 
   //-- Start looping over the data...
@@ -206,6 +196,7 @@ void sysChi2Cutoff(){
 
     //-- Get the VN observed histogram
     hObs[icent] = (TH1D*) fAna->Get( Form("qwebye/hVnFull_c%i", icent) );
+    if( !hObs[icent] ) break;
     hObs[icent]->SetMaximum( 10.*hObs[icent]->GetMaximum() );
 
     //-- Reset the flags that say whether or no the chi2 cutoff has been reached
@@ -216,11 +207,13 @@ void sysChi2Cutoff(){
 
       //-- Get the unfolded histograms
       hUnfold[icent][i] = (TH1D*) fUnfold->Get( Form("hreco%i_c%i", iter[i], icent) );
+      if( !hUnfold[icent][i] ) break;
       hUnfold[icent][i]->SetLineColor(col[i]);
       hUnfold[icent][i]->SetMarkerColor(col[i]);
 
       //-- Get the Refolded histograms
       hRefold[icent][i] = (TH1D*) fUnfold->Get( Form("hrefold%i_c%i", iter[i], icent) );
+      if( !hRefold[icent][i] ) break;
       hRefold[icent][i]->SetLineWidth(2);
       hRefold[icent][i]->SetLineColor(col[i]);
       hRefold[icent][i]->SetMarkerColor(col[i]);
@@ -242,9 +235,12 @@ void sysChi2Cutoff(){
       double vn8vn6;
       if(vn6 == 0) vn8vn6 = 0;
       else         vn8vn6 = vn8 / vn6;
+      double vn46_vn68;
+      if(vn4 == 0 || vn6 == 0 || vn8 == 0) vn46_vn68 = 0;
+      else                                 vn46_vn68 = (vn4 - vn6)/(vn6 - vn8);
 
       //-- Calculate the refold chi2
-      double chi2NDF_Refold = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
       chi2NDF[icent][i] = chi2NDF_Refold;
 
       //-- loop over the scenarios and choose the iteration for each
@@ -259,6 +255,7 @@ void sysChi2Cutoff(){
 	  unfold_Vn6Vn4VSChi2Cut[icent][ichi]      = vn6vn4;
 	  unfold_Vn8Vn4VSChi2Cut[icent][ichi]      = vn8vn4;
 	  unfold_Vn8Vn6VSChi2Cut[icent][ichi]      = vn8vn6;
+	  unfold_Vn46_Vn68VSChi2Cut[icent][ichi]   = vn46_vn68;
 
 	  iterCutoff[ichi] = 1;
 	  finalIteration[icent][ichi] = i;
@@ -272,6 +269,7 @@ void sysChi2Cutoff(){
           unfold_Vn6Vn4VSChi2Cut[icent][ichi]      = vn6vn4;
 	  unfold_Vn8Vn4VSChi2Cut[icent][ichi]      = vn8vn4;
           unfold_Vn8Vn6VSChi2Cut[icent][ichi]      = vn8vn6;
+	  unfold_Vn46_Vn68VSChi2Cut[icent][ichi]   = vn46_vn68;
 
 	  iterCutoff[ichi] = 1;
 	  finalIteration[icent][ichi] = i;
@@ -301,15 +299,18 @@ void sysChi2Cutoff(){
       double vn8vn4_0    = unfold_Vn8Vn4VSChi2Cut[icent][0];
       double vn8vn6_i    = unfold_Vn8Vn6VSChi2Cut[icent][ichi];
       double vn8vn6_0    = unfold_Vn8Vn6VSChi2Cut[icent][0];
+      double vn46_vn68_i = unfold_Vn46_Vn68VSChi2Cut[icent][ichi];
+      double vn46_vn68_0 = unfold_Vn46_Vn68VSChi2Cut[icent][0];
 
-      double vn2Rat    = vn2_i / vn2_0;
-      double vn4Rat    = vn4_i / vn4_0;
-      double vn6Rat    = vn6_i / vn6_0;
-      double vn8Rat    = vn8_i / vn8_0;
-      double g1expRat  = gamma1exp_i / gamma1exp_0;
-      double vn6vn4Rat = vn6vn4_i / vn6vn4_0;
-      double vn8vn4Rat = vn8vn4_i / vn8vn4_0;
-      double vn8vn6Rat = vn8vn6_i / vn8vn6_0;
+      double vn2Rat       = vn2_i / vn2_0;
+      double vn4Rat       = vn4_i / vn4_0;
+      double vn6Rat       = vn6_i / vn6_0;
+      double vn8Rat       = vn8_i / vn8_0;
+      double g1expRat     = gamma1exp_i / gamma1exp_0;
+      double vn6vn4Rat    = vn6vn4_i / vn6vn4_0;
+      double vn8vn4Rat    = vn8vn4_i / vn8vn4_0;
+      double vn8vn6Rat    = vn8vn6_i / vn8vn6_0;
+      double vn46_vn68Rat = vn46_vn68_i / vn46_vn68_0;
 
       double vn2_i_se  = unfold_Vn2VSChi2Cut_staterr[icent][ichi];
       double vn2_0_se  = unfold_Vn2VSChi2Cut_staterr[icent][0];
@@ -328,15 +329,18 @@ void sysChi2Cutoff(){
       double vn8vn4_0_se    = unfold_Vn8Vn4VSChi2Cut_staterr[icent][0];
       double vn8vn6_i_se    = unfold_Vn8Vn6VSChi2Cut_staterr[icent][ichi];
       double vn8vn6_0_se    = unfold_Vn8Vn6VSChi2Cut_staterr[icent][0];
+      double vn46_vn68_i_se = unfold_Vn46_Vn68VSChi2Cut_staterr[icent][ichi];
+      double vn46_vn68_0_se = unfold_Vn46_Vn68VSChi2Cut_staterr[icent][0];
 
-      double vn2Rat_staterr    = sqrt( pow(vn2_i_se/vn2_0, 2) + pow( vn2_i*vn2_0_se/vn2_0/vn2_0, 2) );
-      double vn4Rat_staterr    = sqrt( pow(vn4_i_se/vn4_0, 2) + pow( vn4_i*vn4_0_se/vn4_0/vn4_0, 2) );
-      double vn6Rat_staterr    = sqrt( pow(vn6_i_se/vn6_0, 2) + pow( vn6_i*vn6_0_se/vn6_0/vn6_0, 2) );
-      double vn8Rat_staterr    = sqrt( pow(vn8_i_se/vn8_0, 2) + pow( vn8_i*vn8_0_se/vn8_0/vn8_0, 2) );
-      double g1expRat_staterr  = sqrt( pow(gamma1exp_i_se/gamma1exp_0, 2) + pow( gamma1exp_i*gamma1exp_0_se/gamma1exp_0/gamma1exp_0, 2) );
-      double vn6vn4Rat_staterr = sqrt( pow(vn6vn4_i_se/vn6vn4_0, 2) + pow( vn6vn4_i*vn6vn4_0_se/vn6vn4_0/vn6vn4_0, 2) );
-      double vn8vn4Rat_staterr = sqrt( pow(vn8vn4_i_se/vn8vn4_0, 2) + pow( vn8vn4_i*vn8vn4_0_se/vn8vn4_0/vn8vn4_0, 2) );
-      double vn8vn6Rat_staterr = sqrt( pow(vn8vn6_i_se/vn8vn6_0, 2) + pow( vn8vn6_i*vn8vn6_0_se/vn8vn6_0/vn8vn6_0, 2) );
+      double vn2Rat_staterr       = sqrt( pow(vn2_i_se/vn2_0, 2) + pow( vn2_i*vn2_0_se/vn2_0/vn2_0, 2) );
+      double vn4Rat_staterr       = sqrt( pow(vn4_i_se/vn4_0, 2) + pow( vn4_i*vn4_0_se/vn4_0/vn4_0, 2) );
+      double vn6Rat_staterr       = sqrt( pow(vn6_i_se/vn6_0, 2) + pow( vn6_i*vn6_0_se/vn6_0/vn6_0, 2) );
+      double vn8Rat_staterr       = sqrt( pow(vn8_i_se/vn8_0, 2) + pow( vn8_i*vn8_0_se/vn8_0/vn8_0, 2) );
+      double g1expRat_staterr     = sqrt( pow(gamma1exp_i_se/gamma1exp_0, 2) + pow( gamma1exp_i*gamma1exp_0_se/gamma1exp_0/gamma1exp_0, 2) );
+      double vn6vn4Rat_staterr    = sqrt( pow(vn6vn4_i_se/vn6vn4_0, 2) + pow( vn6vn4_i*vn6vn4_0_se/vn6vn4_0/vn6vn4_0, 2) );
+      double vn8vn4Rat_staterr    = sqrt( pow(vn8vn4_i_se/vn8vn4_0, 2) + pow( vn8vn4_i*vn8vn4_0_se/vn8vn4_0/vn8vn4_0, 2) );
+      double vn8vn6Rat_staterr    = sqrt( pow(vn8vn6_i_se/vn8vn6_0, 2) + pow( vn8vn6_i*vn8vn6_0_se/vn8vn6_0/vn8vn6_0, 2) );
+      double vn46_vn68Rat_staterr = sqrt( pow(vn46_vn68_i_se/vn46_vn68_0, 2) + pow( vn46_vn68_i*vn46_vn68_0_se/vn46_vn68_0/vn46_vn68_0, 2) );
 
       unfoldVn2_RatioToChi21[icent][ichi]        = vn2Rat;
       unfoldVn4_RatioToChi21[icent][ichi]        = vn4Rat;
@@ -346,6 +350,7 @@ void sysChi2Cutoff(){
       unfoldVn6Vn4_RatioToChi21[icent][ichi]     = vn6vn4Rat;
       unfoldVn8Vn4_RatioToChi21[icent][ichi]     = vn8vn4Rat;
       unfoldVn8Vn6_RatioToChi21[icent][ichi]     = vn8vn6Rat;
+      unfoldVn46_Vn68_RatioToChi21[icent][ichi]  = vn46_vn68Rat;
 
       unfoldVn2_RatioToChi21_staterr[icent][ichi]       = vn2Rat_staterr;
       unfoldVn4_RatioToChi21_staterr[icent][ichi]       = vn4Rat_staterr;
@@ -355,6 +360,7 @@ void sysChi2Cutoff(){
       unfoldVn6Vn4_RatioToChi21_staterr[icent][ichi]    = vn6vn4Rat_staterr;
       unfoldVn8Vn4_RatioToChi21_staterr[icent][ichi]    = vn8vn4Rat_staterr;
       unfoldVn8Vn6_RatioToChi21_staterr[icent][ichi]    = vn8vn6Rat_staterr;
+      unfoldVn46_Vn68_RatioToChi21_staterr[icent][ichi] = vn46_vn68Rat_staterr;
 
     } //-- End chi2 loop for ratios
 
@@ -364,6 +370,15 @@ void sysChi2Cutoff(){
     formatGraph(grChi2NDFvsIter[icent], "Iteration", chi2Min, chi2Max, "#chi^{2}/NDF", 1, 20, Form("grChi2NDFvsIter_c%i", icent) );
 
   } //-- End cent loop
+
+  if( !hObs[0] || !hUnfold[0][0] || !hRefold[0][0] ){
+    std::cout << "WARNING! Unfolding procedure not run!\n"
+              << "Please run the unfolding procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
+
   //gErrorIgnoreLevel = kError;
 
   //----------------------------------------------------------------------------------------------------
@@ -397,13 +412,15 @@ void sysChi2Cutoff(){
   for(int icent = 0; icent < NCENT; icent++){
     ratioChi2_21_vn2[icent]        = unfoldVn2_RatioToChi21[icent][3];
     ratioChi2_21_vn4[icent]        = unfoldVn4_RatioToChi21[icent][3];
-    std::cout<<ratioChi2_21_vn4[icent]<<std::endl;
     ratioChi2_21_vn6[icent]        = unfoldVn6_RatioToChi21[icent][3];
     ratioChi2_21_vn8[icent]        = unfoldVn8_RatioToChi21[icent][3];
     ratioChi2_21_gamma1exp[icent]  = fabs( 1.0 - unfoldGamma1Exp_RatioToChi21[icent][3] );
     ratioChi2_21_vn6vn4[icent]     = unfoldVn6Vn4_RatioToChi21[icent][3];
     ratioChi2_21_vn8vn4[icent]     = unfoldVn8Vn4_RatioToChi21[icent][3];
     ratioChi2_21_vn8vn6[icent]     = unfoldVn8Vn6_RatioToChi21[icent][3];
+    ratioChi2_21_vn46_vn68[icent]  = unfoldVn46_Vn68_RatioToChi21[icent][3];
+
+    std::cout<<ratioChi2_21_vn46_vn68[icent]<<std::endl;
 
     ratioChi2_21_vn2_staterr[icent]        = unfoldVn2_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn4_staterr[icent]        = unfoldVn4_RatioToChi21_staterr[icent][3];
@@ -413,6 +430,7 @@ void sysChi2Cutoff(){
     ratioChi2_21_vn6vn4_staterr[icent]     = unfoldVn6Vn4_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn8vn4_staterr[icent]     = unfoldVn8Vn4_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn8vn6_staterr[icent]     = unfoldVn8Vn6_RatioToChi21_staterr[icent][3];
+    ratioChi2_21_vn46_vn68_staterr[icent]  = unfoldVn46_Vn68_RatioToChi21_staterr[icent][3];
 
     cErr[icent] = 0;
   }
@@ -420,12 +438,11 @@ void sysChi2Cutoff(){
   grRatioChi2_21_vn2 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn2, cErr, ratioChi2_21_vn2_staterr);
   formatGraph(grRatioChi2_21_vn2, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} [#chi^{2}=2]/[#chi^{2}=1]", norder_), 1, 24, "grRatioChi2_21_vn2");
   grRatioChi2_21_vn4 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn4, cErr, ratioChi2_21_vn4_staterr);
-  formatGraph(grRatioChi2_21_vn4, "Centrality %", 0.8, 1.02, Form("v_{%i}{4} [#chi^{2}=2]/[#chi^{2}=1]", norder_), kSpring+4, 25, "grRatioChi2_21_vn4");
+  formatGraph(grRatioChi2_21_vn4, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} [#chi^{2}=2]/[#chi^{2}=1]", norder_), kSpring+4, 25, "grRatioChi2_21_vn4");
   grRatioChi2_21_vn6 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn6, cErr, ratioChi2_21_vn6_staterr);
   formatGraph(grRatioChi2_21_vn6, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} [#chi^{2}=2]/[#chi^{2}=1]", norder_), 6, 28, "grRatioChi2_21_vn6");
   grRatioChi2_21_vn8 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn8, cErr, ratioChi2_21_vn8_staterr);
   formatGraph(grRatioChi2_21_vn8, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} [#chi^{2}=2]/[#chi^{2}=1]", norder_), kOrange+7, 27, "grRatioChi2_21_vn8");
-
 
   grRatioChi2_21_gamma1exp = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_gamma1exp, cErr, ratioChi2_21_gamma1exp_staterr);
   formatGraph(grRatioChi2_21_gamma1exp, "Centrality %", ratioGamma1ExpMin, ratioGamma1ExpMax, "|1-#gamma_{1}^{exp} [#chi^{2}=2]/[#chi^{2}=1]|", 2, 20, "grRatioChi2_21_gamma1exp");
@@ -435,6 +452,8 @@ void sysChi2Cutoff(){
   formatGraph(grRatioChi2_21_vn8vn4, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8}/v_{%i}{4} [#chi^{2}=2]/[#chi^{2}=1]", norder_, norder_), kGreen+2, 34, "grRatioChi2_21_vn8vn4");
   grRatioChi2_21_vn8vn6 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn8vn6, cErr, ratioChi2_21_vn8vn6_staterr);
   formatGraph(grRatioChi2_21_vn8vn6, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8}/v_{%i}{6} [#chi^{2}=2]/[#chi^{2}=1]", norder_, norder_), kViolet-1, 33, "grRatioChi2_21_vn8vn6");
+  grRatioChi2_21_vn46_vn68 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn46_vn68, cErr, ratioChi2_21_vn46_vn68_staterr);
+  formatGraph(grRatioChi2_21_vn46_vn68, "Centrality %", 0.80, 1.20, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) [#chi^{2}=2]/[#chi^{2}=1]", norder_, norder_, norder_, norder_), kGray+2, 22, "grRatioChi2_21_vn46_vn68");
 
   TLegend * leg2 = new TLegend(0.1946, 0.1995, 0.3452, 0.4157);
   leg2->SetFillStyle(0);
@@ -485,6 +504,11 @@ void sysChi2Cutoff(){
   line->Draw("same");
   cvnCumuRatioCentDep->SaveAs("../../plots/systematicStudies/cSysChi2Cut_CumuRatioCent.pdf" );
 
+  TCanvas * cVn46_Vn68 = new TCanvas("cVn46_Vn68", "cVn46_Vn68", 500, 500);
+  cVn46_Vn68->cd();
+  grRatioChi2_21_vn46_vn68->Draw("ap");
+  line->Draw("same");
+  cVn46_Vn68->SaveAs("../../plots/systematicStudies/cSysChi2Cut_Vn46_Vn68.pdf");
 
   //---------------------------------------------------------------------------------------------------- 
   //-- Save plots for smoothing
@@ -497,6 +521,7 @@ void sysChi2Cutoff(){
   grRatioChi2_21_vn6vn4->Write("grRatioChi2_21_vn6vn4");
   grRatioChi2_21_vn8vn4->Write("grRatioChi2_21_vn8vn4");
   grRatioChi2_21_vn8vn6->Write("grRatioChi2_21_vn8vn6");
+  grRatioChi2_21_vn46_vn68->Write("grRatioChi2_21_vn46_vn68");
   grRatioChi2_21_gamma1exp->Write("grRatioChi2_21_gamma1exp");
 
   //-- Save the unfolded distns for when the cutoff is chi2=2.

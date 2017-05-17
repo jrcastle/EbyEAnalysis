@@ -18,9 +18,13 @@
 
 using namespace ebyese;
 
-void BottomLineTest(){
+void BottomLineTest(int n = 2){
 
-  const int norder_ = 3;
+  string fin = "EllPFits.root";
+
+  bool cubic = 1;
+
+  const int norder_ = n;
 
   TFile * fAna;
   TH1D * hObs[NCENT];
@@ -58,8 +62,22 @@ void BottomLineTest(){
   latex.SetNDC();
 
   fAna = new TFile( "AnalyzerResults/CastleEbyE.root" );
-  fFit = new TFile( "EllPFits.root" );
   fUnf = new TFile( Form("systematicStudies/SysUnfoldDistns_v%i.root", norder_) );
+  fFit = 0;
+  fFit = new TFile( fin.data() );
+
+  if( fUnf->IsZombie() ){
+    std::cout << "WARNING! " << Form("systematicStudies/SysUnfoldDistns_v%i.root", norder_) << " does not exist!" << std::endl;
+    std::cout << "Please run the macro systematicStudies/sysUnfoldDistns.C first and then run this macro..." << std::endl;
+    std::cout << "Exiting now..." << std::endl;
+    exit(0);
+  }
+  if( fFit->IsZombie() ){
+    std::cout << "WARNING! EllPFits.root does not exist!" << std::endl;
+    std::cout << "Please run the macro FitPvn.C first and then run this macro..." << std::endl;
+    std::cout << "Exiting now..." << std::endl;
+    exit(0);
+  }
 
   hNormFactor = (TH1D*) fUnf->Get("hNormFactor");
 
@@ -129,8 +147,8 @@ void BottomLineTest(){
     hSmearBG[icent]   = (TH1D*) unfolder.refold( hBG[icent], Form("hrefoldbg_c%i", icent) );
 
     //-- Smeared space chi2
-    chi2SmearEllP[icent] = hSmearEllP[icent]->Chi2Test(hObs[icent], "CHI2/NDF");
-    chi2SmearBG[icent]   = hSmearBG[icent]->Chi2Test(hObs[icent], "CHI2/NDF");
+    chi2SmearEllP[icent] = hSmearEllP[icent]->Chi2Test(hObs[icent], "UWCHI2/NDF");
+    chi2SmearBG[icent]   = hSmearBG[icent]->Chi2Test(hObs[icent], "UWCHI2/NDF");
 
     //-- Unfold space chi2
     /*
@@ -170,7 +188,10 @@ void BottomLineTest(){
   formatGraph(grEllPChi2, "Centrality %", 0., 10., "#chi^{2}/NDF", 2, 20, "grEllPChi2");
   formatGraph(grBGChi2,   "Centrality %", 0., 10., "#chi^{2}/NDF", 7, 21, "grBGChi2");
 
-  TFile * fOut = new TFile("SmearSpaceChi2.root", "recreate");
+  TFile * fOut = 0;
+  if( cubic ) fOut = new TFile("SmearSpaceChi2_Cubic.root", "recreate");
+  else        fOut = new TFile("SmearSpaceChi2.root", "recreate");  
+
   fOut->cd();
   grEllPChi2->Write();
   grBGChi2->Write();

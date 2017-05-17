@@ -90,7 +90,7 @@ void FitPvn(){
   bool fixKn      = 0;
   bool fixAlpha   = 0;
   bool moscowFits = 0;
-  bool contours   = 1;
+  bool contours   = 0;
   // kn 0.40
   // al 71.1
   // e0 .17

@@ -21,10 +21,10 @@
 using namespace hi;
 using namespace ebyese;
 
-void svdUnfoldResults(){
+void svdUnfoldResults(int n = 2, double e = 1.0){
 
-  int norder_ = 3;
-  double tkEta = 1.0;
+  int norder_  = n;
+  double tkEta = e;
 
   double cumuMin = 0.0;
   double cumuMax = 0.15;
@@ -110,6 +110,12 @@ void svdUnfoldResults(){
 
   //-- Get Stat Errors
   fStatSVD = new TFile( Form("../../../statErrorHandle/v%i/eta%.1f/StatisticalUncertaintiesSVD_v%i.root", norder_, tkEta, norder_)  );
+  if( fStatSVD->IsZombie() ){
+    std::cout << "WARNING! " << Form("../../../statErrorHandle/v%i/eta%.1f/StatisticalUncertaintiesSVD_v%i.root", norder_, tkEta, norder_) << " does not exist!" << std::endl;
+    std::cout << "Please run the macro "<< Form("../../../statErrorHandle/v%i/eta%.1f/statUncertAssessSVD.C", norder_, tkEta) << " first and then run this plotting macro..." << std::endl;
+    std::cout << "Exiting now..." << std::endl;
+    exit(0);
+  }
   hVarianceOfMean_Vn2       = (TH1D*) fStatSVD->Get("hVarianceOfMean_Vn2");
   hVarianceOfMean_Vn4       = (TH1D*) fStatSVD->Get("hVarianceOfMean_Vn4");
   hVarianceOfMean_Vn6       = (TH1D*) fStatSVD->Get("hVarianceOfMean_Vn6");
@@ -121,6 +127,12 @@ void svdUnfoldResults(){
 
   //-- Get unfold file
   fSVD = new TFile("../UnfoldResults/dataResp/data2_svd.root");
+  if( fSVD->IsZombie() ){
+    std::cout << "WARNING! ../UnfoldResults/dataResp/data2_svd.root does not exist!" << std::endl;
+    std::cout << "Please run SVD unfolding first and then run this plotting macro..." << std::endl;
+    std::cout << "Exiting now..." << std::endl;
+    exit(0);
+  }
 
   //-- Get kregs
   hKreg = (TH1D*) fSVD->Get( "hKreg" );

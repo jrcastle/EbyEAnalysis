@@ -20,9 +20,10 @@
 using namespace hi;
 using namespace ebyese;
 
-void statUncertAssessSVD(){
+void statUncertAssessSVD(int n = 2){
 
-  int norder_ = 3;
+  int norder_ = n;
+
   //-- Unfolding output
   TFile * fUnf[NSPLIT];
   TH1D * hUnfold[NCENT][NSPLIT];
@@ -86,9 +87,17 @@ void statUncertAssessSVD(){
     fUnf[iS] = new TFile( Form("UnfoldResults/dataResp/data%i_svd_Split%i.root", norder_, iS) );
     for(int icent = 0; icent < NCENT; icent++){
       hUnfold[icent][iS] = (TH1D*) fUnf[iS]->Get( Form("hrecokreg4_c%i", icent) );
+      if( !hUnfold[icent][iS] ) break;
     } //-- End cent loop
   } //-- End split loop
 
+  if( !hUnfold[0][0] ){
+    std::cout << "WARNING! Unfolding procedure not run!\n"
+              << "Please run the unfolding procedure first and then run this macro\n"
+              << "Exiting now..."
+              << std::endl;
+    exit(0);
+  }
 
   //-- Now that we have the distributions, let's figure out the scatter on the reported quantities
 
