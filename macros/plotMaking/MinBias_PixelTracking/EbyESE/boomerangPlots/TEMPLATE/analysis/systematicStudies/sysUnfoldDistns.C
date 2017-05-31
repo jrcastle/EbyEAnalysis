@@ -122,7 +122,6 @@ void sysUnfoldDistns(int n = 2, double e = 1.0){
   TLine * upperCut_3Sigma[NCENT];
 
   //-- Save Response and Covariance Matrices:
-  TFile * fCov;
   TH2D * hResponse[NCENT];
   TH2D * hCovMatrix[NCENT];
   TH2D * hCorrMatrix[NCENT];
@@ -239,16 +238,13 @@ void sysUnfoldDistns(int n = 2, double e = 1.0){
   cFinalUnfold = new TCanvas("cFinalUnfold", "cFinalUnfold", 2000, 1500);
   cFinalUnfold->Divide(4,3);
 
-  //-- Grab the file that has the cov matrices
-  fCov = new TFile( Form("../UnfoldResults/dataResp/data%i_CovMatrix.root", norder_) );
-
   hNormFactor = new TH1D("hNormFactor","hNormFactor", NCENT, centbinsDefault);
 
   //-- Start fetching histograms....
   for(int icent = 0; icent < NCENT; icent++){
 
     //-- Get the Response matrix
-    hResponse[icent] = (TH2D*) fCov->Get( Form("hresp_c%i", icent) );
+    hResponse[icent] = (TH2D*) fUnfold->Get( Form("hresp_c%i", icent) );
 
     //-- -------------- Real Dists --------------
     hObs[icent] = (TH1D*) fAna->Get( Form("qwebye/hVnFull_c%i", icent) );
@@ -277,13 +273,13 @@ void sysUnfoldDistns(int n = 2, double e = 1.0){
 	hFinalUnfSysResp[icent] = (TH1D*) hUnfoldResp[icent][i]->Clone( Form("hFinalUnfSysResp_c%i", icent) );
 	iterCut = 1;
 	//-- Grab the cov matrix
-	hCovMatrix[icent] = (TH2D*) fCov->Get( Form("hCovMat%i_c%i", iter[i], icent) );
+	hCovMatrix[icent] = (TH2D*) fUnfold->Get( Form("hCovMat%i_c%i", iter[i], icent) );
       }
       if( i == NITER - 1 && !iterCut){
 	hFinalUnf[icent] = (TH1D*) hUnfold[icent][i]->Clone( Form("hFinalUnf_c%i", icent) );
 	hFinalUnfSysResp[icent] = (TH1D*) hUnfoldResp[icent][i]->Clone( Form("hFinalUnfSysResp_c%i", icent) );
 	//-- Grab the cov matrix
-	hCovMatrix[icent] = (TH2D*) fCov->Get( Form("hCovMat%i_c%i", iter[i], icent) );
+	hCovMatrix[icent] = (TH2D*) fUnfold->Get( Form("hCovMat%i_c%i", iter[i], icent) );
       }
 
       //-- -------------- Reg --------------

@@ -121,7 +121,7 @@ void statUncertAssess(int n = 2){
 	hUnfold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hreco%i_c%i",   iter[i], icent) );
 	hRefold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hrefold%i_c%i", iter[i], icent) );
 
-	if( !hObs[icent][iS] || !hUnfold[icent][iS][i] || hRefold[icent][iS][i] ) break;
+	if( !hObs[icent][iS] || !hUnfold[icent][iS][i] || !hRefold[icent][iS][i] ) break;
 
 	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "UWCHI2/NDF");
 	if( chi2Refold < 1.2 ){
@@ -137,7 +137,7 @@ void statUncertAssess(int n = 2){
     } //-- End cent loop
   } //-- End split loop
 
-  if( !hObs[0][0] ||!hUnfold[0][0][0] || hRefold[0][0][0] ){
+  if( !hObs[0][0] ||!hUnfold[0][0][0] || !hRefold[0][0][0] ){
     std::cout << "WARNING! Unfolding procedure not run!\n"
 	      << "Please run the unfolding procedure first and then run this macro\n"
 	      << "Exiting now..."

@@ -309,7 +309,7 @@ void sysTkQuality(int n = 2, double e = 1.0){
   hVarianceOfMean_Vn8Vn6_Nominal    = (TH1D*) fStatNominal->Get( "hVarianceOfMean_Vn8Vn6" );
   hVarianceOfMean_Vn46_Vn68_Nominal = (TH1D*) fStatNominal->Get( "hVarianceOfMean_Vn46_Vn68" );
 
-  if( !hVarianceOfMean_Vn2_Loose || !hVarianceOfMean_Vn2_Tight || hVarianceOfMean_Vn2_Nominal ){
+  if( !hVarianceOfMean_Vn2_Loose || !hVarianceOfMean_Vn2_Tight || !hVarianceOfMean_Vn2_Nominal ){
     std::cout << "WARNING! Statistical resampling procedure not run!\n"
               << "Please run the procedure first and then run this macro\n"
               << "Exiting now..."

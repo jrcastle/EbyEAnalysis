@@ -1105,7 +1105,7 @@ void sysUnfoldDistns(){
       //-- Add legend
       if(icent == 0){
 	legUnfObs->AddEntry(hObs[icent],      "Observed p(v_{2})", "lp");
-	legUnfObs->AddEntry(hFinalUnf[icent], "Unfold p(v_{2})",   "lp");
+	legUnfObs->AddEntry(hFinalUnf[icent], "Unfolded p(v_{2})", "lp");
 	legUnfObs->Draw("same");
 	legUnfObs->SetTextFont(43);
 	legUnfObs->SetTextSize(33);
@@ -1142,5 +1142,62 @@ void sysUnfoldDistns(){
   cFinalUnfoldMerged->SaveAs("../plots/skew/cFinalUnfoldMerged.pdf");
 
 
+  //-- Select only three cents 
+  TLegend * legUnfObs3 = new TLegend(0.48, 0.79, 0.68, 0.99);
+  legInit(legUnfObs3);
+  legUnfObs3->AddEntry(hObs[0],      "Observed p(v_{2})", "lp");
+  legUnfObs3->AddEntry(hFinalUnf[0], "Unfolded p(v_{2})", "lp");
+
+  TCanvas * cFinalUnfoldMerged3 = new TCanvas("cFinalUnfoldMerged3", "cFinalUnfoldMerged3", 1500, 600);
+  cFinalUnfoldMerged3->SetLeftMargin(0.18);
+  cFinalUnfoldMerged3->SetRightMargin(0.01);
+  cFinalUnfoldMerged3->SetTopMargin(0.071); //-0.07
+  //cFinalUnfoldMerged3->SetBottomMargin(0.19);
+  cFinalUnfoldMerged3->Modified();
+  cFinalUnfoldMerged3->Update();
+  cFinalUnfoldMerged3->Divide(3,1,0,0);
+
+  hDummy->GetXaxis()->SetTitleOffset(0.9);
+  hDummy->GetYaxis()->SetTitleSize(43);
+  hDummy->GetYaxis()->SetTitleOffset(1.4);
+
+  int c = 1;
+  cFinalUnfoldMerged3->cd(1);
+  cFinalUnfoldMerged3->cd(1)->SetLogy();
+  hDummy->Draw();
+  hFinalUnfoldSys[c]->Draw("e2same");
+  hFinalUnf[c]->Draw("same");
+  hObs[c]->Draw("same");
+  latex4.DrawLatex(0.465, 0.91, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+  latex4.DrawLatex(0.77, 0.81, Form("|#eta| < %.1f", tkEta));
+  latex4.DrawLatex(0.26, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
+
+  c = 6;
+  cFinalUnfoldMerged3->cd(2);
+  cFinalUnfoldMerged3->cd(2)->SetLogy();
+  hDummy->Draw();
+  hFinalUnfoldSys[c]->Draw("e2same");
+  hFinalUnf[c]->Draw("same");
+  hObs[c]->Draw("same");
+  legUnfObs3->Draw("same");
+  legUnfObs3->SetTextFont(43);
+  legUnfObs3->SetTextSize(32); 
+  latex4.DrawLatex(0.05, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
+
+  c = 11;
+  cFinalUnfoldMerged3->cd(3);
+  cFinalUnfoldMerged3->cd(3)->SetLogy();
+  hDummy->Draw();
+  hFinalUnfoldSys[c]->Draw("e2same");
+  hFinalUnf[c]->Draw("same");
+  hObs[c]->Draw("same");
+  latex4.DrawLatex(0.05, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
+
+  cFinalUnfoldMerged3->cd(0);
+  latex4.DrawLatex(0.083, 0.94, "#bf{CMS}");
+  latex4.DrawLatex(0.775, 0.94, "26 #mub^{-1} (PbPb 5.02 TeV)");
+
+  cFinalUnfoldMerged3->Update();
+  cFinalUnfoldMerged3->SaveAs("../plots/skew/cFinalUnfoldMerged3.pdf");
 
 }

@@ -341,6 +341,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
     double sysRelErrTotVn46_Vn68;
 
     if( smoothSys ){
+      std::cout<< sysRelErrTotVn2 << std::endl;
       sysRelErrTotVn2       = SmoothSysTotVn2->GetBinContent(icent+1);
       sysRelErrTotVn4       = SmoothSysTotVn4->GetBinContent(icent+1);
       sysRelErrTotVn6       = SmoothSysTotVn6->GetBinContent(icent+1);
@@ -364,7 +365,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
       sysRelErrTotVn46_Vn68 = sysTotalV2_pt0p3_3_eta1p0_Vn46_Vn68[isys];
       */
     }
-
+    crap(3);
     double sysErrVn2       = sysRelErrTotVn2 * vn2;
     double sysErrVn4       = sysRelErrTotVn4 * vn4;
     double sysErrVn6       = sysRelErrTotVn6 * vn6;
