@@ -1089,7 +1089,7 @@ void sysUnfoldDistns(int n = 2, double e = 1.0){
 
     //-- X axes 
     double m = 0.37;
-    hDummy->GetXaxis()->SetTitle("v_{2}");
+    hDummy->GetXaxis()->SetTitle(Form("v_{%i}", norder_));
     hDummy->GetXaxis()->CenterTitle();
     hDummy->GetXaxis()->SetRange(0, hFinalUnfoldSys[icent]->FindBin(m));
     hDummy->GetXaxis()->SetNdivisions(507);
@@ -1101,7 +1101,7 @@ void sysUnfoldDistns(int n = 2, double e = 1.0){
 
 
     //-- Y axes
-    hDummy->GetYaxis()->SetTitle("p(v_{2})");
+    hDummy->GetYaxis()->SetTitle(Form("p(v_{%i})", norder_));
     hDummy->GetYaxis()->CenterTitle();
     hDummy->SetMaximum(0.5);
     hDummy->SetMinimum(2e-5);
@@ -1132,8 +1132,8 @@ void sysUnfoldDistns(int n = 2, double e = 1.0){
 
       //-- Add legend
       if(icent == 0){
-	legUnfObs->AddEntry(hObs[icent],      "Observed p(v_{2})", "lp");
-	legUnfObs->AddEntry(hFinalUnf[icent], "Unfold p(v_{2})",   "lp");
+	legUnfObs->AddEntry(hObs[icent],      Form("Observed p(v_{%i})", norder_), "lp");
+	legUnfObs->AddEntry(hFinalUnf[icent], Form("Unfold p(v_{%i})", norder_),   "lp");
 	legUnfObs->Draw("same");
 	legUnfObs->SetTextFont(43);
 	legUnfObs->SetTextSize(33);
