@@ -1,7 +1,6 @@
 #!/bin/bash
 N="3"     # Flow Order
-n=3       # Flow Order
-ETA="1.0" # Track eta max, |eta| < $ETA
+ETA="2.4" # Track eta max, |eta| < $ETA
 PMN="0.3" # Track pT min
 PMX="3.0" # Track pT max
 TEST="0"  # Test run flag
@@ -372,12 +371,12 @@ EOF
 
 else 
     ##-- ================================== v$N/Unfolding_dosys ==================================
-    #echo "$OUT v$N/Unfolding_dosys (43/51)"
-    #cd $EBYESE/unfoldingv$N
-    #cp $EBYESE/boomerangPlots/v$N/eta$ETA/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
-    #cp $EBYESE/boomerangPlots/v$N/eta$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
-    #bash unfoldDataBoomerang_RooUnfold.sh $N $ROOUNFOLD
-    #cp txt/PbPb_2015/data/data$N.root $EBYESE/boomerangPlots/v$N/eta$ETA/UnfoldResults/dataResp/data${N}_dosys.root
+    echo "$OUT v$N/Unfolding_dosys (43/51)"
+    cd $EBYESE/unfoldingv$N
+    cp $EBYESE/boomerangPlots/v$N/eta$ETA/AnalyzerResults/CastleEbyE.root data/PbPb_2015/data/./
+    cp $EBYESE/boomerangPlots/v$N/eta$ETA/AnalyzerResults/DDResp/dataDrivenResponseAndPriors.root DDResp/./
+    bash unfoldDataBoomerang_RooUnfold.sh $N $ROOUNFOLD
+    cp txt/PbPb_2015/data/data$N.root $EBYESE/boomerangPlots/v$N/eta$ETA/UnfoldResults/dataResp/data${N}_dosys.root
 
     ##-- ================================== v$N/sysUnfoldDistns.C  ==================================
     echo "$OUT v$N/sysUnfoldDistns.C (44/51)"

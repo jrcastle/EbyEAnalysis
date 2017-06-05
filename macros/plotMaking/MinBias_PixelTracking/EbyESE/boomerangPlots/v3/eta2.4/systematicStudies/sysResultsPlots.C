@@ -34,7 +34,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
   bool theory    = 0;
 
   double cumuMin = 0.0;
-  double cumuMax = 0.06;
+  double cumuMax = 0.12999;
 
   double gamm1expMin = -1.0;
   double gamm1expMax = 0.5;
@@ -341,7 +341,6 @@ void sysResultsPlots(int n = 2, double e = 1.0){
     double sysRelErrTotVn46_Vn68;
 
     if( smoothSys ){
-      std::cout<< sysRelErrTotVn2 << std::endl;
       sysRelErrTotVn2       = SmoothSysTotVn2->GetBinContent(icent+1);
       sysRelErrTotVn4       = SmoothSysTotVn4->GetBinContent(icent+1);
       sysRelErrTotVn6       = SmoothSysTotVn6->GetBinContent(icent+1);
@@ -365,7 +364,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
       sysRelErrTotVn46_Vn68 = sysTotalV2_pt0p3_3_eta1p0_Vn46_Vn68[isys];
       */
     }
-    crap(3);
+
     double sysErrVn2       = sysRelErrTotVn2 * vn2;
     double sysErrVn4       = sysRelErrTotVn4 * vn4;
     double sysErrVn6       = sysRelErrTotVn6 * vn6;
@@ -736,7 +735,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
   latex3.DrawLatex(0.24, 0.75, Form("|#eta| < %.1f", tkEta));
   latex3.DrawLatex(0.57, 0.54, "#bf{v_{2}{2k}}");
   cCumuRaw->SaveAs("../plots/skew/SysCumuRaw.pdf");
-
+  /*
   TCanvas * cCumuVn2 = new TCanvas("cCumuVn2", "cCumuVn2", 500, 500);
   cCumuVn2->cd();
   cCumuVn2->SetTopMargin(0.1);
@@ -744,8 +743,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
   cCumuVn2->SetRightMargin(0.1);
   grVn2RawSys->GetYaxis()->SetTitle( Form("v_{%i}{2}", norder_) );
   grVn2Raw->GetYaxis()->SetTitle( Form("v_{%i}{2}", norder_) );
-  grCumuDummy->Draw("ap");
-  grVn2RawSys->Draw("pE2same");
+  grVn2RawSys->Draw("apE2");
   grVn2Raw->Draw("psame");
   latex.DrawLatex(0.20, 0.913, "#bf{CMS} #it{Preliminary}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
@@ -760,8 +758,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
   cCumuVn4->SetRightMargin(0.1);
   grVn4RawSys->GetYaxis()->SetTitle( Form("v_{%i}{4}", norder_) );
   grVn4Raw->GetYaxis()->SetTitle( Form("v_{%i}{4}", norder_) );
-  grCumuDummy->Draw("ap");
-  grVn4RawSys->Draw("pE2same");
+  grVn4RawSys->Draw("apE2");
   grVn4Raw->Draw("psame");
   latex.DrawLatex(0.20, 0.913, "#bf{CMS} #it{Preliminary}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
@@ -776,8 +773,7 @@ void sysResultsPlots(int n = 2, double e = 1.0){
   cCumuVn6->SetRightMargin(0.1);
   grVn6RawSys->GetYaxis()->SetTitle( Form("v_{%i}{6}", norder_) );
   grVn6Raw->GetYaxis()->SetTitle( Form("v_{%i}{6}", norder_) );
-  grCumuDummy->Draw("ap");
-  grVn6RawSys->Draw("pE2same");
+  grVn6RawSys->Draw("apE2");
   grVn6Raw->Draw("psame");
   latex.DrawLatex(0.20, 0.913, "#bf{CMS} #it{Preliminary}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
@@ -792,15 +788,14 @@ void sysResultsPlots(int n = 2, double e = 1.0){
   cCumuVn8->SetRightMargin(0.1);
   grVn8RawSys->GetYaxis()->SetTitle( Form("v_{%i}{8}", norder_) );
   grVn8Raw->GetYaxis()->SetTitle( Form("v_{%i}{8}", norder_) );
-  grCumuDummy->Draw("ap");
-  grVn8RawSys->Draw("pE2same");
+  grVn8RawSys->Draw("apE2");
   grVn8Raw->Draw("psame");
   latex.DrawLatex(0.20, 0.913, "#bf{CMS} #it{Preliminary}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.24, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex2.DrawLatex(0.24, 0.76, Form("|#eta| < %.1f", tkEta));
   cCumuVn8->SaveAs("../plots/skew/SysCumuVn8.pdf");
-
+  */
   /*
   TCanvas * cCumuTheoryComp = new TCanvas("cCumuTheoryComp", "cCumuTheoryComp", 2000, 500);
   cCumuTheoryComp->Divide(4,1);
