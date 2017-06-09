@@ -34,6 +34,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -107,19 +108,30 @@ private:
   edm::EDGetTokenT<reco::Centrality> CentralityTag_;
   edm::EDGetTokenT<int> CentralityBinTag_;
 
+  edm::InputTag HepMCEvtTag_;
+  edm::EDGetTokenT<edm::HepMCProduct> HepMCEvtToken_;
+  edm::Handle<edm::HepMCProduct> HepMCEvt_ ;
+
+  edm::InputTag V2TrueTag_;
+  edm::EDGetTokenT<double> V2TrueToken_;
+  edm::Handle<double> V2True_ ;
+
   bool genAna_;
   bool smearPt_;
   double smearPtPct_;
 
+  double V2True;
+
   int hiBinHF;
   double centval;
   double centmax_;
+  double b;
 
   int vs_sell;
   float vzr_sell;
   double vtx;
 
-  double vxError; 
+  double vxError;
   double vyError;
   double vzError;
 
@@ -141,6 +153,8 @@ private:
   double dzCut_;
   double d0Cut_;
   double ptResCut_;
+  double pixChi2NLayerCut_;
+  double pixd0Cut_;
 
   bool useTeff_;
   TrackCorrector3D * teff;
@@ -155,11 +169,9 @@ private:
   bool FirstEvent_;
   string effTable_;
 
-  bool Branch_Cent;
+  bool Branch_V2True;
   bool Branch_Vtx;
   bool Branch_sumw;
-  bool Branch_sumwqx;
-  bool Branch_sumwqy;
   bool Branch_Run;
   bool Branch_mult;
   bool Branch_HFqn;
@@ -198,8 +210,11 @@ EbyEAnalyzer::EbyEAnalyzer(const edm::ParameterSet& iConfig):
   vertexToken_( consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertexTag_")) ),
   trackToken_( consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackTag_")) ),
   genTrackToken_( consumes<reco::GenParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("genTrackTag_")) ),
+  caloToken_( consumes<CaloTowerCollection>(iConfig.getUntrackedParameter<edm::InputTag>("caloTag_")) ),
   CentralityTag_(consumes<reco::Centrality>(iConfig.getUntrackedParameter<edm::InputTag>("CentralityTag_"))),
-  CentralityBinTag_(consumes<int>(iConfig.getUntrackedParameter<edm::InputTag>("CentralityBinTag_")))
+  CentralityBinTag_(consumes<int>(iConfig.getUntrackedParameter<edm::InputTag>("CentralityBinTag_"))),
+  HepMCEvtToken_( consumes<edm::HepMCProduct>(iConfig.getUntrackedParameter<edm::InputTag>("HepMCEvtTag_")) ),
+  V2TrueToken_( consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("V2TrueTag_")) )
 {
   runno_      = 0;
   FirstEvent_ = kTRUE;
@@ -209,7 +224,6 @@ EbyEAnalyzer::EbyEAnalyzer(const edm::ParameterSet& iConfig):
   vertexTag_          = iConfig.getUntrackedParameter<edm::InputTag>("vertexTag_");
   genAna_             = iConfig.getUntrackedParameter<bool>("GenAna_", false);
   caloTag_            = iConfig.getUntrackedParameter<edm::InputTag>("caloTag_");
-  caloToken_          = consumes<CaloTowerCollection>(caloTag_);
   centmax_            = iConfig.getUntrackedParameter<double>("centmax_", 70.);
   useTeff_            = iConfig.getUntrackedParameter<bool>("useTeff_", true);
   usePixelTeff_       = iConfig.getUntrackedParameter<bool>("usePixelTeff_", false);
@@ -229,21 +243,27 @@ EbyEAnalyzer::EbyEAnalyzer(const edm::ParameterSet& iConfig):
   //-- Set Track quality cuts
   if( trackQualityCuts_ == 1){
     //-- Nominal Cuts
-    dzCut_    = 3.0;
-    d0Cut_    = 3.0;
-    ptResCut_ = 0.1;
+    dzCut_            = 3.0;
+    d0Cut_            = 3.0;
+    ptResCut_         = 0.1;
+    pixChi2NLayerCut_ = 12;
+    pixd0Cut_         = 8;
   }
   if( trackQualityCuts_ == 2){
     //-- Loose Cuts
-    dzCut_    = 5.0;
-    d0Cut_    = 5.0;
-    ptResCut_ = 0.1;
+    dzCut_            = 5.0;
+    d0Cut_            = 5.0;
+    ptResCut_         = 0.1;
+    pixChi2NLayerCut_ = 18;
+    pixd0Cut_         = 10;
   }
   if( trackQualityCuts_ == 3){
     //-- Tight Cuts
-    dzCut_    = 2.0;
-    d0Cut_    = 2.0;
-    ptResCut_ = 0.05;
+    dzCut_            = 2.0;
+    d0Cut_            = 2.0;
+    ptResCut_         = 0.05;
+    pixChi2NLayerCut_ = 9;
+    pixd0Cut_         = 6;
   }
 
   //-- Set efficiency table
@@ -254,12 +274,12 @@ EbyEAnalyzer::EbyEAnalyzer(const edm::ParameterSet& iConfig):
   if( usePixelTeff_ ) pxTeff = new TrackEfficiency(effTable_);
 
   //-- Choose which branches will be stored in the tree
-  Branch_Cent       = iConfig.getUntrackedParameter<bool>("Branch_Cent", true);
-  Branch_Vtx        = iConfig.getUntrackedParameter<bool>("Branch_Vtx",  true);
-  Branch_sumw       = iConfig.getUntrackedParameter<bool>("Branch_sumw", true);
-  Branch_Run        = iConfig.getUntrackedParameter<bool>("Branch_Run",  true);
-  Branch_mult       = iConfig.getUntrackedParameter<bool>("Branch_mult", true);
-  Branch_HFqn       = iConfig.getUntrackedParameter<bool>("Branch_HFqn", true);
+  Branch_V2True = iConfig.getUntrackedParameter<bool>("Branch_V2True", false);
+  Branch_Vtx    = iConfig.getUntrackedParameter<bool>("Branch_Vtx",    true);
+  Branch_sumw   = iConfig.getUntrackedParameter<bool>("Branch_sumw",   true);
+  Branch_Run    = iConfig.getUntrackedParameter<bool>("Branch_Run",    true);
+  Branch_mult   = iConfig.getUntrackedParameter<bool>("Branch_mult",   true);
+  Branch_HFqn   = iConfig.getUntrackedParameter<bool>("Branch_HFqn",   true);
 
   //-- Choose how subevents will be divided
   Subevent_Standard = iConfig.getUntrackedParameter<bool>("Subevent_Standard",true);
@@ -271,7 +291,7 @@ EbyEAnalyzer::EbyEAnalyzer(const edm::ParameterSet& iConfig):
   netabinsDefault_ = iConfig.getUntrackedParameter<int>("netabinsDefault_");
   etabinsDefault_  = iConfig.getUntrackedParameter< std::vector<double> >("etabinsDefault_");
 
-  tree = fs->make<TTree>("tree","EP tree");
+  tree    = fs->make<TTree>("tree", "EP tree");
   sumwqx2 = fs->make<TH2D>( "sumwqx2", "sumwqx2", nptbinsDefault_, &(ptbinsDefault_[0]), netabinsDefault_, &(etabinsDefault_[0]) );
   sumwqy2 = fs->make<TH2D>( "sumwqy2", "sumwqy2", nptbinsDefault_, &(ptbinsDefault_[0]), netabinsDefault_, &(etabinsDefault_[0]) );
   sumwqx3 = fs->make<TH2D>( "sumwqx3", "sumwqx3", nptbinsDefault_, &(ptbinsDefault_[0]), netabinsDefault_, &(etabinsDefault_[0]) );
@@ -314,10 +334,12 @@ EbyEAnalyzer::EbyEAnalyzer(const edm::ParameterSet& iConfig):
   mult->SetOption("colz");
 
   //-- Set Tree branches
-  if(Branch_Cent) tree->Branch("Cent",    &centval, "cent/D");
-  if(Branch_Vtx)  tree->Branch("Vtx",     &vtx,     "vtx/D");
-  if(Branch_Run)  tree->Branch("Run",     &runno_,  "run/i");
-  if(Branch_mult) tree->Branch("mult",    "TH2I",   &mult,    128000, 0);
+  if(!genAna_)      tree->Branch("Cent",    &centval, "cent/D");
+  else              tree->Branch("b",       &b,       "b/D");
+  if(Branch_V2True) tree->Branch("V2True",  &V2True,  "V2True/D");
+  if(Branch_Vtx)    tree->Branch("Vtx",     &vtx,     "vtx/D");
+  if(Branch_Run)    tree->Branch("Run",     &runno_,  "run/i");
+  if(Branch_mult)   tree->Branch("mult",    "TH2I",   &mult,    128000, 0);
   if(Branch_sumw){
     tree->Branch("sumw",    "TH2D",   &sumw,    128000, 0);
     tree->Branch("sumwqx2", "TH2D",   &sumwqx2, 128000, 0);
@@ -408,8 +430,8 @@ EbyEAnalyzer::HFQVectors(const edm::Event& iEvent)
         double w = tower_energyet;
 
         if( tower_eta >= EPEtaMin1[i] && tower_eta < EPEtaMax1[i] ){
-          qnHFx_EP[i]  += w * TMath::Cos( 2. * tower_phi );
-          qnHFy_EP[i]  += w * TMath::Sin( 2. * tower_phi );
+          qnHFx_EP[i]  += w * TMath::Cos( 2. * tower_phi ); 
+          qnHFy_EP[i]  += w * TMath::Sin( 2. * tower_phi ); 
           sumET_EP[i]  += w;
         }
 
@@ -431,7 +453,7 @@ EbyEAnalyzer::GENTrackerQVectors(const edm::Event& iEvent)
       ++itTrack
       ){
 
-    if( itTrack->status()!=1 )           continue;
+    if( itTrack->status() != 1 )         continue;
     if( itTrack->charge() == 0 )         continue;
     if( itTrack->pt() < minpt_ )         continue;
     if( itTrack->pt() > maxpt_ )         continue;
@@ -444,7 +466,7 @@ EbyEAnalyzer::GENTrackerQVectors(const edm::Event& iEvent)
     sumwqy3 -> Fill(itTrack->pt(), itTrack->eta(), TMath::Sin(3.*itTrack->phi())/w);
     sumwqx4 -> Fill(itTrack->pt(), itTrack->eta(), TMath::Cos(4.*itTrack->phi())/w);
     sumwqy4 -> Fill(itTrack->pt(), itTrack->eta(), TMath::Sin(4.*itTrack->phi())/w);
-    
+
     mult->Fill(itTrack->pt(), itTrack->eta(), 1 );
     sumw->Fill(itTrack->pt(), itTrack->eta(), 1./w);
 
@@ -466,47 +488,58 @@ EbyEAnalyzer::RECOTrackerQVectors(const edm::Event& iEvent, math::XYZPoint vv1)
     double dz          = itTrack->dz(vv1);
     double dzerror     = sqrt(itTrack->dzError()*itTrack->dzError()+vzError*vzError);
     double algoOffline = itTrack->originalAlgo();
-    bool pixTrax       = 0;
     int nHits          = itTrack->numberOfValidHits();
+    int nLayers        = itTrack->hitPattern().trackerLayersWithMeasurement();
+    double chi2NDF     = itTrack->normalizedChi2();
 
-    double trackpt = itTrack->pt();
+    bool pixTrax       = 0;
+    bool highPurity    = itTrack->quality(reco::TrackBase::highPurity);
+    double tracketa    = itTrack->eta();
+    double trackpt     = itTrack->pt();
+    double ptErr       = itTrack->ptError();
+    int trackCharge    = itTrack->charge();
+
     if( smearPt_ ) trackpt = SmearPt(trackpt, smearPtPct_);
-    
-    if( !itTrack->quality(reco::TrackBase::highPurity) ) continue;
-    if( itTrack->charge() == 0 )                         continue;
-    if( trackpt < minpt_ )                               continue;
-    if( trackpt > maxpt_ )                               continue;
-    if( fabs(itTrack->eta()) > etaMax_ )                 continue;
 
-    //-- Pixel Tracks
-    if(trackpt < 2.4 && (nHits==3 || nHits==4 || nHits==5 || nHits==6) ) pixTrax = 1;
+    if( !highPurity )              continue;
+    if( trackCharge == 0 )         continue;
+    if( trackpt < minpt_ )         continue;
+    if( trackpt > maxpt_ )         continue;
+    if( fabs(tracketa) > etaMax_ ) continue;
 
-    //-- Not Pixel Tracks
-    if( !pixTrax ){
+    if(trackpt < 2.4 && (nHits==3 || nHits==4 || nHits==5 || nHits==6) ) pixTrax = true;
+
+    if( pixTrax ){
+      //-- Pixel track cuts
+      if( (chi2NDF/(double)nLayers) > pixChi2NLayerCut_) continue;
+      if( fabs( dz/dzerror ) > pixd0Cut_)                continue;
+    }
+    else{
+      //-- General track cuts
       if( nHits < 11 )                                                                                continue;
       if( fabs( dz/dzerror ) > dzCut_ )                                                               continue;
       if( fabs( d0/derror ) > d0Cut_ )                                                                continue;
-      if( itTrack->ptError()/trackpt > ptResCut_ )                                                    continue;
-      if( itTrack->normalizedChi2() / itTrack->hitPattern().trackerLayersWithMeasurement() > 0.15 )   continue;
+      if( ptErr/trackpt > ptResCut_ )                                                                 continue;
+      if( (chi2NDF/(double)nLayers) > 0.15 )                                                          continue;
       if( trackpt > 2.4 && !(algoOffline==4 || algoOffline==5 || algoOffline==6 || algoOffline==7 ) ) continue;
     }
 
     double w = 1.;
-    if(useTeff_) w = teff->getWeight(trackpt, itTrack->eta(), hiBinHF);
-    if(usePixelTeff_) w = pxTeff->GetEff(centval, trackpt, itTrack->eta());
+    if(useTeff_) w = teff->getWeight(trackpt, tracketa, hiBinHF);
+    if(usePixelTeff_) w = pxTeff->GetEff(centval, trackpt, tracketa);
     if(w == 0.0) continue;
     if(Subevent_Standard){
-      sumwqx2 -> Fill(trackpt, itTrack->eta(), TMath::Cos(2.*itTrack->phi())/w);
-      sumwqy2 -> Fill(trackpt, itTrack->eta(), TMath::Sin(2.*itTrack->phi())/w);
-      sumwqx3 -> Fill(trackpt, itTrack->eta(), TMath::Cos(3.*itTrack->phi())/w);
-      sumwqy3 -> Fill(trackpt, itTrack->eta(), TMath::Sin(3.*itTrack->phi())/w);
-      sumwqx4 -> Fill(trackpt, itTrack->eta(), TMath::Cos(4.*itTrack->phi())/w);
-      sumwqy4 -> Fill(trackpt, itTrack->eta(), TMath::Sin(4.*itTrack->phi())/w);
-      
-      mult->Fill(trackpt, itTrack->eta(), 1 );
-      sumw->Fill(trackpt, itTrack->eta(), 1./w);
+      sumwqx2 -> Fill(trackpt, tracketa, TMath::Cos(2.*itTrack->phi())/w);
+      sumwqy2 -> Fill(trackpt, tracketa, TMath::Sin(2.*itTrack->phi())/w);
+      sumwqx3 -> Fill(trackpt, tracketa, TMath::Cos(3.*itTrack->phi())/w);
+      sumwqy3 -> Fill(trackpt, tracketa, TMath::Sin(3.*itTrack->phi())/w);
+      sumwqx4 -> Fill(trackpt, tracketa, TMath::Cos(4.*itTrack->phi())/w);
+      sumwqy4 -> Fill(trackpt, tracketa, TMath::Sin(4.*itTrack->phi())/w);
+
+      mult->Fill(trackpt, tracketa, 1 );
+      sumw->Fill(trackpt, tracketa, 1./w);
     }
-    
+
   } //-- end track loop
 
 }
@@ -529,63 +562,90 @@ EbyEAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //
   //Get Centrality
   //
-  edm::Handle<int> cbin_;
-  iEvent.getByToken(CentralityBinTag_,cbin_);
-  int hiBin = *cbin_; //HF tower centrality
-  hiBinHF = hiBin;
-  centval = 0.5 * (hiBinHF + 0.5);
-  if(centval > centmax_) return;
+  if( !genAna_ ){
+    edm::Handle<int> cbin_;
+    iEvent.getByToken(CentralityBinTag_,cbin_);
+    int hiBin = *cbin_; //HF tower centrality
+    hiBinHF = hiBin;
+    centval = 0.5 * (hiBinHF + 0.5);
+    if(centval > centmax_) return;
+  }
+  else{
+    iEvent.getByToken( HepMCEvtToken_ , HepMCEvt_ ) ;
+    HepMC::GenEvent * genevt = (HepMC::GenEvent *)HepMCEvt_->GetEvent();
+    HepMC::HeavyIon * hi = genevt->heavy_ion();
+    b = hi->impact_parameter();
+  }
 
-  //
-  // Get Vertex
-  //
-  iEvent.getByToken(vertexToken_, vertex_);
-  const reco::VertexCollection * vertices3 = vertex_.product();
-  vs_sell = vertices3->size();
-  if(vs_sell>0) {
-    vzr_sell = vertices3->begin()->z();
-  } else vzr_sell = -999.9;
 
-  vtx = vzr_sell;
+  if(genAna_){
 
-  VertexCollection recoV = *vertex_;
+    if(Branch_V2True){
+      iEvent.getByToken(V2TrueToken_, V2True_);
+      V2True = *V2True_;
+    }
 
-  int primaryvtx = 0;
-  math::XYZPoint vv1( recoV[primaryvtx].position().x(), recoV[primaryvtx].position().y(), recoV[primaryvtx].position().z() );
-  vxError = recoV[primaryvtx].xError();
-  vyError = recoV[primaryvtx].yError();
-  vzError = recoV[primaryvtx].zError();
-  double vz = recoV[primaryvtx].z();
+    sumw->Reset();
+    sumwqx2->Reset();
+    sumwqy2->Reset();
+    sumwqx3->Reset();
+    sumwqy3->Reset();
+    sumwqx4->Reset();
+    sumwqy4->Reset();
+    mult->Reset();
+    GENTrackerQVectors(iEvent);
+  }
+  else{
+    //
+    // Get Vertex
+    //
+    iEvent.getByToken(vertexToken_, vertex_);
+    const reco::VertexCollection * vertices3 = vertex_.product();
+    vs_sell = vertices3->size();
+    if(vs_sell>0) {
+      vzr_sell = vertices3->begin()->z();
+    } else vzr_sell = -999.9;
 
-  bool vSize    = true;
-  bool vZaccept = true;
-  bool vTrkSize = true;
+    vtx = vzr_sell;
 
-  if( (int) recoV.size() > nvtx_ )         vSize    = false;
-  if( vz < minvz_ || vz > maxvz_ )         vZaccept = false;
-  if( recoV[primaryvtx].tracksSize() < 1 ) vTrkSize = false;
+    VertexCollection recoV = *vertex_;
 
-  if( !vSize || !vZaccept || !vTrkSize ) return;
+    int primaryvtx = 0;
+    math::XYZPoint vv1( recoV[primaryvtx].position().x(), recoV[primaryvtx].position().y(), recoV[primaryvtx].position().z() );
+    vxError = recoV[primaryvtx].xError();
+    vyError = recoV[primaryvtx].yError();
+    vzError = recoV[primaryvtx].zError();
+    double vz = recoV[primaryvtx].z();
+
+    bool vSize    = true;
+    bool vZaccept = true;
+    bool vTrkSize = true;
+
+    if( (int) recoV.size() > nvtx_ )         vSize    = false;
+    if( vz < minvz_ || vz > maxvz_ )         vZaccept = false;
+    if( recoV[primaryvtx].tracksSize() < 1 ) vTrkSize = false;
+
+    if( !vSize || !vZaccept || !vTrkSize ) return;
+
+    //
+    // Tracking part
+    //
+    sumw->Reset();
+    sumwqx2->Reset();
+    sumwqy2->Reset();
+    sumwqx3->Reset();
+    sumwqy3->Reset();
+    sumwqx4->Reset();
+    sumwqy4->Reset();
+    mult->Reset();
+    RECOTrackerQVectors(iEvent, vv1);
+  }
 
   //
   // Calo part
   //
   if(Branch_HFqn) HFQVectors(iEvent);
 
-  //
-  // Tracking part
-  //
-  sumw->Reset();
-  sumwqx2->Reset();
-  sumwqy2->Reset();
-  sumwqx3->Reset();
-  sumwqy3->Reset();
-  sumwqx4->Reset();
-  sumwqy4->Reset();
-  mult->Reset();
-
-  if(genAna_) GENTrackerQVectors(iEvent);
-  else        RECOTrackerQVectors(iEvent, vv1);
   tree->Fill();
 
 }

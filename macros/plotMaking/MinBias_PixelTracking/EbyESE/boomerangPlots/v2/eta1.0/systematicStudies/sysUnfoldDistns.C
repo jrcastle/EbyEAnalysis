@@ -786,6 +786,7 @@ void sysUnfoldDistns(){
     cCovRespUnf[icent]->cd(1);
     cCovRespUnf[icent]->cd(1)->SetLogz();
     hResponse[icent]->GetZaxis()->SetNdivisions(508);
+    hResponse[icent]->GetYaxis()->SetTitle( Form( "v_{%i}", norder_) );
     //hResponse[icent]->Scale(1./hResponse[icent]->Integral());
     hResponse[icent]->Draw("colz");
     cCovRespUnf[icent]->Update();
