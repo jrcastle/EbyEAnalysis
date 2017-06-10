@@ -25,13 +25,22 @@ void svdComp(){
   const int norder_ = 2;
   double ratioMin = 0.95;
   double ratioMax = 1.05;
-  double ratioMinVn8Vn6 = 0.98;
-  double ratioMaxVn8Vn6 = 1.003;
+  double ratioMinVn8Vn6 = 0.99;
+  double ratioMaxVn8Vn6 = 1.01;
   double ratioMinG1E = 0.5;
   double ratioMaxG1E = 3.2;
 
   double histMin = -0.2;
   double histMax = 1.2;
+
+  double cumuMin = 0.00;
+  double cumuMax = 0.13;
+  double cumuRatMin = 0.95;
+  double cumuRatMax = 1.03;
+  double cumuRatMin86 = 0.997;
+  double cumuRatMax86 = 1.003;
+  double g1eMin = -1;
+  double g1eMax = 0.5;
 
   //-- D'Agostini
   TFile * fDAgUnf;
@@ -141,6 +150,29 @@ void svdComp(){
   grVn4RawDAgSys->GetYaxis()->SetTitle( Form("v_{%i}{4}", norder_) );
   grVn6RawDAgSys->GetYaxis()->SetTitle( Form("v_{%i}{6}", norder_) );
   grVn8RawDAgSys->GetYaxis()->SetTitle( Form("v_{%i}{8}", norder_) );
+  grvn6vn4RatioDAgSys->GetYaxis()->SetTitle( Form("v_{%i}{6}/v_{%i}{4}", norder_, norder_) );
+  grvn8vn4RatioDAgSys->GetYaxis()->SetTitle( Form("v_{%i}{8}/v_{%i}{4}", norder_, norder_) );
+  grvn8vn6RatioDAgSys->GetYaxis()->SetTitle( Form("v_{%i}{8}/v_{%i}{6}", norder_, norder_) );
+  grGamma1ExpDAgSys->GetYaxis()->SetTitle("#gamma_{1}^{exp}");
+
+  grVn2RawDAgSys->GetYaxis()->SetRangeUser(cumuMin, cumuMax);
+  grVn4RawDAgSys->GetYaxis()->SetRangeUser(cumuMin, cumuMax);
+  grVn6RawDAgSys->GetYaxis()->SetRangeUser(cumuMin, cumuMax);
+  grVn8RawDAgSys->GetYaxis()->SetRangeUser(cumuMin, cumuMax);
+  grvn6vn4RatioDAgSys->GetYaxis()->SetRangeUser(cumuRatMin, cumuRatMax);
+  grvn8vn4RatioDAgSys->GetYaxis()->SetRangeUser(cumuRatMin, cumuRatMax);
+  grvn8vn6RatioDAgSys->GetYaxis()->SetRangeUser(cumuRatMin86, cumuRatMax86);
+  grGamma1ExpDAgSys->GetYaxis()->SetRangeUser(g1eMin, g1eMax);
+
+  grVn2RawDAgSys->GetXaxis()->SetTitle("Centrality %");
+  grVn4RawDAgSys->GetXaxis()->SetTitle("Centrality %");
+  grVn6RawDAgSys->GetXaxis()->SetTitle("Centrality %");
+  grVn8RawDAgSys->GetXaxis()->SetTitle("Centrality %");
+  grvn6vn4RatioDAgSys->GetXaxis()->SetTitle("Centrality %");
+  grvn8vn4RatioDAgSys->GetXaxis()->SetTitle("Centrality %");
+  grvn8vn6RatioDAgSys->GetXaxis()->SetTitle("Centrality %");
+  grGamma1ExpDAgSys->GetXaxis()->SetTitle("Centrality %");
+
 
   //-- Get SVD objects
   fSVDPhysics = new TFile( "../../systematicStudies/SVDPhysics.root" );
@@ -294,15 +326,32 @@ void svdComp(){
   grvn8vn6Ratio_SVD_DAg    = new TGraphErrors(NCENT, centBinCenter, vn8vn6SVD_DAg, CERR, vn8vn6SVD_DAg_err);
   grGamma1ExpRatio_SVD_DAg = new TGraphErrors(NCENT, centBinCenter, g1eSVD_DAg,    CERR, g1eSVD_DAg_err);
 
-  formatGraph(grVn2RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{2} Ratio: SVD/DAg", norder_),                    9,         20, "grVn2RawRatio_SVD_DAg");
-  formatGraph(grVn4RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{4} Ratio: SVD/DAg", norder_),                    kSpring+4, 20, "grVn4RawRatio_SVD_DAg");
-  formatGraph(grVn6RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{6} Ratio: SVD/DAg", norder_),                    6,         20, "grVn6RawRatio_SVD_DAg");
-  formatGraph(grVn8RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{8} Ratio: SVD/DAg", norder_),                    kOrange+7, 20, "grVn8RawRatio_SVD_DAg");
-  formatGraph(grvn6vn4Ratio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{6}/v_{%i}{4} Ratio: SVD/DAg", norder_, norder_), 4,         20, "grvn6vn4Ratio_SVD_DAg");
-  formatGraph(grvn8vn4Ratio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{8}/v_{%i}{4} Ratio: SVD/DAg", norder_, norder_), kGreen+2,  20, "grvn8vn4Ratio_SVD_DAg");
-  formatGraph(grvn8vn6Ratio_SVD_DAg,    "Centrality %", ratioMinVn8Vn6, ratioMaxVn8Vn6, Form("v_{%i}{8}/v_{%i}{6} Ratio: SVD/DAg", norder_, norder_), kViolet-1, 20, "grvn8vn6Ratio_SVD_DAg");
-  formatGraph(grGamma1ExpRatio_SVD_DAg, "Centrality %", ratioMinG1E,    ratioMaxG1E,    "#gamma_{1}^{exp} Ratio: SVD/DAg",                            2,         20, "grGamma1ExpRatio_SVD_DAg");
+  formatGraph(grVn2RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{2} Ratio: SVD/DAg", norder_),                    1, 20, "grVn2RawRatio_SVD_DAg");
+  formatGraph(grVn4RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{4} Ratio: SVD/DAg", norder_),                    1, 20, "grVn4RawRatio_SVD_DAg");
+  formatGraph(grVn6RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{6} Ratio: SVD/DAg", norder_),                    1, 20, "grVn6RawRatio_SVD_DAg");
+  formatGraph(grVn8RawRatio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{8} Ratio: SVD/DAg", norder_),                    1, 20, "grVn8RawRatio_SVD_DAg");
+  formatGraph(grvn6vn4Ratio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{6}/v_{%i}{4} Ratio: SVD/DAg", norder_, norder_), 1, 20, "grvn6vn4Ratio_SVD_DAg");
+  formatGraph(grvn8vn4Ratio_SVD_DAg,    "Centrality %", ratioMin,       ratioMax,       Form("v_{%i}{8}/v_{%i}{4} Ratio: SVD/DAg", norder_, norder_), 1, 20, "grvn8vn4Ratio_SVD_DAg");
+  formatGraph(grvn8vn6Ratio_SVD_DAg,    "Centrality %", ratioMinVn8Vn6, ratioMaxVn8Vn6, Form("v_{%i}{8}/v_{%i}{6} Ratio: SVD/DAg", norder_, norder_), 1, 20, "grvn8vn6Ratio_SVD_DAg");
+  formatGraph(grGamma1ExpRatio_SVD_DAg, "Centrality %", ratioMinG1E,    ratioMaxG1E,    "#gamma_{1}^{exp} Ratio: SVD/DAg",                            1, 20, "grGamma1ExpRatio_SVD_DAg");
 
+  grVn2RawSVD->SetLineColor(1);
+  grVn4RawSVD->SetLineColor(1);
+  grVn6RawSVD->SetLineColor(1);
+  grVn8RawSVD->SetLineColor(1);
+  grvn6vn4RatioSVD->SetLineColor(1);
+  grvn8vn4RatioSVD->SetLineColor(1);
+  grvn8vn6RatioSVD->SetLineColor(1);
+  grGamma1ExpSVD->SetLineColor(1);
+
+  grVn2RawSVD->SetMarkerColor(1);
+  grVn4RawSVD->SetMarkerColor(1);
+  grVn6RawSVD->SetMarkerColor(1);
+  grVn8RawSVD->SetMarkerColor(1);
+  grvn6vn4RatioSVD->SetMarkerColor(1);
+  grvn8vn4RatioSVD->SetMarkerColor(1);
+  grvn8vn6RatioSVD->SetMarkerColor(1);
+  grGamma1ExpSVD->SetMarkerColor(1);
 
   //-- DRAW
 
@@ -339,62 +388,74 @@ void svdComp(){
   TCanvas * cCumu = new TCanvas("cCumu", "cCumu", 2000, 1000);
   cCumu->Divide(4, 2);
 
-  cCumu->cd(1);
+  double mar = 0.2;
+  double offs = 1.6;
+
+  grVn2RawDAgSys->GetYaxis()->SetTitleOffset(offs);
+  grVn4RawDAgSys->GetYaxis()->SetTitleOffset(offs);
+  grVn6RawDAgSys->GetYaxis()->SetTitleOffset(offs);
+  grVn8RawDAgSys->GetYaxis()->SetTitleOffset(offs);
+  grVn2RawRatio_SVD_DAg->GetYaxis()->SetTitleOffset(offs);
+  grVn4RawRatio_SVD_DAg->GetYaxis()->SetTitleOffset(offs);
+  grVn6RawRatio_SVD_DAg->GetYaxis()->SetTitleOffset(offs);
+  grVn8RawRatio_SVD_DAg->GetYaxis()->SetTitleOffset(offs);
+
+  cCumu->cd(1)->SetLeftMargin(mar);
   grVn2RawDAgSys->Draw("apE2");
   grVn2RawDAg->Draw("psame");
   grVn2RawSVD->Draw("psame");
   legvn2->Draw("same");
 
-  cCumu->cd(2);
+  cCumu->cd(2)->SetLeftMargin(mar);
   grVn4RawDAgSys->Draw("apE2");
   grVn4RawDAg->Draw("psame");
   grVn4RawSVD->Draw("psame");
   legvn4->Draw("same");
 
-  cCumu->cd(3);
+  cCumu->cd(3)->SetLeftMargin(mar);
   grVn6RawDAgSys->Draw("apE2");
   grVn6RawDAg->Draw("psame");
   grVn6RawSVD->Draw("psame");
   legvn6->Draw("same");
 
-  cCumu->cd(4);
+  cCumu->cd(4)->SetLeftMargin(mar);
   grVn8RawDAgSys->Draw("apE2");
   grVn8RawDAg->Draw("psame");
   grVn8RawSVD->Draw("psame");
   legvn8->Draw("same");
 
-  cCumu->cd(5);
+  cCumu->cd(5)->SetLeftMargin(mar);
   grVn2RawRatio_SVD_DAg->Draw("ap");
   lOne->Draw("same");
 
-  cCumu->cd(6);
+  cCumu->cd(6)->SetLeftMargin(mar);
   grVn4RawRatio_SVD_DAg->Draw("ap");
   lOne->Draw("same");
 
-  cCumu->cd(7);
+  cCumu->cd(7)->SetLeftMargin(mar);
   grVn6RawRatio_SVD_DAg->Draw("ap");
   lOne->Draw("same");
 
-  cCumu->cd(8);
+  cCumu->cd(8)->SetLeftMargin(mar);
   grVn8RawRatio_SVD_DAg->Draw("ap");
   lOne->Draw("same");
 
   cCumu->SaveAs("cumu.pdf");
 
   //-- cumu Ratios
-  TLegend * legvn6vn4 = new TLegend(0.1846, 0.1898, 0.5894, 0.3560);
+  TLegend * legvn6vn4 = new TLegend(0.2146, 0.1898, 0.6194, 0.3560);
   legvn6vn4->SetBorderSize(0);
   legvn6vn4->SetFillStyle(0);
   legvn6vn4->AddEntry(grvn6vn4RatioDAg, "D'Agostini", "lp");
   legvn6vn4->AddEntry(grvn6vn4RatioSVD, "SVD",        "lp");
  
-  TLegend * legvn8vn4 = new TLegend(0.1846, 0.1898, 0.5894, 0.3560);
+  TLegend * legvn8vn4 = new TLegend(0.2146, 0.1898, 0.6194, 0.3560);
   legvn8vn4->SetBorderSize(0);
   legvn8vn4->SetFillStyle(0);
   legvn8vn4->AddEntry(grvn8vn4RatioDAg, "D'Agostini", "lp");
   legvn8vn4->AddEntry(grvn8vn4RatioSVD, "SVD",        "lp");
 
-  TLegend * legvn8vn6 = new TLegend(0.1846, 0.1898, 0.5894, 0.3560);
+  TLegend * legvn8vn6 = new TLegend(0.2146, 0.1898, 0.6194, 0.3560);
   legvn8vn6->SetBorderSize(0);
   legvn8vn6->SetFillStyle(0);
   legvn8vn6->AddEntry(grvn8vn6RatioDAg, "D'Agostini", "lp");
@@ -403,33 +464,40 @@ void svdComp(){
   TCanvas * cCumuRatio = new TCanvas("cCumuRatio", "cCumuRatio", 1500, 1000);
   cCumuRatio->Divide(3, 2);
 
-  cCumuRatio->cd(1);
+  grvn6vn4RatioDAgSys->GetYaxis()->SetTitleOffset(offs);
+  grvn8vn4RatioDAgSys->GetYaxis()->SetTitleOffset(offs);
+  grvn8vn6RatioDAgSys->GetYaxis()->SetTitleOffset(offs+0.1);
+  grvn6vn4Ratio_SVD_DAg->GetYaxis()->SetTitleOffset(offs);
+  grvn8vn4Ratio_SVD_DAg->GetYaxis()->SetTitleOffset(offs);
+  grvn8vn6Ratio_SVD_DAg->GetYaxis()->SetTitleOffset(offs+0.1);
+
+  cCumuRatio->cd(1)->SetLeftMargin(mar);
   grvn6vn4RatioDAgSys->Draw("apE2");
   grvn6vn4RatioDAg->Draw("psame");
   grvn6vn4RatioSVD->Draw("psame");
   legvn6vn4->Draw("same");
 
-  cCumuRatio->cd(2);
+  cCumuRatio->cd(2)->SetLeftMargin(mar);
   grvn8vn4RatioDAgSys->Draw("apE2");
   grvn8vn4RatioDAg->Draw("psame");
   grvn8vn4RatioSVD->Draw("psame");
   legvn8vn4->Draw("same");
 
-  cCumuRatio->cd(3);
+  cCumuRatio->cd(3)->SetLeftMargin(mar);
   grvn8vn6RatioDAgSys->Draw("apE2");
   grvn8vn6RatioDAg->Draw("psame");
   grvn8vn6RatioSVD->Draw("psame");
   legvn8vn6->Draw("same");
 
-  cCumuRatio->cd(4);
+  cCumuRatio->cd(4)->SetLeftMargin(mar);
   grvn6vn4Ratio_SVD_DAg->Draw("ap");
   lOne->Draw("same");
 
-  cCumuRatio->cd(5);
+  cCumuRatio->cd(5)->SetLeftMargin(mar);
   grvn8vn4Ratio_SVD_DAg->Draw("ap");
   lOne->Draw("same");
 
-  cCumuRatio->cd(6);
+  cCumuRatio->cd(6)->SetLeftMargin(mar);
   grvn8vn6Ratio_SVD_DAg->Draw("ap");
   lOne->Draw("same");
 

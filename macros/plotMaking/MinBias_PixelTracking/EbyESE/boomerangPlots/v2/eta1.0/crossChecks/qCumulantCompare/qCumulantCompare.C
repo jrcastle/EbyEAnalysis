@@ -35,7 +35,7 @@ void qCumulantCompare(){
   double ratioMax = 1.03;
 
   double cumuMin = 0.0;
-  double cumuMax = 0.15;
+  double cumuMax = 0.13;
 
   double ratioMinVn8Vn6 = 0.97;
   double ratioMaxVn8Vn6 = 1.004;
@@ -173,6 +173,11 @@ void qCumulantCompare(){
   grEbyEVn8Vn4_sys = (TGraphErrors*) fEbyE->Get("grvn8vn4RatioSys");
   grEbyEVn8Vn6_sys = (TGraphErrors*) fEbyE->Get("grvn8vn6RatioSys");
   grEbyEG1E_sys    = (TGraphErrors*) fEbyE->Get("grGamma1ExpSys");
+
+  grEbyEVn2_sys->GetYaxis()->SetRangeUser(cumuMin, cumuMax); 
+  grEbyEVn4_sys->GetYaxis()->SetRangeUser(cumuMin, cumuMax); 
+  grEbyEVn6_sys->GetYaxis()->SetRangeUser(cumuMin, cumuMax); 
+  grEbyEVn8_sys->GetYaxis()->SetRangeUser(cumuMin, cumuMax); 
 
   //-- Get Quan's values
   fQuan = new TFile("outGraph.root");
@@ -350,10 +355,10 @@ void qCumulantCompare(){
   grVn6_RatioQuanToEbyE = new TGraphErrors(NQCENT, quanCentBinCenter, Vn6_RatioQuanToEbyE, c_err, Vn6_RatioQuanToEbyE_err);
   grVn8_RatioQuanToEbyE = new TGraphErrors(NQCENT, quanCentBinCenter, Vn8_RatioQuanToEbyE, c_err, Vn8_RatioQuanToEbyE_err);
 
-  formatGraph(grVn2_RatioQuanToEbyE, "Centrality %", 0.9,   1.6,   "Ratio: QCumu / EbyE", 1, 21, "grVn2_RatioQuanToEbyE");
-  formatGraph(grVn4_RatioQuanToEbyE, "Centrality %", rMinC, rMaxC, "Ratio: QCumu / EbyE", 1, 21, "grVn4_RatioQuanToEbyE");
-  formatGraph(grVn6_RatioQuanToEbyE, "Centrality %", rMinC, rMaxC, "Ratio: QCumu / EbyE", 1, 21, "grVn6_RatioQuanToEbyE");
-  formatGraph(grVn8_RatioQuanToEbyE, "Centrality %", rMinC, rMaxC, "Ratio: QCumu / EbyE", 1, 21, "grVn8_RatioQuanToEbyE");
+  formatGraph(grVn2_RatioQuanToEbyE, "Centrality %", 0.9,   1.6,   "Ratio: #it{m}-particle / Unfolding", 1, 21, "grVn2_RatioQuanToEbyE");
+  formatGraph(grVn4_RatioQuanToEbyE, "Centrality %", rMinC, rMaxC, "Ratio: #it{m}-particle / Unfolding", 1, 21, "grVn4_RatioQuanToEbyE");
+  formatGraph(grVn6_RatioQuanToEbyE, "Centrality %", rMinC, rMaxC, "Ratio: #it{m}-particle / Unfolding", 1, 21, "grVn6_RatioQuanToEbyE");
+  formatGraph(grVn8_RatioQuanToEbyE, "Centrality %", rMinC, rMaxC, "Ratio: #it{m}-particle / Unfolding", 1, 21, "grVn8_RatioQuanToEbyE");
 
   grVn6Vn4_RatioQuanToEbyE = new TGraphErrors(NQCENT, quanCentBinCenter, Vn6Vn4_RatioQuanToEbyE, c_err, Vn6Vn4_RatioQuanToEbyE_err);
   grVn8Vn4_RatioQuanToEbyE = new TGraphErrors(NQCENT, quanCentBinCenter, Vn8Vn4_RatioQuanToEbyE, c_err, Vn8Vn4_RatioQuanToEbyE_err);
@@ -370,29 +375,35 @@ void qCumulantCompare(){
   TLegend * legvn2 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn2->SetBorderSize(0);
   legvn2->SetFillStyle(0);
-  legvn2->AddEntry(grEbyEVn2, "EbyE", "lp");
-  legvn2->AddEntry(grQuanVn2, "Q-Cumulant", "lp");
+  legvn2->AddEntry(grEbyEVn2, "Unfolding", "lp");
+  legvn2->AddEntry(grQuanVn2, "#it{m}-particle", "lp");
 
   TLegend * legvn4 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn4->SetBorderSize(0);
   legvn4->SetFillStyle(0);
-  legvn4->AddEntry(grEbyEVn4, "EbyE", "lp");
-  legvn4->AddEntry(grQuanVn4, "Q-Cumulant", "lp");
+  legvn4->AddEntry(grEbyEVn4, "Unfolding", "lp");
+  legvn4->AddEntry(grQuanVn4, "#it{m}-particle", "lp");
 
   TLegend * legvn6 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn6->SetBorderSize(0);
   legvn6->SetFillStyle(0);
-  legvn6->AddEntry(grEbyEVn6, "EbyE", "lp");
-  legvn6->AddEntry(grQuanVn6, "Q-Cumulant", "lp");
+  legvn6->AddEntry(grEbyEVn6, "Unfolding", "lp");
+  legvn6->AddEntry(grQuanVn6, "#it{m}-particle", "lp");
 
   TLegend * legvn8 = new TLegend(0.4220, 0.1909, 0.9409, 0.3834);
   legvn8->SetBorderSize(0);
   legvn8->SetFillStyle(0);
-  legvn8->AddEntry(grEbyEVn8, "EbyE", "lp");
-  legvn8->AddEntry(grQuanVn8, "Q-Cumulant", "lp");
+  legvn8->AddEntry(grEbyEVn8, "Unfolding", "lp");
+  legvn8->AddEntry(grQuanVn8, "#it{m}-particle", "lp");
 
   TCanvas * cCumu = new TCanvas("cCumu", "cCumu", 2000, 500);
   cCumu->Divide(4, 1);
+
+  double offs = 1.6;
+  grEbyEVn2_sys->GetYaxis()->SetTitleOffset(offs);
+  grEbyEVn4_sys->GetYaxis()->SetTitleOffset(offs);
+  grEbyEVn6_sys->GetYaxis()->SetTitleOffset(offs);
+  grEbyEVn8_sys->GetYaxis()->SetTitleOffset(offs);
 
   cCumu->cd(1);
   cCumu->cd(1)->SetLeftMargin(0.19);
@@ -438,6 +449,11 @@ void qCumulantCompare(){
 
   TCanvas * cCumu_RQtoE = new TCanvas("cCumu_RQtoE", "cCumu_RQtoE", 2000, 500);
   cCumu_RQtoE->Divide(4, 1);
+
+  grVn2_RatioQuanToEbyE->GetYaxis()->SetTitleOffset(offs);
+  grVn4_RatioQuanToEbyE->GetYaxis()->SetTitleOffset(offs);
+  grVn6_RatioQuanToEbyE->GetYaxis()->SetTitleOffset(offs);
+  grVn8_RatioQuanToEbyE->GetYaxis()->SetTitleOffset(offs);
 
   cCumu_RQtoE->cd(1);
   cCumu_RQtoE->cd(1)->SetLeftMargin(0.19);

@@ -29,8 +29,8 @@ void sysChi2Cutoff(){
   bool studTResp = 0;
   bool dataResp  = 1;
 
-  double ratioGamma1ExpMin = 0.0;
-  double ratioGamma1ExpMax = 0.5;
+  double ratioGamma1ExpMin = 0.6;
+  double ratioGamma1ExpMax = 1.4;
   double ratioVn6Vn4Min    = 0.9;
   double ratioVn6Vn4Max    = 1.1;
   double ratioVn8Vn4Min    = 0.9;
@@ -422,19 +422,19 @@ void sysChi2Cutoff(){
     ratioChi2_21_vn4[icent]        = unfoldVn4_RatioToChi21[icent][3];
     ratioChi2_21_vn6[icent]        = unfoldVn6_RatioToChi21[icent][3];
     ratioChi2_21_vn8[icent]        = unfoldVn8_RatioToChi21[icent][3];
-    ratioChi2_21_gamma1exp[icent]  = fabs( 1.0 - unfoldGamma1Exp_RatioToChi21[icent][3] );
+    ratioChi2_21_gamma1exp[icent]  = unfoldGamma1Exp_RatioToChi21[icent][3];
     ratioChi2_21_vn6vn4[icent]     = unfoldVn6Vn4_RatioToChi21[icent][3];
     ratioChi2_21_vn8vn4[icent]     = unfoldVn8Vn4_RatioToChi21[icent][3];
     ratioChi2_21_vn8vn6[icent]     = unfoldVn8Vn6_RatioToChi21[icent][3];
     ratioChi2_21_vn46_vn68[icent]  = unfoldVn46_Vn68_RatioToChi21[icent][3];
 
-    std::cout<<ratioChi2_21_vn46_vn68[icent]<<std::endl;
+    std::cout<<ratioChi2_21_gamma1exp[icent]<<std::endl;
 
     ratioChi2_21_vn2_staterr[icent]        = unfoldVn2_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn4_staterr[icent]        = unfoldVn4_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn6_staterr[icent]        = unfoldVn6_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn8_staterr[icent]        = unfoldVn8_RatioToChi21_staterr[icent][3];
-    ratioChi2_21_gamma1exp_staterr[icent]  = fabs( unfoldGamma1Exp_RatioToChi21_staterr[icent][3] );
+    ratioChi2_21_gamma1exp_staterr[icent]  = unfoldGamma1Exp_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn6vn4_staterr[icent]     = unfoldVn6Vn4_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn8vn4_staterr[icent]     = unfoldVn8Vn4_RatioToChi21_staterr[icent][3];
     ratioChi2_21_vn8vn6_staterr[icent]     = unfoldVn8Vn6_RatioToChi21_staterr[icent][3];
@@ -453,7 +453,7 @@ void sysChi2Cutoff(){
   formatGraph(grRatioChi2_21_vn8, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} [#chi^{2}=2]/[#chi^{2}=1]", norder_), kOrange+7, 27, "grRatioChi2_21_vn8");
 
   grRatioChi2_21_gamma1exp = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_gamma1exp, cErr, ratioChi2_21_gamma1exp_staterr);
-  formatGraph(grRatioChi2_21_gamma1exp, "Centrality %", ratioGamma1ExpMin, ratioGamma1ExpMax, "|1-#gamma_{1}^{exp} [#chi^{2}=2]/[#chi^{2}=1]|", 2, 20, "grRatioChi2_21_gamma1exp");
+  formatGraph(grRatioChi2_21_gamma1exp, "Centrality %", ratioGamma1ExpMin, ratioGamma1ExpMax, "#gamma_{1}^{exp} [#chi^{2}=2]/[#chi^{2}=1]", 2, 20, "grRatioChi2_21_gamma1exp");
   grRatioChi2_21_vn6vn4 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn6vn4, cErr, ratioChi2_21_vn6vn4_staterr);
   formatGraph(grRatioChi2_21_vn6vn4, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6}/v_{%i}{4} [#chi^{2}=2]/[#chi^{2}=1]", norder_, norder_), 4, 21, "grRatioChi2_21_vn6vn4");
   grRatioChi2_21_vn8vn4 = new TGraphErrors(NCENT, centBinCenter, ratioChi2_21_vn8vn4, cErr, ratioChi2_21_vn8vn4_staterr);
@@ -477,16 +477,25 @@ void sysChi2Cutoff(){
 
   TCanvas * cCumuCentDep = new TCanvas("cCumuCentDep","cCumuCentDep", 1000, 1000);
   cCumuCentDep->Divide(2,2);
-  cCumuCentDep->cd(1);
+  
+  double mar = 0.2;
+  double offs = 1.6;
+
+  grRatioChi2_21_vn2->GetYaxis()->SetTitleOffset(offs);
+  grRatioChi2_21_vn4->GetYaxis()->SetTitleOffset(offs);
+  grRatioChi2_21_vn6->GetYaxis()->SetTitleOffset(offs);
+  grRatioChi2_21_vn8->GetYaxis()->SetTitleOffset(offs);
+
+  cCumuCentDep->cd(1)->SetLeftMargin(mar);
   grRatioChi2_21_vn2->Draw("ap");
   line->Draw("same");
-  cCumuCentDep->cd(2);
+  cCumuCentDep->cd(2)->SetLeftMargin(mar);
   grRatioChi2_21_vn4->Draw("ap");
   line->Draw("same");
-  cCumuCentDep->cd(3);
+  cCumuCentDep->cd(3)->SetLeftMargin(mar);
   grRatioChi2_21_vn6->Draw("ap");
   line->Draw("same");
-  cCumuCentDep->cd(4);
+  cCumuCentDep->cd(4)->SetLeftMargin(mar);
   grRatioChi2_21_vn8->Draw("ap");
   line->Draw("same");
   cCumuCentDep->SaveAs("../../plots/systematicStudies/cSysChi2Cut_CumuCent.pdf" );
@@ -494,20 +503,23 @@ void sysChi2Cutoff(){
   TCanvas * cGamma1ExpCentDep = new TCanvas("cGamma1ExpCentDep","cGamma1ExpCentDep", 500, 500);
   cGamma1ExpCentDep->cd();
   grRatioChi2_21_gamma1exp->Draw("ap");
-  //line->Draw("same");
+  line->Draw("same");
   cGamma1ExpCentDep->SaveAs("../../plots/systematicStudies/cSysChi2Cut_Gamma1ExpCent.pdf" );
 
   TCanvas * cvnCumuRatioCentDep = new TCanvas("cvnCumuRatioCentDep","cvnCumuRatioCentDep", 1500, 500);
   cvnCumuRatioCentDep->Divide(3,1);
-  cvnCumuRatioCentDep->cd(1);
-  cvnCumuRatioCentDep->cd(1)->SetLeftMargin(0.2);
-  grRatioChi2_21_vn6vn4->GetYaxis()->SetTitleOffset(1.6);
+
+  grRatioChi2_21_vn6vn4->GetYaxis()->SetTitleOffset(offs);
+  grRatioChi2_21_vn8vn4->GetYaxis()->SetTitleOffset(offs);
+  grRatioChi2_21_vn8vn6->GetYaxis()->SetTitleOffset(offs);
+
+  cvnCumuRatioCentDep->cd(1)->SetLeftMargin(mar);
   grRatioChi2_21_vn6vn4->Draw("ap");
   line->Draw("same");
-  cvnCumuRatioCentDep->cd(2);
+  cvnCumuRatioCentDep->cd(2)->SetLeftMargin(mar);
   grRatioChi2_21_vn8vn4->Draw("ap");
   line->Draw("same");
-  cvnCumuRatioCentDep->cd(3);
+  cvnCumuRatioCentDep->cd(3)->SetLeftMargin(mar);
   grRatioChi2_21_vn8vn6->Draw("ap");
   line->Draw("same");
   cvnCumuRatioCentDep->SaveAs("../../plots/systematicStudies/cSysChi2Cut_CumuRatioCent.pdf" );

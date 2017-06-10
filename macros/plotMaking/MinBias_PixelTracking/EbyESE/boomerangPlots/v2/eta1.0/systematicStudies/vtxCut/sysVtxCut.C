@@ -44,7 +44,7 @@ void sysVtxCut(){
   double ratioMin = 0.98;
   double ratioMax = 1.02;
   double gamma1ExpRatioMin = 0.;
-  double gamma1ExpRatioMax = 1.;
+  double gamma1ExpRatioMax = 2.;
 
   //-- Vertex < 3.0
   TFile * fAnaVtx3;
@@ -716,7 +716,7 @@ void sysVtxCut(){
     vn4Vtx3_RatiotoVtx15[icent]       = r43;
     vn6Vtx3_RatiotoVtx15[icent]       = r63;
     vn8Vtx3_RatiotoVtx15[icent]       = r83;
-    gamma1expVtx3_RatiotoVtx15[icent] = fabs(1.-rgamma1exp3);
+    gamma1expVtx3_RatiotoVtx15[icent] = rgamma1exp3;
     vn6vn4Vtx3_RatiotoVtx15[icent]    = r643;
     vn8vn4Vtx3_RatiotoVtx15[icent]    = r843;
     vn8vn6Vtx3_RatiotoVtx15[icent]    = r863;
@@ -736,7 +736,7 @@ void sysVtxCut(){
     vn4Vtx3_15_RatiotoVtx15[icent]       = r43_15;
     vn6Vtx3_15_RatiotoVtx15[icent]       = r63_15;
     vn8Vtx3_15_RatiotoVtx15[icent]       = r83_15;
-    gamma1expVtx3_15_RatiotoVtx15[icent] = fabs(1.-rgamma1exp3_15);
+    gamma1expVtx3_15_RatiotoVtx15[icent] = rgamma1exp3_15;
     vn6vn4Vtx3_15_RatiotoVtx15[icent]    = r643_15;
     vn8vn4Vtx3_15_RatiotoVtx15[icent]    = r843_15;
     vn8vn6Vtx3_15_RatiotoVtx15[icent]    = r863_15;
@@ -788,22 +788,28 @@ void sysVtxCut(){
   TCanvas * cSysCumu = new TCanvas("cSysCumu", "cSysCumu", 1000, 1000);
   cSysCumu->Divide(2,2);
 
+  double mar = 0.2;
+
   cSysCumu->cd(1);
+  cSysCumu->cd(1)->SetLeftMargin(mar);
   grVn2Vtx3_RatiotoVtx15->Draw("ap");
   grVn2Vtx3_15_RatiotoVtx15->Draw("psame");
   line->Draw("same");
 
   cSysCumu->cd(2);
+  cSysCumu->cd(2)->SetLeftMargin(mar);
   grVn4Vtx3_RatiotoVtx15->Draw("ap");
   grVn4Vtx3_15_RatiotoVtx15->Draw("psame");
   line->Draw("same");
 
   cSysCumu->cd(3);
+  cSysCumu->cd(3)->SetLeftMargin(mar);
   grVn6Vtx3_RatiotoVtx15->Draw("ap");
   grVn6Vtx3_15_RatiotoVtx15->Draw("psame");
   line->Draw("same");
 
   cSysCumu->cd(4);
+  cSysCumu->cd(4)->SetLeftMargin(mar);
   grVn8Vtx3_RatiotoVtx15->Draw("ap");
   grVn8Vtx3_15_RatiotoVtx15->Draw("psame");
   line->Draw("same");
@@ -820,25 +826,35 @@ void sysVtxCut(){
   formatGraph(grVn8Vtx3_RatiotoVtx15,    "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} Ratio", norder_), kOrange+7, 27, "grVn8Vtx3_RatiotoVtx15");
   formatGraph(grVn8Vtx3_15_RatiotoVtx15, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} Ratio", norder_), kGray+2, 27, "grVn8Vtx3_15_RatiotoVtx15");
 
-  TLegend * leg31 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  double offs = 1.6;
+  grVn2Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+  grVn2Vtx3_15_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+  grVn4Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+  grVn4Vtx3_15_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+  grVn6Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+  grVn6Vtx3_15_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+  grVn8Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+  grVn8Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(offs);
+
+  TLegend * leg31 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg31->SetFillStyle(0);
   leg31->SetBorderSize(0);
   leg31->AddEntry(grVn2Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");
   leg31->AddEntry(grVn2Vtx3_15_RatiotoVtx15, "#frac{3.0 < |v_{z}| < 15.0}{|v_{z}| < 15.0}", "lp");
 
-  TLegend * leg32 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  TLegend * leg32 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg32->SetFillStyle(0);
   leg32->SetBorderSize(0);
   leg32->AddEntry(grVn4Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");
   leg32->AddEntry(grVn4Vtx3_15_RatiotoVtx15, "#frac{3.0 < |v_{z}| < 15.0}{|v_{z}| < 15.0}", "lp");
 
-  TLegend * leg33 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  TLegend * leg33 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg33->SetFillStyle(0);
   leg33->SetBorderSize(0);
   leg33->AddEntry(grVn6Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");
   leg33->AddEntry(grVn6Vtx3_15_RatiotoVtx15, "#frac{3.0 < |v_{z}| < 15.0}{|v_{z}| < 15.0}", "lp");
 
-  TLegend * leg34 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  TLegend * leg34 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg34->SetFillStyle(0);
   leg34->SetBorderSize(0);
   leg34->AddEntry(grVn8Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");
@@ -861,12 +877,12 @@ void sysVtxCut(){
   cGamma1Exp->cd();
   grGamma1ExpVtx3_RatiotoVtx15->Draw("ap");
   grGamma1ExpVtx3_15_RatiotoVtx15->Draw("psame");
-  //line->Draw("same");
+  line->Draw("same");
 
-  formatGraph(grGamma1ExpVtx3_RatiotoVtx15,    "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "|1-#gamma_{1}^{exp} Ratio|", 2, 28, "grGamma1ExpVtx3_RatiotoVtx15");
-  formatGraph(grGamma1ExpVtx3_15_RatiotoVtx15, "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "|1-#gamma_{1}^{exp} Ratio|", 1, 28, "grGamma1ExpVtx3_15_RatiotoVtx15");
+  formatGraph(grGamma1ExpVtx3_RatiotoVtx15,    "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "#gamma_{1}^{exp} Ratio", 2, 28, "grGamma1ExpVtx3_RatiotoVtx15");
+  formatGraph(grGamma1ExpVtx3_15_RatiotoVtx15, "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "#gamma_{1}^{exp} Ratio", 1, 28, "grGamma1ExpVtx3_15_RatiotoVtx15");
 
-  TLegend * leg4 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  TLegend * leg4 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg4->SetFillStyle(0);
   leg4->SetBorderSize(0);
   leg4->AddEntry(grGamma1ExpVtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");
@@ -885,10 +901,12 @@ void sysVtxCut(){
   grVn6Vn4Vtx3_15_RatiotoVtx15->Draw("psame");
   line->Draw("same");
   cCumuRatioSys->cd(2);
+  cCumuRatioSys->cd(2)->SetLeftMargin(0.2);
   grVn8Vn4Vtx3_RatiotoVtx15->Draw("ap");
   grVn8Vn4Vtx3_15_RatiotoVtx15->Draw("psame");
   line->Draw("same");
   cCumuRatioSys->cd(3);
+  cCumuRatioSys->cd(3)->SetLeftMargin(0.2);
   grVn8Vn6Vtx3_RatiotoVtx15->Draw("ap");
   grVn8Vn6Vtx3_15_RatiotoVtx15->Draw("psame");
   line->Draw("same");
@@ -903,20 +921,22 @@ void sysVtxCut(){
   formatGraph(grVn8Vn6Vtx3_15_RatiotoVtx15, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} / v_{%i}{6} Ratio", norder_, norder_), kOrange+7, 33, "grVn8Vn6Vtx3_15_RatiotoVtx15");
 
   grVn6Vn4Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(1.6);
+  grVn8Vn4Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(1.6);
+  grVn8Vn6Vtx3_RatiotoVtx15->GetYaxis()->SetTitleOffset(1.6);
 
-  TLegend * leg51 = new TLegend(0.18, 0.20, 0.66, 0.47);
+  TLegend * leg51 = new TLegend(0.21, 0.20, 0.69, 0.47);
   leg51->SetFillStyle(0);
   leg51->SetBorderSize(0);
   leg51->AddEntry(grVn6Vn4Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");
   leg51->AddEntry(grVn6Vn4Vtx3_15_RatiotoVtx15, "#frac{3.0 < |v_{z}| < 15.0}{|v_{z}| < 15.0}", "lp");
 
-  TLegend * leg52 = new TLegend(0.18, 0.20, 0.66, 0.47);
+  TLegend * leg52 = new TLegend(0.21, 0.20, 0.69, 0.47);
   leg52->SetFillStyle(0);
   leg52->SetBorderSize(0);
   leg52->AddEntry(grVn8Vn4Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");
   leg52->AddEntry(grVn8Vn4Vtx3_15_RatiotoVtx15, "#frac{3.0 < |v_{z}| < 15.0}{|v_{z}| < 15.0}", "lp");
 
-  TLegend * leg53 = new TLegend(0.18, 0.20, 0.66, 0.47);
+  TLegend * leg53 = new TLegend(0.21, 0.20, 0.69, 0.47);
   leg53->SetFillStyle(0);
   leg53->SetBorderSize(0);
   leg53->AddEntry(grVn8Vn6Vtx3_RatiotoVtx15,    "#frac{|v_{z}| < 3.0}{|v_{z}| < 15.0}", "lp");

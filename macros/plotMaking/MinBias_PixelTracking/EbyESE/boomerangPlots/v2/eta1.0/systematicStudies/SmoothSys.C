@@ -624,7 +624,7 @@ void SmoothSys(){
     sysRegVn8Vn4[icent]    = fabs( 1. - grSysRegVn8Vn4->GetY()[icent] );
     sysRegVn8Vn6[icent]    = fabs( 1. - grSysRegVn8Vn6->GetY()[icent] );
     sysRegVn46_Vn68[icent] = fabs( 1. - grSysRegVn46_Vn68->GetY()[icent] );
-    sysRegG1E[icent]       = grSysRegG1E->GetY()[icent];
+    sysRegG1E[icent]       = fabs( 1. - grSysRegG1E->GetY()[icent] );
     sysRegKn[icent]        = fabs( 1. - grSysRegKn->GetY()[icent] );
     sysRegAlpha[icent]     = fabs( 1. - grSysRegAlpha->GetY()[icent] );
     sysRegE0[icent]        = fabs( 1. - grSysRegE0->GetY()[icent] );
@@ -651,7 +651,7 @@ void SmoothSys(){
     sysRespVn8Vn4[icent]    = fabs( 1. - grSysRespVn8Vn4->GetY()[icent] );
     sysRespVn8Vn6[icent]    = fabs( 1. - grSysRespVn8Vn6->GetY()[icent] );
     sysRespVn46_Vn68[icent] = fabs( 1. - grSysRespVn46_Vn68->GetY()[icent] );
-    sysRespG1E[icent]       = grSysRespG1E->GetY()[icent];
+    sysRespG1E[icent]       = fabs( 1. - grSysRespG1E->GetY()[icent] );
     sysRespKn[icent]        = fabs( 1. - grSysRespKn->GetY()[icent] );
     sysRespAlpha[icent]     = fabs( 1. - grSysRespAlpha->GetY()[icent] );
     sysRespE0[icent]        = fabs( 1. - grSysRespE0->GetY()[icent] );
@@ -678,7 +678,7 @@ void SmoothSys(){
     sysNewCCVn8Vn4[icent]    = fabs( 1. - grSysNewCCVn8Vn4->GetY()[icent] );
     sysNewCCVn8Vn6[icent]    = fabs( 1. - grSysNewCCVn8Vn6->GetY()[icent] );
     sysNewCCVn46_Vn68[icent] = fabs( 1. - grSysNewCCVn46_Vn68->GetY()[icent] );
-    sysNewCCG1E[icent]       = grSysNewCCG1E->GetY()[icent];
+    sysNewCCG1E[icent]       = fabs( 1. - grSysNewCCG1E->GetY()[icent] );
     sysNewCCKn[icent]        = fabs( 1. - grSysNewCCKn->GetY()[icent] );
     sysNewCCAlpha[icent]     = fabs( 1. - grSysNewCCAlpha->GetY()[icent] );
     sysNewCCE0[icent]        = fabs( 1. - grSysNewCCE0->GetY()[icent] );
@@ -705,7 +705,7 @@ void SmoothSys(){
     double tkQLVn8Vn4    = fabs( 1. - grSysTkQLVn8Vn4->GetY()[icent] );
     double tkQLVn8Vn6    = fabs( 1. - grSysTkQLVn8Vn6->GetY()[icent] );
     double tkQLVn46_Vn68 = fabs( 1. - grSysTkQLVn46_Vn68->GetY()[icent] );
-    double tkQLG1E       = grSysTkQLG1E->GetY()[icent];
+    double tkQLG1E       = fabs( 1. - grSysTkQLG1E->GetY()[icent] );
     double tkQLKn        = fabs( 1. - grSysTkQLKn->GetY()[icent] );
     double tkQLAlpha     = fabs( 1. - grSysTkQLAlpha->GetY()[icent] );
     double tkQLE0        = fabs( 1. - grSysTkQLE0->GetY()[icent] );
@@ -732,7 +732,7 @@ void SmoothSys(){
     double tkQTVn8Vn4    = fabs( 1. - grSysTkQTVn8Vn4->GetY()[icent] );
     double tkQTVn8Vn6    = fabs( 1. - grSysTkQTVn8Vn6->GetY()[icent] );
     double tkQTVn46_Vn68 = fabs( 1. - grSysTkQTVn46_Vn68->GetY()[icent] );
-    double tkQTG1E       = grSysTkQTG1E->GetY()[icent];
+    double tkQTG1E       = fabs( 1. - grSysTkQTG1E->GetY()[icent] );
     double tkQTKn        = fabs( 1. - grSysTkQTKn->GetY()[icent] );
     double tkQTAlpha     = fabs( 1. - grSysTkQTAlpha->GetY()[icent] );
     double tkQTE0        = fabs( 1. - grSysTkQTE0->GetY()[icent] );
@@ -868,7 +868,7 @@ void SmoothSys(){
     double Vtx3Vn8Vn4    = fabs( 1. - grSysVtx3Vn8Vn4->GetY()[icent] );
     double Vtx3Vn8Vn6    = fabs( 1. - grSysVtx3Vn8Vn6->GetY()[icent] );
     double Vtx3Vn46_Vn68 = fabs( 1. - grSysVtx3Vn46_Vn68->GetY()[icent] );
-    double Vtx3G1E       = grSysVtx3G1E->GetY()[icent];
+    double Vtx3G1E       = fabs( 1. - grSysVtx3G1E->GetY()[icent] );
     double Vtx3Kn        = fabs( 1. - grSysVtx3Kn->GetY()[icent] );
     double Vtx3Alpha     = fabs( 1. - grSysVtx3Alpha->GetY()[icent] );
     double Vtx3E0        = fabs( 1. - grSysVtx3E0->GetY()[icent] );
@@ -895,7 +895,7 @@ void SmoothSys(){
     double Vtx3_15Vn8Vn4    = fabs( 1. - grSysVtx3_15Vn8Vn4->GetY()[icent] );
     double Vtx3_15Vn8Vn6    = fabs( 1. - grSysVtx3_15Vn8Vn6->GetY()[icent] );
     double Vtx3_15Vn46_Vn68 = fabs( 1. - grSysVtx3_15Vn46_Vn68->GetY()[icent] );
-    double Vtx3_15G1E       = grSysVtx3_15G1E->GetY()[icent];
+    double Vtx3_15G1E       = fabs( 1. - grSysVtx3_15G1E->GetY()[icent] );
     double Vtx3_15Kn        = fabs( 1. - grSysVtx3_15Kn->GetY()[icent] );
     double Vtx3_15Alpha     = fabs( 1. - grSysVtx3_15Alpha->GetY()[icent] );
     double Vtx3_15E0        = fabs( 1. - grSysVtx3_15E0->GetY()[icent] );
@@ -1371,59 +1371,59 @@ void SmoothSys(){
     SmoothSysTotG1E       -> SetBinContent(icent+1, sysTotG1E);
 
     if(centBinCenter[icent] < 10. && centBinCenter[icent] > 5.){
-      aveSys_00_10_Vn2       += sysTotVn2;
-      aveSys_00_10_Vn4       += sysTotVn4;
-      aveSys_00_10_Vn6       += sysTotVn6;
-      aveSys_00_10_Vn8       += sysTotVn8;
-      aveSys_00_10_Vn6Vn4    += sysTotVn6Vn4;
-      aveSys_00_10_Vn8Vn4    += sysTotVn8Vn4;
-      aveSys_00_10_Vn8Vn6    += sysTotVn8Vn6;
-      aveSys_00_10_Vn46_Vn68 += sysTotVn46_Vn68;  
-      aveSys_00_10_G1E       += sysTotG1E;
+      aveSys_00_10_Vn2       += sysRegVn2;
+      aveSys_00_10_Vn4       += sysRegVn4;
+      aveSys_00_10_Vn6       += sysRegVn6;
+      aveSys_00_10_Vn8       += sysRegVn8;
+      aveSys_00_10_Vn6Vn4    += sysRegVn6Vn4;
+      aveSys_00_10_Vn8Vn4    += sysRegVn8Vn4;
+      aveSys_00_10_Vn8Vn6    += sysRegVn8Vn6;
+      aveSys_00_10_Vn46_Vn68 += sysRegVn46_Vn68;  
+      aveSys_00_10_G1E       += sysRegG1E;
     }
     if(centBinCenter[icent] > 10. && centBinCenter[icent] < 20.){
-      aveSys_10_20_Vn2       += sysTotVn2;
-      aveSys_10_20_Vn4       += sysTotVn4;
-      aveSys_10_20_Vn6       += sysTotVn6;
-      aveSys_10_20_Vn8       += sysTotVn8;
-      aveSys_10_20_Vn6Vn4    += sysTotVn6Vn4;
-      aveSys_10_20_Vn8Vn4    += sysTotVn8Vn4;
-      aveSys_10_20_Vn8Vn6    += sysTotVn8Vn6;
-      aveSys_10_20_Vn46_Vn68 += sysTotVn46_Vn68;
-      aveSys_10_20_G1E       += sysTotG1E;
+      aveSys_10_20_Vn2       += sysRegVn2;
+      aveSys_10_20_Vn4       += sysRegVn4;
+      aveSys_10_20_Vn6       += sysRegVn6;
+      aveSys_10_20_Vn8       += sysRegVn8;
+      aveSys_10_20_Vn6Vn4    += sysRegVn6Vn4;
+      aveSys_10_20_Vn8Vn4    += sysRegVn8Vn4;
+      aveSys_10_20_Vn8Vn6    += sysRegVn8Vn6;
+      aveSys_10_20_Vn46_Vn68 += sysRegVn46_Vn68;
+      aveSys_10_20_G1E       += sysRegG1E;
     }
     if(centBinCenter[icent] > 20. && centBinCenter[icent] < 30.){
-      aveSys_20_30_Vn2       += sysTotVn2;
-      aveSys_20_30_Vn4       += sysTotVn4;
-      aveSys_20_30_Vn6       += sysTotVn6;
-      aveSys_20_30_Vn8       += sysTotVn8;
-      aveSys_20_30_Vn6Vn4    += sysTotVn6Vn4;
-      aveSys_20_30_Vn8Vn4    += sysTotVn8Vn4;
-      aveSys_20_30_Vn8Vn6    += sysTotVn8Vn6;
-      aveSys_20_30_Vn46_Vn68 += sysTotVn46_Vn68;
-      aveSys_20_30_G1E       += sysTotG1E;
+      aveSys_20_30_Vn2       += sysRegVn2;
+      aveSys_20_30_Vn4       += sysRegVn4;
+      aveSys_20_30_Vn6       += sysRegVn6;
+      aveSys_20_30_Vn8       += sysRegVn8;
+      aveSys_20_30_Vn6Vn4    += sysRegVn6Vn4;
+      aveSys_20_30_Vn8Vn4    += sysRegVn8Vn4;
+      aveSys_20_30_Vn8Vn6    += sysRegVn8Vn6;
+      aveSys_20_30_Vn46_Vn68 += sysRegVn46_Vn68;
+      aveSys_20_30_G1E       += sysRegG1E;
     }
     if(centBinCenter[icent] > 30. && centBinCenter[icent] < 50.){
-      aveSys_30_50_Vn2       += sysTotVn2;
-      aveSys_30_50_Vn4       += sysTotVn4;
-      aveSys_30_50_Vn6       += sysTotVn6;
-      aveSys_30_50_Vn8       += sysTotVn8;
-      aveSys_30_50_Vn6Vn4    += sysTotVn6Vn4;
-      aveSys_30_50_Vn8Vn4    += sysTotVn8Vn4;
-      aveSys_30_50_Vn8Vn6    += sysTotVn8Vn6;
-      aveSys_30_50_Vn46_Vn68 += sysTotVn46_Vn68;
-      aveSys_30_50_G1E       += sysTotG1E;
+      aveSys_30_50_Vn2       += sysRegVn2;
+      aveSys_30_50_Vn4       += sysRegVn4;
+      aveSys_30_50_Vn6       += sysRegVn6;
+      aveSys_30_50_Vn8       += sysRegVn8;
+      aveSys_30_50_Vn6Vn4    += sysRegVn6Vn4;
+      aveSys_30_50_Vn8Vn4    += sysRegVn8Vn4;
+      aveSys_30_50_Vn8Vn6    += sysRegVn8Vn6;
+      aveSys_30_50_Vn46_Vn68 += sysRegVn46_Vn68;
+      aveSys_30_50_G1E       += sysRegG1E;
     }
     if(centBinCenter[icent] > 50.){
-      aveSys_50_60_Vn2       += sysTotVn2;
-      aveSys_50_60_Vn4       += sysTotVn4;
-      aveSys_50_60_Vn6       += sysTotVn6;
-      aveSys_50_60_Vn8       += sysTotVn8;
-      aveSys_50_60_Vn6Vn4    += sysTotVn6Vn4;
-      aveSys_50_60_Vn8Vn4    += sysTotVn8Vn4;
-      aveSys_50_60_Vn8Vn6    += sysTotVn8Vn6;
-      aveSys_50_60_Vn46_Vn68 += sysTotVn46_Vn68;
-      aveSys_50_60_G1E       += sysTotG1E;
+      aveSys_50_60_Vn2       += sysRegVn2;
+      aveSys_50_60_Vn4       += sysRegVn4;
+      aveSys_50_60_Vn6       += sysRegVn6;
+      aveSys_50_60_Vn8       += sysRegVn8;
+      aveSys_50_60_Vn6Vn4    += sysRegVn6Vn4;
+      aveSys_50_60_Vn8Vn4    += sysRegVn8Vn4;
+      aveSys_50_60_Vn8Vn6    += sysRegVn8Vn6;
+      aveSys_50_60_Vn46_Vn68 += sysRegVn46_Vn68;
+      aveSys_50_60_G1E       += sysRegG1E;
     }
 
     //-- Ellp 

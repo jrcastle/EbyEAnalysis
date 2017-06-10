@@ -39,10 +39,10 @@ void sysPtRes(){
   double g1eMin       = -1.0;
   double g1eMax       = 0.5;
 
-  double rMin = 0.95;
-  double rMax = 1.05;
-  double g1rMin = 0.;
-  double g1rMax = 0.4;
+  double rMin = 0.98;
+  double rMax = 1.02;
+  double g1rMin = 0.7;
+  double g1rMax = 1.3;
 
   TLatex latex;
 
@@ -390,15 +390,15 @@ void sysPtRes(){
     else                                vn8SmearPt5_RatioToDefault[icent] = vn8SmearPt5/ vn8Default;
 
     if(vn4SmearPt5 == 0 || vn6SmearPt5 == 0 || vn4Default == 0 || vn6Default == 0) vn6vn4SmearPt5_RatioToDefault[icent] = 0.;
-    else                                                                   vn6vn4SmearPt5_RatioToDefault[icent] = vn6vn4SmearPt5[icent] / vn6vn4Default[icent];
+    else                                                                           vn6vn4SmearPt5_RatioToDefault[icent] = vn6vn4SmearPt5[icent] / vn6vn4Default[icent];
     if(vn4SmearPt5 == 0 || vn8SmearPt5 == 0 || vn4Default == 0 || vn8Default == 0) vn8vn4SmearPt5_RatioToDefault[icent] = 0.;
-    else                                                                   vn8vn4SmearPt5_RatioToDefault[icent] = vn8vn4SmearPt5[icent] / vn8vn4Default[icent];
+    else                                                                           vn8vn4SmearPt5_RatioToDefault[icent] = vn8vn4SmearPt5[icent] / vn8vn4Default[icent];
     if(vn6SmearPt5 == 0 || vn8SmearPt5 == 0 || vn6Default == 0 || vn8Default == 0) vn8vn6SmearPt5_RatioToDefault[icent] = 0.;
-    else                                                                   vn8vn6SmearPt5_RatioToDefault[icent] = vn8vn6SmearPt5[icent] / vn8vn6Default[icent];
+    else                                                                           vn8vn6SmearPt5_RatioToDefault[icent] = vn8vn6SmearPt5[icent] / vn8vn6Default[icent];
     if(vn46_vn68SmearPt5[icent] <= 0 || vn46_vn68Default[icent] <= 0) vn46_vn68SmearPt5_RatioToDefault[icent] = 0.;
-    else                                                          vn46_vn68SmearPt5_RatioToDefault[icent] = vn46_vn68SmearPt5[icent] / vn46_vn68Default[icent];
+    else                                                              vn46_vn68SmearPt5_RatioToDefault[icent] = vn46_vn68SmearPt5[icent] / vn46_vn68Default[icent];
     if(g1exSmearPt5== -10000. || g1exDefault == -10000.) g1eSmearPt5_RatioToDefault[icent] = 0.;
-    else                                                          g1eSmearPt5_RatioToDefault[icent]= fabs(1.0 - g1eSmearPt5[icent]/ g1eDefault[icent]);
+    else                                                 g1eSmearPt5_RatioToDefault[icent]= g1eSmearPt5[icent]/ g1eDefault[icent];
 
     vn2SmearPt5_RatioToDefault_err[icent]       = sqrt( pow(vn2SmearPt5_err[icent]/Vn2Default[icent],2) + pow(Vn2SmearPt5[icent]*vn2Default_err[icent]/Vn2Default[icent]/Vn2Default[icent],2) );
     vn4SmearPt5_RatioToDefault_err[icent]       = sqrt( pow(vn4SmearPt5_err[icent]/Vn4Default[icent],2) + pow(Vn4SmearPt5[icent]*vn4Default_err[icent]/Vn4Default[icent]/Vn4Default[icent],2) );
@@ -477,7 +477,7 @@ void sysPtRes(){
   formatGraph(grVn8Vn4SmearPt5_RatioToDefault,    "Centrality %", rMin,   rMax,   Form("v_{%i}{8}/v_{%i}{4} Ratio", norder_, norder_),                                         kGreen+2,  24, "grVn8Vn4SmearPt5_RatioToDefault");
   formatGraph(grVn8Vn6SmearPt5_RatioToDefault,    "Centrality %", rMin,   rMax,   Form("v_{%i}{8}/v_{%i}{6} Ratio", norder_, norder_),                                         kViolet-1, 24, "grVn8Vn6SmearPt5_RatioToDefault");
   formatGraph(grVn46_Vn68SmearPt5_RatioToDefault, "Centrality %", 0.85,   1.15,   Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_), kGray+2,   24, "grVn46_Vn68SmearPt5_RatioToDefault");
-  formatGraph(grG1ESmearPt5_RatioToDefault,       "Centrality %", g1rMin, g1rMax, "|1 - #gamma_{1}^{exp} Ratio|",                                                              2,         24, "grG1ESmearPt5_RatioToDefault");
+  formatGraph(grG1ESmearPt5_RatioToDefault,       "Centrality %", g1rMin, g1rMax, "#gamma_{1}^{exp} Ratio",                                                                    2,         24, "grG1ESmearPt5_RatioToDefault");
 
   //-- DRAW
   TLine * lOne = new TLine(0, 1.0, grVn2Default->GetXaxis()->GetXmax(), 1.0);
@@ -538,19 +538,27 @@ void sysPtRes(){
   TCanvas * cCumuRatToDef = new TCanvas("cCumuRatToDef", "cCumuRatToDef", 1000, 1000);
   cCumuRatToDef->Divide(2,2);
 
-  cCumuRatToDef->cd(1);
+  double mar = 0.2;
+  double offs = 1.6;
+
+  grVn2SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(offs);
+  grVn4SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(offs);
+  grVn6SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(offs);
+  grVn8SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(offs);
+
+  cCumuRatToDef->cd(1)->SetLeftMargin(mar);
   grVn2SmearPt5_RatioToDefault->Draw("ap");
   lOne->Draw("same");
 
-  cCumuRatToDef->cd(2);
+  cCumuRatToDef->cd(2)->SetLeftMargin(mar);
   grVn4SmearPt5_RatioToDefault->Draw("ap");
   lOne->Draw("same");
 
-  cCumuRatToDef->cd(3);
+  cCumuRatToDef->cd(3)->SetLeftMargin(mar);
   grVn6SmearPt5_RatioToDefault->Draw("ap");
   lOne->Draw("same");
 
-  cCumuRatToDef->cd(4);
+  cCumuRatToDef->cd(4)->SetLeftMargin(mar);
   grVn8SmearPt5_RatioToDefault->Draw("ap");
   lOne->Draw("same");
 
@@ -599,17 +607,19 @@ void sysPtRes(){
   TCanvas * cCumuRatio_RatToDef = new TCanvas("cCumuRatio_RatToDef", "cCumuRatio_RatToDef", 1500, 500);
   cCumuRatio_RatToDef->Divide(3,1);
 
-  cCumuRatio_RatToDef->cd(1);
-  cCumuRatio_RatToDef->cd(1)->SetLeftMargin(0.2);
-  grVn6Vn4SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(1.6);
+  grVn6Vn4SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(offs);
+  grVn8Vn4SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(offs);
+  grVn8Vn6SmearPt5_RatioToDefault->GetYaxis()->SetTitleOffset(offs);
+
+  cCumuRatio_RatToDef->cd(1)->SetLeftMargin(mar);
   grVn6Vn4SmearPt5_RatioToDefault->Draw("ap");
   lOne->Draw("same");
 
-  cCumuRatio_RatToDef->cd(2);
+  cCumuRatio_RatToDef->cd(2)->SetLeftMargin(mar);
   grVn8Vn4SmearPt5_RatioToDefault->Draw("ap");
   lOne->Draw("same");
 
-  cCumuRatio_RatToDef->cd(3);
+  cCumuRatio_RatToDef->cd(3)->SetLeftMargin(mar);
   grVn8Vn6SmearPt5_RatioToDefault->Draw("ap");
   lOne->Draw("same");
 
@@ -633,7 +643,7 @@ void sysPtRes(){
   TCanvas* cG1eR = new TCanvas("cG1eR", "cG1eR", 500, 500);
   cG1eR->cd();
   grG1ESmearPt5_RatioToDefault->Draw("ap");
-  //lOne->Draw("same");
+  lOne->Draw("same");
   cG1eR->SaveAs("cSysPtRes_G1ECent.pdf");
 
   //-- vn46_vn68 

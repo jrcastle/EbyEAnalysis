@@ -28,7 +28,7 @@ void sysRespEl(){
   double ratioMax = 1.05;
 
   double ratioG1Min = 0.;
-  double ratioG1Max = 1.;
+  double ratioG1Max = 2.;
 
   double ratioCumuRatioMin = 0.95;
   double ratioCumuRatioMax = 1.05;
@@ -308,8 +308,8 @@ void sysRespEl(){
     else                            vn8DoSys_RatioToNominal[icent] = vn8DoSys / vn8;
 
     if( gamma1exp == 0 || gamma1expDoSys == 0 ) gamma1expDoSys_RatioToNominal[icent] = 0;
-    else                                        gamma1expDoSys_RatioToNominal[icent] = fabs( 1. - gamma1expDoSys / gamma1exp );
-    std::cout<<gamma1expDoSys_RatioToNominal[icent]<<std::endl;
+    else                                        gamma1expDoSys_RatioToNominal[icent] = gamma1expDoSys / gamma1exp ;
+
     if( vn6vn4 == 0 || vn6vn4DoSys == 0 ) vn6vn4DoSys_RatioToNominal[icent] = 0;
     else                                  vn6vn4DoSys_RatioToNominal[icent] = vn6vn4DoSys / vn6vn4;
 
@@ -369,23 +369,23 @@ void sysRespEl(){
   double cErr[NCENT];
   for(int i = 0; i < NCENT; i++) cErr[i] = 0;
   grVn2DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn2DoSys_RatioToNominal, cErr, vn2DoSys_RatioToNominal_staterr);
-  formatGraph(grVn2DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} [RespErr] / [Nominal]", norder_), 1, 24, "grVn2DoSys_RatioToNominal");
+  formatGraph(grVn2DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{2} [Analytic] / [Nominal]", norder_), 1, 24, "grVn2DoSys_RatioToNominal");
   grVn4DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn4DoSys_RatioToNominal, cErr, vn4DoSys_RatioToNominal_staterr);
-  formatGraph(grVn4DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} [RespErr] / [Nominal]", norder_), kSpring+4, 25, "grVn4DoSys_RatioToNominal");
+  formatGraph(grVn4DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{4} [Analytic] / [Nominal]", norder_), kSpring+4, 25, "grVn4DoSys_RatioToNominal");
   grVn6DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn6DoSys_RatioToNominal, cErr, vn6DoSys_RatioToNominal_staterr);
-  formatGraph(grVn6DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} [RespErr] / [Nominal]", norder_), 6, 28, "grVn6DoSys_RatioToNominal");
+  formatGraph(grVn6DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{6} [Analytic] / [Nominal]", norder_), 6, 28, "grVn6DoSys_RatioToNominal");
   grVn8DoSys_RatioToNominal       = new TGraphErrors(NCENT, centBinCenter, vn8DoSys_RatioToNominal, cErr, vn8DoSys_RatioToNominal_staterr);
-  formatGraph(grVn8DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} [RespErr] / [Nominal]", norder_), kOrange+7, 27, "grVn8DoSys_RatioToNominal");
+  formatGraph(grVn8DoSys_RatioToNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} [Analytic] / [Nominal]", norder_), kOrange+7, 27, "grVn8DoSys_RatioToNominal");
   grGamma1ExpDoSys_RatioToNominal = new TGraphErrors(NCENT, centBinCenter, gamma1expDoSys_RatioToNominal, cErr, gamma1expDoSys_RatioToNominal_staterr);
-  formatGraph(grGamma1ExpDoSys_RatioToNominal, "Centrality %", ratioG1Min, ratioG1Max, "|1-#gamma_{1}^{exp} [RespErr] / [Nominal]|", 2, 20, "grGamma1ExpDoSys_RatioToNominal");
+  formatGraph(grGamma1ExpDoSys_RatioToNominal, "Centrality %", ratioG1Min, ratioG1Max, "#gamma_{1}^{exp} [Analytic] / [Nominal]", 2, 20, "grGamma1ExpDoSys_RatioToNominal");
   grVn6Vn4DoSys_RatioToNominal    = new TGraphErrors(NCENT, centBinCenter, vn6vn4DoSys_RatioToNominal, cErr, vn6vn4DoSys_RatioToNominal_staterr);
-  formatGraph(grVn6Vn4DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{6}/v_{%i}{4} [RespErr] / [Nominal]", norder_, norder_), 4, 21, "grVn6Vn4DoSys_RatioToNominal");
+  formatGraph(grVn6Vn4DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{6}/v_{%i}{4} [Analytic] / [Nominal]", norder_, norder_), 4, 21, "grVn6Vn4DoSys_RatioToNominal");
   grVn8Vn4DoSys_RatioToNominal    = new TGraphErrors(NCENT, centBinCenter, vn8vn4DoSys_RatioToNominal, cErr, vn8vn4DoSys_RatioToNominal_staterr);
-  formatGraph(grVn8Vn4DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{8}/v_{%i}{4} [RespErr] / [Nominal]", norder_, norder_), kGreen+2, 34, "grVn8Vn4DoSys_RatioToNominal");
+  formatGraph(grVn8Vn4DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{8}/v_{%i}{4} [Analytic] / [Nominal]", norder_, norder_), kGreen+2, 34, "grVn8Vn4DoSys_RatioToNominal");
   grVn8Vn6DoSys_RatioToNominal    = new TGraphErrors(NCENT, centBinCenter, vn8vn6DoSys_RatioToNominal, cErr, vn8vn6DoSys_RatioToNominal_staterr);
-  formatGraph(grVn8Vn6DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{8}/v_{%i}{6} [RespErr] / [Nominal]", norder_, norder_), kViolet-1, 33, "grVn8Vn6DoSys_RatioToNominal");
+  formatGraph(grVn8Vn6DoSys_RatioToNominal, "Centrality %", ratioCumuRatioMin, ratioCumuRatioMax, Form("v_{%i}{8}/v_{%i}{6} [Analytic] / [Nominal]", norder_, norder_), kViolet-1, 33, "grVn8Vn6DoSys_RatioToNominal");
   grVn46_Vn68DoSys_RatioToNominal    = new TGraphErrors(NCENT, centBinCenter, vn46_vn68DoSys_RatioToNominal, cErr, vn46_vn68DoSys_RatioToNominal_staterr);
-  formatGraph(grVn46_Vn68DoSys_RatioToNominal, "Centrality %", 0.75, 1.25, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) [RespErr] / [Nominal]", norder_, norder_, norder_, norder_), kGray+2, 22, "grVn46_Vn68DoSys_RatioToNominal");
+  formatGraph(grVn46_Vn68DoSys_RatioToNominal, "Centrality %", 0.75, 1.25, Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8}) [Analytic] / [Nominal]", norder_, norder_, norder_, norder_), kGray+2, 22, "grVn46_Vn68DoSys_RatioToNominal");
 
 
   TLine * line = new TLine(grVn2DoSys_RatioToNominal->GetXaxis()->GetXmin(), 1.0, grVn2DoSys_RatioToNominal->GetXaxis()->GetXmax(), 1.0);
@@ -396,16 +396,25 @@ void sysRespEl(){
 
   TCanvas * cCumuSys = new TCanvas("cCumuSys", "cCumuSys", 1000, 1000);
   cCumuSys->Divide(2,2);
-  cCumuSys->cd(1);
+
+  double mar = 0.2;
+  double offs = 1.6;
+
+  grVn2DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn4DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn6DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn8DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(offs);
+
+  cCumuSys->cd(1)->SetLeftMargin(mar);
   grVn2DoSys_RatioToNominal->Draw("ap");
   line->Draw("same");
-  cCumuSys->cd(2);
+  cCumuSys->cd(2)->SetLeftMargin(mar);
   grVn4DoSys_RatioToNominal->Draw("ap");
   line->Draw("same");
-  cCumuSys->cd(3);
+  cCumuSys->cd(3)->SetLeftMargin(mar);
   grVn6DoSys_RatioToNominal->Draw("ap");
   line->Draw("same");
-  cCumuSys->cd(4);
+  cCumuSys->cd(4)->SetLeftMargin(mar);
   grVn8DoSys_RatioToNominal->Draw("ap");
   line->Draw("same");
   cCumuSys->SaveAs("../../plots/systematicStudies/cSysResp_CumuCent.pdf");
@@ -413,20 +422,23 @@ void sysRespEl(){
   TCanvas * cGamma1ExpSys = new TCanvas("cGamma1ExpSys", "cGamma1ExpSys", 500, 500);
   cGamma1ExpSys->cd();
   grGamma1ExpDoSys_RatioToNominal->Draw("ap");
-  //line->Draw("same");
+  line->Draw("same");
   cGamma1ExpSys->SaveAs("../../plots/systematicStudies/cSysResp_Gamma1ExpCent.pdf");
 
   TCanvas * cCumuRatioSys = new TCanvas("cCumuRatioSys", "cCumuRatioSys", 1500, 500);
   cCumuRatioSys->Divide(3,1);
-  cCumuRatioSys->cd(1);
-  cCumuRatioSys->cd(1)->SetLeftMargin(0.2);
-  grVn6Vn4DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(1.6);
+
+  grVn6Vn4DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn8Vn4DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn8Vn6DoSys_RatioToNominal->GetYaxis()->SetTitleOffset(offs);
+
+  cCumuRatioSys->cd(1)->SetLeftMargin(mar);
   grVn6Vn4DoSys_RatioToNominal->Draw("ap");
   line->Draw("same");
-  cCumuRatioSys->cd(2);
+  cCumuRatioSys->cd(2)->SetLeftMargin(mar);
   grVn8Vn4DoSys_RatioToNominal->Draw("ap");
   line->Draw("same");
-  cCumuRatioSys->cd(3);
+  cCumuRatioSys->cd(3)->SetLeftMargin(mar);
   grVn8Vn6DoSys_RatioToNominal->Draw("ap");
   line->Draw("same");
   cCumuRatioSys->SaveAs("../../plots/systematicStudies/cSysResp_CumuRatioCent.pdf");

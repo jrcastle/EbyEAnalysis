@@ -43,8 +43,8 @@ void sysTkQuality(){
 
   double ratioMin = 0.98;
   double ratioMax = 1.02;
-  double gamma1ExpRatioMin = 0.;
-  double gamma1ExpRatioMax = 0.2;
+  double gamma1ExpRatioMin = 0.7;
+  double gamma1ExpRatioMax = 1.3;
 
   //-- Loose Cuts
   TFile * fAnaLoose;
@@ -719,7 +719,7 @@ void sysTkQuality(){
     vn4Loose_RatiotoNominal[icent]       = r4L;
     vn6Loose_RatiotoNominal[icent]       = r6L;
     vn8Loose_RatiotoNominal[icent]       = r8L;
-    gamma1expLoose_RatiotoNominal[icent] = fabs(1.-rgamma1expL);
+    gamma1expLoose_RatiotoNominal[icent] = rgamma1expL;
     vn6vn4Loose_RatiotoNominal[icent]    = r64L;
     vn8vn4Loose_RatiotoNominal[icent]    = r84L;
     vn8vn6Loose_RatiotoNominal[icent]    = r86L;
@@ -739,7 +739,7 @@ void sysTkQuality(){
     vn4Tight_RatiotoNominal[icent]       = r4T;
     vn6Tight_RatiotoNominal[icent]       = r6T;
     vn8Tight_RatiotoNominal[icent]       = r8T;
-    gamma1expTight_RatiotoNominal[icent] = fabs(1.-rgamma1expT);
+    gamma1expTight_RatiotoNominal[icent] = rgamma1expT;
     vn6vn4Tight_RatiotoNominal[icent]    = r64T;
     vn8vn4Tight_RatiotoNominal[icent]    = r84T;
     vn8vn6Tight_RatiotoNominal[icent]    = r86T;
@@ -791,22 +791,25 @@ void sysTkQuality(){
   TCanvas * cSysCumu = new TCanvas("cSysCumu", "cSysCumu", 1000, 1000);
   cSysCumu->Divide(2,2);
 
-  cSysCumu->cd(1);
+  double mar = 0.2;
+  double offs = 1.6;
+
+  cSysCumu->cd(1)->SetLeftMargin(mar);
   grVn2Loose_RatiotoNominal->Draw("ap");
   grVn2Tight_RatiotoNominal->Draw("psame");
   line->Draw("same");
 
-  cSysCumu->cd(2);
+  cSysCumu->cd(2)->SetLeftMargin(mar);
   grVn4Loose_RatiotoNominal->Draw("ap");
   grVn4Tight_RatiotoNominal->Draw("psame");
   line->Draw("same");
 
-  cSysCumu->cd(3);
+  cSysCumu->cd(3)->SetLeftMargin(mar);
   grVn6Loose_RatiotoNominal->Draw("ap");
   grVn6Tight_RatiotoNominal->Draw("psame");
   line->Draw("same");
 
-  cSysCumu->cd(4);
+  cSysCumu->cd(4)->SetLeftMargin(mar);
   grVn8Loose_RatiotoNominal->Draw("ap");
   grVn8Tight_RatiotoNominal->Draw("psame");
   line->Draw("same");
@@ -823,25 +826,34 @@ void sysTkQuality(){
   formatGraph(grVn8Loose_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} Ratio", norder_), kOrange+7, 27, "grVn8Loose_RatiotoNominal");
   formatGraph(grVn8Tight_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} Ratio", norder_), kGray+2, 27, "grVn8Tight_RatiotoNominal");
 
-  TLegend * leg31 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  grVn2Loose_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn2Tight_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn4Loose_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn4Tight_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn6Loose_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn6Tight_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn8Loose_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+  grVn8Tight_RatiotoNominal->GetYaxis()->SetTitleOffset(offs);
+
+  TLegend * leg31 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg31->SetFillStyle(0);
   leg31->SetBorderSize(0);
   leg31->AddEntry(grVn2Loose_RatiotoNominal, "loose/nominal", "lp");
   leg31->AddEntry(grVn2Tight_RatiotoNominal, "tight/nominal", "lp");
 
-  TLegend * leg32 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  TLegend * leg32 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg32->SetFillStyle(0);
   leg32->SetBorderSize(0);
   leg32->AddEntry(grVn4Loose_RatiotoNominal, "loose/nominal", "lp");
   leg32->AddEntry(grVn4Tight_RatiotoNominal, "tight/nominal", "lp");
 
-  TLegend * leg33 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  TLegend * leg33 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg33->SetFillStyle(0);
   leg33->SetBorderSize(0);
   leg33->AddEntry(grVn6Loose_RatiotoNominal, "loose/nominal", "lp");
   leg33->AddEntry(grVn6Tight_RatiotoNominal, "tight/nominal", "lp");
 
-  TLegend * leg34 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
+  TLegend * leg34 = new TLegend(0.6700, 0.7034, 0.9156, 0.9449);
   leg34->SetFillStyle(0);
   leg34->SetBorderSize(0);
   leg34->AddEntry(grVn8Loose_RatiotoNominal, "loose/nominal", "lp");
@@ -864,10 +876,10 @@ void sysTkQuality(){
   cGamma1Exp->cd();
   grGamma1ExpLoose_RatiotoNominal->Draw("ap");
   grGamma1ExpTight_RatiotoNominal->Draw("psame");
-  //line->Draw("same");
+  line->Draw("same");
 
-  formatGraph(grGamma1ExpLoose_RatiotoNominal, "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "|1.-#gamma_{1}^{exp} Ratio|", 2, 28, "grGamma1ExpLoose_RatiotoNominal");
-  formatGraph(grGamma1ExpTight_RatiotoNominal, "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "|1.-#gamma_{1}^{exp} Ratio|", 1, 28, "grGamma1ExpTight_RatiotoNominal");
+  formatGraph(grGamma1ExpLoose_RatiotoNominal, "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "#gamma_{1}^{exp} Ratio", 2, 28, "grGamma1ExpLoose_RatiotoNominal");
+  formatGraph(grGamma1ExpTight_RatiotoNominal, "Centrality %", gamma1ExpRatioMin, gamma1ExpRatioMax, "#gamma_{1}^{exp} Ratio", 1, 28, "grGamma1ExpTight_RatiotoNominal");
 
   TLegend * leg4 = new TLegend(0.7000, 0.7034, 0.9456, 0.9449);
   leg4->SetFillStyle(0);
@@ -882,17 +894,18 @@ void sysTkQuality(){
   //-- Cumu Ratio Plot
   TCanvas * cCumuRatioSys = new TCanvas("cCumuRatioSys", "cCumuRatioSys", 1500, 500);
   cCumuRatioSys->Divide(3,1);
-  cCumuRatioSys->cd(1);
   cCumuRatioSys->cd(1)->SetLeftMargin(0.2);
   grVn6Vn4Loose_RatiotoNominal->GetYaxis()->SetTitleOffset(1.6);
   grVn6Vn4Loose_RatiotoNominal->Draw("ap");
   grVn6Vn4Tight_RatiotoNominal->Draw("psame");
   line->Draw("same");
-  cCumuRatioSys->cd(2);
+  cCumuRatioSys->cd(2)->SetLeftMargin(0.2);
+  grVn8Vn4Loose_RatiotoNominal->GetYaxis()->SetTitleOffset(1.6);
   grVn8Vn4Loose_RatiotoNominal->Draw("ap");
   grVn8Vn4Tight_RatiotoNominal->Draw("psame");
   line->Draw("same");
-  cCumuRatioSys->cd(3);
+  cCumuRatioSys->cd(3)->SetLeftMargin(0.2);
+  grVn8Vn6Loose_RatiotoNominal->GetYaxis()->SetTitleOffset(1.6);
   grVn8Vn6Loose_RatiotoNominal->Draw("ap");
   grVn8Vn6Tight_RatiotoNominal->Draw("psame");
   line->Draw("same");
@@ -906,19 +919,19 @@ void sysTkQuality(){
   formatGraph(grVn8Vn6Loose_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} / v_{%i}{6} Ratio", norder_, norder_), kViolet-1, 33, "grVn8Vn6Loose_RatiotoNominal");
   formatGraph(grVn8Vn6Tight_RatiotoNominal, "Centrality %", ratioMin, ratioMax, Form("v_{%i}{8} / v_{%i}{6} Ratio", norder_, norder_), kOrange+7, 33, "grVn8Vn6Tight_RatiotoNominal");
 
-  TLegend * leg51 = new TLegend(0.24, 0.20, 0.76, 0.45);
+  TLegend * leg51 = new TLegend(0.21, 0.20, 0.73, 0.45);
   leg51->SetFillStyle(0);
   leg51->SetBorderSize(0);
   leg51->AddEntry(grVn6Vn4Loose_RatiotoNominal, "loose/nominal", "lp");
   leg51->AddEntry(grVn6Vn4Tight_RatiotoNominal, "tight/nominal", "lp");
 
-  TLegend * leg52 = new TLegend(0.24, 0.20, 0.76, 0.45);
+  TLegend * leg52 = new TLegend(0.21, 0.20, 0.73, 0.45);
   leg52->SetFillStyle(0);
   leg52->SetBorderSize(0);
   leg52->AddEntry(grVn8Vn4Loose_RatiotoNominal, "loose/nominal", "lp");
   leg52->AddEntry(grVn8Vn4Tight_RatiotoNominal, "tight/nominal", "lp");
 
-  TLegend * leg53 = new TLegend(0.24, 0.20, 0.76, 0.45);
+  TLegend * leg53 = new TLegend(0.21, 0.20, 0.73, 0.45);
   leg53->SetFillStyle(0);
   leg53->SetBorderSize(0);
   leg53->AddEntry(grVn8Vn6Loose_RatiotoNominal, "loose/nominal", "lp");

@@ -211,6 +211,11 @@ void svdUnfoldResults(){
     if(vn6 == 0 || vn8 == 0) vn8vn6 = -1;
     else                     vn8vn6 = vn8 / vn6;
 
+    if(vn2 == 0) vn2 = -1;
+    if(vn4 == 0) vn4 = -1;
+    if(vn6 == 0) vn6 = -1;
+    if(vn8 == 0) vn8 = -1;
+
     double vn2e    = sqrt( hVarianceOfMean_Vn2->GetBinContent(icent+1) );
     double vn4e    = sqrt( hVarianceOfMean_Vn4->GetBinContent(icent+1) );
     double vn6e    = sqrt( hVarianceOfMean_Vn6->GetBinContent(icent+1) );
