@@ -1,3 +1,4 @@
+#include "TPaletteAxis.h"
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TFile.h"
@@ -75,6 +76,13 @@ void polyCut(){
 
   f = new TFile("MultCent_NoCCFilter.root");
   hCCvsNpix = (TH2D*) f->Get("multcentana/hClusVtxCompInteg");
+  hCCvsNpix->GetYaxis()->SetTitle("Clus-Vtx Compatibility");
+  hCCvsNpix->GetYaxis()->SetTitleSize(0.06);
+  hCCvsNpix->GetYaxis()->SetLabelSize(0.05);
+  hCCvsNpix->GetXaxis()->SetTitle("N_{Pixel}");
+  hCCvsNpix->GetXaxis()->SetTitleSize(0.06);
+  hCCvsNpix->GetXaxis()->SetLabelSize(0.05);
+  hCCvsNpix->GetXaxis()->SetNdivisions(509);
   int bccmax = hCCvsNpix->GetYaxis()->FindBin(CCMax);
   hCCvsNpix->GetYaxis()->SetRange(1, bccmax);
 
@@ -265,7 +273,7 @@ void polyCut(){
   cFit_1pct->SaveAs("cFit_1pct.pdf");
 
   TCanvas * cFit_2pct = new TCanvas("cFit_2pct", "cFit_2pct", 500, 500);
-  cFit_2pct->cd();
+  cFit_2pct->cd()->SetRightMargin(0.1);
   grCCcut_2pct->Draw("ap");
   polyCut_2pct->Draw("same");
   lowPixLine_2pct->Draw("same");
@@ -289,8 +297,14 @@ void polyCut(){
   leg->AddEntry(polyCut_3pct, "3.0%","l");
 
   TCanvas * c2DHist = new TCanvas("c2DHist", "c2DHist", 500, 500);
-  c2DHist->cd();
+  c2DHist->cd()->SetRightMargin(0.1);
   hCCvsNpix->Draw();
+  c2DHist->Update();
+  TPaletteAxis* palette = (TPaletteAxis*) hCCvsNpix->GetListOfFunctions()->FindObject("palette");
+  palette->SetX1NDC(0.75);
+  palette->SetY1NDC(0.6);
+  palette->SetX2NDC(0.8);
+  palette->SetY2NDC(0.9);
   /*
   polyCut_0p5pct->Draw("same");
   polyCut_1pct->Draw("same");

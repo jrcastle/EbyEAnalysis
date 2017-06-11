@@ -1,3 +1,4 @@
+#include "TPaletteAxis.h"
 #include "TF1.h"
 #include "TH2D.h"
 #include "TLegend.h"
@@ -39,7 +40,7 @@ void clusTree(){
   TH2D * hCCvsNpix;
   TF1 * polyCut;
   TF1 * lineCut;
-  TF1 * lineHigh;
+  TF1 * lineCutHigh;
 
   TLatex latex;
 
@@ -64,6 +65,13 @@ void clusTree(){
   hCent2->GetYaxis()->SetTitle("Events");
 
   hCCvsNpix = (TH2D*) f->Get("multcentana/hClusVtxCompInteg");
+  hCCvsNpix->GetYaxis()->SetTitle("Clus-Vtx Compatibility");
+  hCCvsNpix->GetYaxis()->SetTitleSize(0.06);
+  hCCvsNpix->GetYaxis()->SetLabelSize(0.05);
+  hCCvsNpix->GetXaxis()->SetTitle("N_{Pixel}");
+  hCCvsNpix->GetXaxis()->SetTitleSize(0.06);
+  hCCvsNpix->GetXaxis()->SetLabelSize(0.05);
+  hCCvsNpix->GetXaxis()->SetNdivisions(509);
   int bccmax = hCCvsNpix->GetYaxis()->FindBin(CCMax);
   hCCvsNpix->GetYaxis()->SetRange(1, bccmax);
 
@@ -147,11 +155,19 @@ void clusTree(){
   cCent->SaveAs("hCent.png");
 
   TCanvas * cCCvsNpix = new TCanvas("cCCvsNpix", "cCCvsNpix", 500, 500);
-  cCCvsNpix->cd();
+  cCCvsNpix->cd()->SetRightMargin(0.1);
   hCCvsNpix->Draw();
   polyCut->Draw("same");
   lineCut->Draw("same");
   lineCutHigh->Draw("same");
-  cCCvsNpix->SaveAs("cCCvsNpix_NewTune.png");
+
+  cCCvsNpix->Update();
+  TPaletteAxis* palette = (TPaletteAxis*) hCCvsNpix->GetListOfFunctions()->FindObject("palette");
+  palette->SetX1NDC(0.75);
+  palette->SetY1NDC(0.6);
+  palette->SetX2NDC(0.8);
+  palette->SetY2NDC(0.9);
+
+  cCCvsNpix->SaveAs("cCCvsNpix_NewTune.pdf");
 
 }
