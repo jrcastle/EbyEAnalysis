@@ -1063,4 +1063,16 @@ void FitPvn(){
 
   cUnfoldDistsBig_NoFit->SaveAs("cUnfoldDistsBig_NoFit.pdf");
   */
+
+  for(int icent = 3; icent < NCENT; icent++){
+    double alpha = fEllP[icent]->GetParameter(1);
+    double alphae = fEllP[icent]->GetParError(1);
+    double kn = fEllP[icent]->GetParameter(2);
+    double kne = fEllP[icent]->GetParError(2);
+    double eps = fEllP[icent]->GetParameter(0);
+    double epse = fEllP[icent]->GetParError(0);
+
+    std::cout << Form("%.1f +/- %.1f\t", alpha, alphae) << Form("%.4f +/- %.4f\t", kn, kne) << Form("%.4f +/- %.4f\t", eps, epse) << std::endl;
+  }
+
 }
