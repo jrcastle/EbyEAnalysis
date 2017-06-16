@@ -19,8 +19,8 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '75X_dataRun2_v12', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '75X_mcRun2_HeavyIon_v14', '')
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(500) )  
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )  
 process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
@@ -33,7 +33,7 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("EbyETree_SMEARpt.root")
+    fileName = cms.string("EbyETree_NewPixelNominal.root")
 )
 
 process.ebyeana.Subevent_Standard = cms.untracked.bool(True)
@@ -44,28 +44,36 @@ process.ebyeana.Subevent_Standard = cms.untracked.bool(True)
 # ==3 => Tight
 process.ebyeana.trackQualityCuts_ = cms.untracked.int32(1) #####PAY ATTENTION!!!!!!! 
 
+# Track Efficiencies
 process.ebyeana.useTeff_      = cms.untracked.bool(False) #####PAY ATTENTION!!!!!!!
 process.ebyeana.usePixelTeff_ = cms.untracked.bool(True)  #####PAY ATTENTION!!!!!!!
-process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixel_TT_pt_0_10_v2.root") 
-#process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixel_z_3_15_pt_0_10.root")
-#process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixel_z_minus_15_minus_3_pt_0_10.root")
-#process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixel_z_minus_3_3_pt_0_10.root")
+#process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixelPbPb_loose.root")   # Loose Pixel Track Cuts
+process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixelPbPb_nominal.root") # Nominal Pixel Track Cuts
+#process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixelPbPb_tight.root")   # Tight Pixel Track Cuts
+#process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixelPbPb_narrow.root")  # |Vz| < 3 cm
+#process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixelPbPb_wide.root")    # 3 < |Vz| < 15 cm
 
-process.ebyeana.minvz_ = cms.untracked.double(-15.0) #####PAY ATTENTION!!!!!!! In the analyzer, the cut is: 
+# Vertex Cut
+process.ebyeana.minvz_ = cms.untracked.double(0.0)   #####PAY ATTENTION!!!!!!! In the analyzer, the cut is: 
 process.ebyeana.maxvz_ = cms.untracked.double(15.0)  #####PAY ATTENTION!!!!!!! if( fabs(vz) < minvz_ || fabs(vz) > maxvz_ ) vZaccept = false;
 
+# Save run number?
 process.ebyeana.Branch_Run = cms.untracked.bool(False)
 
+# Pt and Eta binning
 process.ebyeana.nptbinsDefault_  = cms.untracked.int32(2)                           #####PAY ATTENTION!!!!!!!
 process.ebyeana.ptbinsDefault_   = cms.untracked.vdouble(0.3, 1.0, 3.0)             #####PAY ATTENTION!!!!!!!
 process.ebyeana.netabinsDefault_ = cms.untracked.int32(4)                           #####PAY ATTENTION!!!!!!!
 process.ebyeana.etabinsDefault_  = cms.untracked.vdouble(-2.4, -1.0, 0.0, 1.0, 2.4) #####PAY ATTENTION!!!!!!!
 
+# Smear PT?
 process.ebyeana.smearPt_    = cms.untracked.bool(False)  #####PAY ATTENTION!!!!!!!
 process.ebyeana.smearPtPct_ = cms.untracked.double(0.05)
 
+# Track collection
 process.ebyeana.trackTag_    = cms.untracked.InputTag('hiGeneralAndPixelTracks')
 
+# Is MC?
 process.ebyeana.GenAna_      = cms.untracked.bool(False) #####PAY ATTENTION!!!!!!!
 process.ebyeana.genTrackTag_ = cms.untracked.InputTag('genParticles')
 
