@@ -353,14 +353,3 @@ void ReadTree_normDet(){
   cout<<"File written, process completed"<<endl;
     
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

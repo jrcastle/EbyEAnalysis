@@ -164,6 +164,16 @@ void qCumulantCompare(){
   grEbyEVn6_sys->GetYaxis()->SetTitle( Form("v_{%i}{6}", norder_) );
   grEbyEVn8_sys->GetYaxis()->SetTitle( Form("v_{%i}{8}", norder_) );
 
+  grEbyEVn2->GetXaxis()->SetTitle( "Centrality %" );
+  grEbyEVn4->GetXaxis()->SetTitle( "Centrality %" );
+  grEbyEVn6->GetXaxis()->SetTitle( "Centrality %" );
+  grEbyEVn8->GetXaxis()->SetTitle( "Centrality %" );
+
+  grEbyEVn2_sys->GetXaxis()->SetTitle( "Centrality %" );
+  grEbyEVn4_sys->GetXaxis()->SetTitle( "Centrality %" );
+  grEbyEVn6_sys->GetXaxis()->SetTitle( "Centrality %" );
+  grEbyEVn8_sys->GetXaxis()->SetTitle( "Centrality %" );
+
   grEbyEVn6Vn4 = (TGraphErrors*) fEbyE->Get("grvn6vn4Ratio");
   grEbyEVn8Vn4 = (TGraphErrors*) fEbyE->Get("grvn8vn4Ratio");
   grEbyEVn8Vn6 = (TGraphErrors*) fEbyE->Get("grvn8vn6Ratio");

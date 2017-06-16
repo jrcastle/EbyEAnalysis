@@ -26,8 +26,12 @@ void makePhysics(){
   int QnBinOrder_ = 2;
   double tkEta    = 2.4;
 
-  bool dosys_      = 0;
+  bool dosys_      = 1;
   double sysWidth_ = 0.01;
+
+  double mar   = 0.2;
+  double offsx = 1.2;
+  double offsy = 1.6;
 
   bool looseChi2IterCut   = 0;
   bool nominalChi2IterCut = 1;
@@ -40,17 +44,19 @@ void makePhysics(){
   double rmsVnMax      = 0.05;
   double meanVnMin     = 0.;
   double meanVnMax     = 0.05;
-  double relFluctVnMin = 0.4;
-  double relFluctVnMax = 0.7;
+  double relFluctVnMin = 0.0;
+  double relFluctVnMax = 0.79;
+  double stdDevVnMin    = 0.0;
+  double stdDevVnMax    = 0.02;
 
   double vn2Min = 0.;
-  double vn2Max = 0.05;
+  double vn2Max = 0.2;
   double vn4Min = 0.;
-  double vn4Max = 0.05;
+  double vn4Max = 0.2;
   double vn6Min = 0.;
-  double vn6Max = 0.05;
+  double vn6Max = 0.2;
   double vn8Min = 0.;
-  double vn8Max = 0.05;
+  double vn8Max = 0.2;
 
   double vn6vn4Min = 0.95;
   double vn6vn4Max = 1.05;
@@ -85,6 +91,7 @@ void makePhysics(){
   TH1D * hVarianceOfMean_RMSVn[NEPSymm][NQN];
   TH1D * hVarianceOfMean_MeanVn[NEPSymm][NQN];
   TH1D * hVarianceOfMean_RelFluctVn[NEPSymm][NQN];
+  TH1D * hVarianceOfMean_StdDevVn[NEPSymm][NQN];
   TH1D * hVarianceOfMean_Vn2[NEPSymm][NQN];
   TH1D * hVarianceOfMean_Vn4[NEPSymm][NQN];
   TH1D * hVarianceOfMean_Vn6[NEPSymm][NQN];
@@ -109,20 +116,6 @@ void makePhysics(){
   TH1D * relErr_Regularization_Vn8Vn4[NEPSymm][NQN];
   TH1D * relErr_Regularization_Vn8Vn6[NEPSymm][NQN];
 
-  TFile * fRelErr_RespEl;
-  TH1D * relErr_RespEl_RMSVn[NEPSymm][NQN];
-  TH1D * relErr_RespEl_MeanVn[NEPSymm][NQN];
-  TH1D * relErr_RespEl_StDevVn[NEPSymm][NQN];
-  TH1D * relErr_RespEl_RelFluctVn[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Vn2[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Vn4[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Vn6[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Vn8[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Gamma1Exp[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Vn6Vn4[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Vn8Vn4[NEPSymm][NQN];
-  TH1D * relErr_RespEl_Vn8Vn6[NEPSymm][NQN];
-
   TFile * fRelErr_Vtx;
   TH1D * relErr_Vtx_RMSVn[NEPSymm][NQN];
   TH1D * relErr_Vtx_MeanVn[NEPSymm][NQN];
@@ -136,20 +129,6 @@ void makePhysics(){
   TH1D * relErr_Vtx_Vn6Vn4[NEPSymm][NQN];
   TH1D * relErr_Vtx_Vn8Vn4[NEPSymm][NQN];
   TH1D * relErr_Vtx_Vn8Vn6[NEPSymm][NQN];
-
-  TFile * fRelErr_TkEff;
-  TH1D * relErr_TkEff_RMSVn[NEPSymm][NQN];
-  TH1D * relErr_TkEff_MeanVn[NEPSymm][NQN];
-  TH1D * relErr_TkEff_StDevVn[NEPSymm][NQN];
-  TH1D * relErr_TkEff_RelFluctVn[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Vn2[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Vn4[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Vn6[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Vn8[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Gamma1Exp[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Vn6Vn4[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Vn8Vn4[NEPSymm][NQN];
-  TH1D * relErr_TkEff_Vn8Vn6[NEPSymm][NQN];
 
   TFile * fRelErr_TkQuality;
   TH1D * relErr_TkQuality_RMSVn[NEPSymm][NQN];
@@ -173,10 +152,12 @@ void makePhysics(){
   double rmsVn_vs_qn[NCENT][NEPSymm][NQN];
   double meanVn_vs_qn[NCENT][NEPSymm][NQN];
   double relFluctVn_vs_qn[NCENT][NEPSymm][NQN];
+  double stdDevVn_vs_qn[NCENT][NEPSymm][NQN];
 
   double rmsVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
   double meanVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
   double relFluctVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
+  double stdDevVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
 
   double rmsVn_vs_qn_sysErr[NCENT][NEPSymm][NQN];
   double meanVn_vs_qn_sysErr[NCENT][NEPSymm][NQN];
@@ -185,6 +166,7 @@ void makePhysics(){
   TGraphErrors * grRMSVnVSQn[NCENT][NEPSymm];
   TGraphErrors * grMeanVnVSQn[NCENT][NEPSymm];
   TGraphErrors * grRelFluctVnVSQn[NCENT][NEPSymm];
+  TGraphErrors * grStdDevVnVSQn[NCENT][NEPSymm];
 
   TGraphErrors * grRMSVnVSQn_DoSys[NCENT][NEPSymm];
   TGraphErrors * grMeanVnVSQn_DoSys[NCENT][NEPSymm];
@@ -301,6 +283,7 @@ void makePhysics(){
       hVarianceOfMean_RMSVn[iEP][iqn]      = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_RMSVn_%s_qbin%i",      EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_MeanVn[iEP][iqn]     = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_MeanVn_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_RelFluctVn[iEP][iqn] = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_RelFluctVn_%s_qbin%i", EPSymmNames[iEP].data(), iqn) );
+      hVarianceOfMean_StdDevVn[iEP][iqn]   = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_StDevVn_%s_qbin%i",    EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_Vn2[iEP][iqn]        = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_Vn2_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_Vn4[iEP][iqn]        = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_Vn4_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_Vn6[iEP][iqn]        = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_Vn6_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
@@ -317,9 +300,7 @@ void makePhysics(){
   if( dosys_ ){
     //-- Systematic Errors
     fRelErr_Regularization = new TFile("systematicStudies/chi2Cutoff/relErrorRegularization.root");
-    fRelErr_RespEl         = new TFile("systematicStudies/responseElements/relErrorResponse.root");
     fRelErr_Vtx            = new TFile("systematicStudies/vtxCut/relErrorVtx.root");
-    fRelErr_TkEff          = new TFile("systematicStudies/tkEff/relErrorTkEff.root");
     fRelErr_TkQuality      = new TFile("systematicStudies/tkQuality/relErrorTkQuality.root");
 
     //-- Widths for systematic error bars
@@ -343,20 +324,6 @@ void makePhysics(){
 	relErr_Regularization_Vn8Vn6[iEP][iqn]     = (TH1D*) fRelErr_Regularization->Get( Form("relErrVn8Vn6_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
 
 
-	relErr_RespEl_RMSVn[iEP][iqn]      = (TH1D*) fRelErr_RespEl->Get( Form("relErrRMSVn_%s_qbin%i",      EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_MeanVn[iEP][iqn]     = (TH1D*) fRelErr_RespEl->Get( Form("relErrMeanVn_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_StDevVn[iEP][iqn]    = (TH1D*) fRelErr_RespEl->Get( Form("relErrStDevVn_%s_qbin%i",    EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_RelFluctVn[iEP][iqn] = (TH1D*) fRelErr_RespEl->Get( Form("relErrRelFluctVn_%s_qbin%i", EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Vn2[iEP][iqn]        = (TH1D*) fRelErr_RespEl->Get( Form("relErrVn2_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Vn4[iEP][iqn]        = (TH1D*) fRelErr_RespEl->Get( Form("relErrVn4_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Vn6[iEP][iqn]        = (TH1D*) fRelErr_RespEl->Get( Form("relErrVn6_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Vn8[iEP][iqn]        = (TH1D*) fRelErr_RespEl->Get( Form("relErrVn8_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Gamma1Exp[iEP][iqn]  = (TH1D*) fRelErr_RespEl->Get( Form("relErrGamma1Exp_%s_qbin%i",  EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Vn6Vn4[iEP][iqn]     = (TH1D*) fRelErr_RespEl->Get( Form("relErrVn6Vn4_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Vn8Vn4[iEP][iqn]     = (TH1D*) fRelErr_RespEl->Get( Form("relErrVn8Vn4_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-	relErr_RespEl_Vn8Vn6[iEP][iqn]     = (TH1D*) fRelErr_RespEl->Get( Form("relErrVn8Vn6_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-
-
 	relErr_Vtx_RMSVn[iEP][iqn]      = (TH1D*) fRelErr_Vtx->Get( Form("relErrRMSVn_%s_qbin%i",      EPSymmNames[iEP].data(), iqn) );
 	relErr_Vtx_MeanVn[iEP][iqn]     = (TH1D*) fRelErr_Vtx->Get( Form("relErrMeanVn_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
 	relErr_Vtx_StDevVn[iEP][iqn]    = (TH1D*) fRelErr_Vtx->Get( Form("relErrStDevVn_%s_qbin%i",    EPSymmNames[iEP].data(), iqn) );
@@ -369,20 +336,6 @@ void makePhysics(){
 	relErr_Vtx_Vn6Vn4[iEP][iqn]     = (TH1D*) fRelErr_Vtx->Get( Form("relErrVn6Vn4_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
 	relErr_Vtx_Vn8Vn4[iEP][iqn]     = (TH1D*) fRelErr_Vtx->Get( Form("relErrVn8Vn4_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
 	relErr_Vtx_Vn8Vn6[iEP][iqn]     = (TH1D*) fRelErr_Vtx->Get( Form("relErrVn8Vn6_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-
-
-	relErr_TkEff_RMSVn[iEP][iqn]      = (TH1D*) fRelErr_TkEff->Get( Form("relErrRMSVn_%s_qbin%i",      EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_MeanVn[iEP][iqn]     = (TH1D*) fRelErr_TkEff->Get( Form("relErrMeanVn_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_StDevVn[iEP][iqn]    = (TH1D*) fRelErr_TkEff->Get( Form("relErrStDevVn_%s_qbin%i",    EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_RelFluctVn[iEP][iqn] = (TH1D*) fRelErr_TkEff->Get( Form("relErrRelFluctVn_%s_qbin%i", EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Vn2[iEP][iqn]        = (TH1D*) fRelErr_TkEff->Get( Form("relErrVn2_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Vn4[iEP][iqn]        = (TH1D*) fRelErr_TkEff->Get( Form("relErrVn4_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Vn6[iEP][iqn]        = (TH1D*) fRelErr_TkEff->Get( Form("relErrVn6_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Vn8[iEP][iqn]        = (TH1D*) fRelErr_TkEff->Get( Form("relErrVn8_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Gamma1Exp[iEP][iqn]  = (TH1D*) fRelErr_TkEff->Get( Form("relErrGamma1Exp_%s_qbin%i",  EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Vn6Vn4[iEP][iqn]     = (TH1D*) fRelErr_TkEff->Get( Form("relErrVn6Vn4_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Vn8Vn4[iEP][iqn]     = (TH1D*) fRelErr_TkEff->Get( Form("relErrVn8Vn4_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
-	relErr_TkEff_Vn8Vn6[iEP][iqn]     = (TH1D*) fRelErr_TkEff->Get( Form("relErrVn8Vn6_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
 
 
 	relErr_TkQuality_RMSVn[iEP][iqn]      = (TH1D*) fRelErr_TkQuality->Get( Form("relErrRMSVn_%s_qbin%i",      EPSymmNames[iEP].data(), iqn) );
@@ -493,6 +446,7 @@ void makePhysics(){
 	double rmsStatErr      = sqrt( hVarianceOfMean_RMSVn[iEP][iqn]->GetBinContent(icent+1) );
 	double meanStatErr     = sqrt( hVarianceOfMean_MeanVn[iEP][iqn]->GetBinContent(icent+1) );
 	double relFluctStatErr = sqrt( hVarianceOfMean_RelFluctVn[iEP][iqn]->GetBinContent(icent+1) );
+	double stdDevStatErr   = sqrt( hVarianceOfMean_StdDevVn[iEP][iqn]->GetBinContent(icent+1) );
 
 	double vn2StatErr = sqrt( hVarianceOfMean_Vn2[iEP][iqn]->GetBinContent(icent+1) );
 	double vn4StatErr = sqrt( hVarianceOfMean_Vn4[iEP][iqn]->GetBinContent(icent+1) );
@@ -506,7 +460,6 @@ void makePhysics(){
 
 	//-- Sys Errors
 	if( dosys_ ){
-
 	  //-- Individual studies
 	  double re_Reg_RMSVn      = relErr_Regularization_RMSVn[iEP][iqn]->GetBinContent(icent+1);
 	  double re_Reg_MeanVn     = relErr_Regularization_MeanVn[iEP][iqn]->GetBinContent(icent+1);
@@ -521,19 +474,6 @@ void makePhysics(){
 	  double re_Reg_Vn8Vn4     = relErr_Regularization_Vn8Vn4[iEP][iqn]->GetBinContent(icent+1);
 	  double re_Reg_Vn8Vn6     = relErr_Regularization_Vn8Vn6[iEP][iqn]->GetBinContent(icent+1);
 
-	  double re_Resp_RMSVn      = relErr_RespEl_RMSVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_MeanVn     = relErr_RespEl_MeanVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_StDevVn    = relErr_RespEl_StDevVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_RelFluctVn = relErr_RespEl_RelFluctVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Vn2        = relErr_RespEl_Vn2[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Vn4        = relErr_RespEl_Vn4[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Vn6        = relErr_RespEl_Vn6[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Vn8        = relErr_RespEl_Vn8[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Gamma1Exp  = relErr_RespEl_Gamma1Exp[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Vn6Vn4     = relErr_RespEl_Vn6Vn4[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Vn8Vn4     = relErr_RespEl_Vn8Vn4[iEP][iqn]->GetBinContent(icent+1);
-	  double re_Resp_Vn8Vn6     = relErr_RespEl_Vn8Vn6[iEP][iqn]->GetBinContent(icent+1);
-
 	  double re_Vtx_RMSVn      = relErr_Vtx_RMSVn[iEP][iqn]->GetBinContent(icent+1);
 	  double re_Vtx_MeanVn     = relErr_Vtx_MeanVn[iEP][iqn]->GetBinContent(icent+1);
 	  double re_Vtx_StDevVn    = relErr_Vtx_StDevVn[iEP][iqn]->GetBinContent(icent+1);
@@ -546,19 +486,6 @@ void makePhysics(){
 	  double re_Vtx_Vn6Vn4     = relErr_Vtx_Vn6Vn4[iEP][iqn]->GetBinContent(icent+1);
 	  double re_Vtx_Vn8Vn4     = relErr_Vtx_Vn8Vn4[iEP][iqn]->GetBinContent(icent+1);
 	  double re_Vtx_Vn8Vn6     = relErr_Vtx_Vn8Vn6[iEP][iqn]->GetBinContent(icent+1);
-
-	  double re_TkEff_RMSVn      = relErr_TkEff_RMSVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_MeanVn     = relErr_TkEff_MeanVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_StDevVn    = relErr_TkEff_StDevVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_RelFluctVn = relErr_TkEff_RelFluctVn[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Vn2        = relErr_TkEff_Vn2[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Vn4        = relErr_TkEff_Vn4[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Vn6        = relErr_TkEff_Vn6[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Vn8        = relErr_TkEff_Vn8[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Gamma1Exp  = relErr_TkEff_Gamma1Exp[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Vn6Vn4     = relErr_TkEff_Vn6Vn4[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Vn8Vn4     = relErr_TkEff_Vn8Vn4[iEP][iqn]->GetBinContent(icent+1);
-	  double re_TkEff_Vn8Vn6     = relErr_TkEff_Vn8Vn6[iEP][iqn]->GetBinContent(icent+1);
 
 	  double re_TkQ_RMSVn      = relErr_TkQuality_RMSVn[iEP][iqn]->GetBinContent(icent+1);
 	  double re_TkQ_MeanVn     = relErr_TkQuality_MeanVn[iEP][iqn]->GetBinContent(icent+1);
@@ -574,18 +501,18 @@ void makePhysics(){
 	  double re_TkQ_Vn8Vn6     = relErr_TkQuality_Vn8Vn6[iEP][iqn]->GetBinContent(icent+1);
 
 	  //-- Merge
-	  double sys_RMSVn      = rms * sqrt( pow(re_Reg_RMSVn,2) + pow(re_Resp_RMSVn,2) + pow(re_Vtx_RMSVn,2) + pow(re_TkEff_RMSVn,2) + pow(re_TkQ_RMSVn,2) );
-          double sys_MeanVn     = mean * sqrt( pow(re_Reg_MeanVn,2) + pow(re_Resp_MeanVn,2) + pow(re_Vtx_MeanVn,2) + pow(re_TkEff_MeanVn,2) + pow(re_TkQ_MeanVn,2) );
-          double sys_StDevVn    = stdev * sqrt( pow(re_Reg_StDevVn,2) + pow(re_Resp_StDevVn,2) + pow(re_Vtx_StDevVn,2) + pow(re_TkEff_StDevVn,2) + pow(re_TkQ_StDevVn,2) );
-          double sys_RelFluctVn = relFluct * sqrt( pow(re_Reg_RelFluctVn,2) + pow(re_Resp_RelFluctVn,2) + pow(re_Vtx_RelFluctVn,2) + pow(re_TkEff_RelFluctVn,2) + pow(re_TkQ_RelFluctVn,2) );
-          double sys_Vn2        = vn2 * sqrt( pow(re_Reg_Vn2,2) + pow(re_Resp_Vn2,2) + pow(re_Vtx_Vn2,2) + pow(re_TkEff_Vn2,2) + pow(re_TkQ_Vn2,2) );
-          double sys_Vn4        = vn4 * sqrt( pow(re_Reg_Vn4,2) + pow(re_Resp_Vn4,2) + pow(re_Vtx_Vn4,2) + pow(re_TkEff_Vn4,2) + pow(re_TkQ_Vn4,2) );
-          double sys_Vn6        = vn6 * sqrt( pow(re_Reg_Vn6,2) + pow(re_Resp_Vn6,2) + pow(re_Vtx_Vn6,2) + pow(re_TkEff_Vn6,2) + pow(re_TkQ_Vn6,2) );
-          double sys_Vn8        = vn8 * sqrt( pow(re_Reg_Vn8,2) + pow(re_Resp_Vn8,2) + pow(re_Vtx_Vn8,2) + pow(re_TkEff_Vn8,2) + pow(re_TkQ_Vn8,2) );
-          double sys_Gamma1Exp  = g1exp * sqrt( pow(re_Reg_Gamma1Exp,2) + pow(re_Resp_Gamma1Exp,2) + pow(re_Vtx_Gamma1Exp,2) + pow(re_TkEff_Gamma1Exp,2) + pow(re_TkQ_Gamma1Exp,2) );
-          double sys_Vn6Vn4     = vn6vn4 * sqrt( pow(re_Reg_Vn6Vn4,2) + pow(re_Resp_Vn6Vn4,2) + pow(re_Vtx_Vn6Vn4,2) + pow(re_TkEff_Vn6Vn4,2) + pow(re_TkQ_Vn6Vn4,2) );
-          double sys_Vn8Vn4     = vn8vn4 * sqrt( pow(re_Reg_Vn8Vn4,2) + pow(re_Resp_Vn8Vn4,2) + pow(re_Vtx_Vn8Vn4,2) + pow(re_TkEff_Vn8Vn4,2) + pow(re_TkQ_Vn8Vn4,2) );
-          double sys_Vn8Vn6     = vn8vn6 * sqrt( pow(re_Reg_Vn8Vn6,2) + pow(re_Resp_Vn8Vn6,2) + pow(re_Vtx_Vn8Vn6,2) + pow(re_TkEff_Vn8Vn6,2) + pow(re_TkQ_Vn8Vn6,2) );
+	  double sys_RMSVn      = rms * sqrt( pow(re_Reg_RMSVn,2) + pow(re_Vtx_RMSVn,2) + pow(re_TkQ_RMSVn,2) );
+          double sys_MeanVn     = mean * sqrt( pow(re_Reg_MeanVn,2) + pow(re_Vtx_MeanVn,2) + pow(re_TkQ_MeanVn,2) );
+          double sys_StDevVn    = stdev * sqrt( pow(re_Reg_StDevVn,2) + pow(re_Vtx_StDevVn,2) + pow(re_TkQ_StDevVn,2) );
+          double sys_RelFluctVn = relFluct * sqrt( pow(re_Reg_RelFluctVn,2) + pow(re_Vtx_RelFluctVn,2) + pow(re_TkQ_RelFluctVn,2) );
+          double sys_Vn2        = vn2 * sqrt( pow(re_Reg_Vn2,2) + pow(re_Vtx_Vn2,2) + pow(re_TkQ_Vn2,2) );
+          double sys_Vn4        = vn4 * sqrt( pow(re_Reg_Vn4,2) + pow(re_Vtx_Vn4,2) + pow(re_TkQ_Vn4,2) );
+          double sys_Vn6        = vn6 * sqrt( pow(re_Reg_Vn6,2) + pow(re_Vtx_Vn6,2) + pow(re_TkQ_Vn6,2) );
+          double sys_Vn8        = vn8 * sqrt( pow(re_Reg_Vn8,2) + pow(re_Vtx_Vn8,2) + pow(re_TkQ_Vn8,2) );
+          double sys_Gamma1Exp  = g1exp * sqrt( pow(re_Reg_Gamma1Exp,2) + pow(re_Vtx_Gamma1Exp,2) + pow(re_TkQ_Gamma1Exp,2) );
+          double sys_Vn6Vn4     = vn6vn4 * sqrt( pow(re_Reg_Vn6Vn4,2) + pow(re_Vtx_Vn6Vn4,2) + pow(re_TkQ_Vn6Vn4,2) );
+          double sys_Vn8Vn4     = vn8vn4 * sqrt( pow(re_Reg_Vn8Vn4,2) + pow(re_Vtx_Vn8Vn4,2) + pow(re_TkQ_Vn8Vn4,2) );
+          double sys_Vn8Vn6     = vn8vn6 * sqrt( pow(re_Reg_Vn8Vn6,2) + pow(re_Vtx_Vn8Vn6,2) + pow(re_TkQ_Vn8Vn6,2) );
 
 	  //-- Set
 	  rmsVn_vs_qn_sysErr[icent][iEP][iqn]      = sys_RMSVn;
@@ -608,10 +535,12 @@ void makePhysics(){
 	rmsVn_vs_qn[icent][iEP][iqn]      = rms;
 	meanVn_vs_qn[icent][iEP][iqn]     = mean;
 	relFluctVn_vs_qn[icent][iEP][iqn] = relFluct;
+	stdDevVn_vs_qn[icent][iEP][iqn]   = stdev;
 
 	rmsVn_vs_qn_statErr[icent][iEP][iqn]      = rmsStatErr;
 	meanVn_vs_qn_statErr[icent][iEP][iqn]     = meanStatErr;
 	relFluctVn_vs_qn_statErr[icent][iEP][iqn] = relFluctStatErr;
+	stdDevVn_vs_qn_statErr[icent][iEP][iqn]   = stdDevStatErr;
 
 	vn2_vs_qn[icent][iEP][iqn] = vn2;
 	vn4_vs_qn[icent][iEP][iqn] = vn4;
@@ -639,6 +568,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]      = new TGraphErrors(NQN, qnBinCenter[icent][iEP], rmsVn_vs_qn[icent][iEP],      qnBinCentere[icent][iEP], rmsVn_vs_qn_statErr[icent][iEP]);
       grMeanVnVSQn[icent][iEP]     = new TGraphErrors(NQN, qnBinCenter[icent][iEP], meanVn_vs_qn[icent][iEP],     qnBinCentere[icent][iEP], meanVn_vs_qn_statErr[icent][iEP]);
       grRelFluctVnVSQn[icent][iEP] = new TGraphErrors(NQN, qnBinCenter[icent][iEP], relFluctVn_vs_qn[icent][iEP], qnBinCentere[icent][iEP], relFluctVn_vs_qn_statErr[icent][iEP]);
+      grStdDevVnVSQn[icent][iEP]   = new TGraphErrors(NQN, qnBinCenter[icent][iEP], stdDevVn_vs_qn[icent][iEP],   qnBinCentere[icent][iEP], stdDevVn_vs_qn_statErr[icent][iEP]);
 
       grVn2VSQn[icent][iEP] = new TGraphErrors(NQN, qnBinCenter[icent][iEP], vn2_vs_qn[icent][iEP], qnBinCentere[icent][iEP], vn2_vs_qn_statErr[icent][iEP]);
       grVn4VSQn[icent][iEP] = new TGraphErrors(NQN, qnBinCenter[icent][iEP], vn4_vs_qn[icent][iEP], qnBinCentere[icent][iEP], vn4_vs_qn_statErr[icent][iEP]);
@@ -654,7 +584,7 @@ void makePhysics(){
       formatGraph(grRMSVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), rmsVnMin, rmsVnMax, Form("#sqrt{#LTv_{%i}^{2}#GT}", norder_), centCol[icent], centMark[icent], Form("grRMSVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grMeanVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), meanVnMin, meanVnMax, Form("#LTv_{%i}#GT", norder_), centCol[icent], centMark[icent], Form("grMeanVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grRelFluctVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), relFluctVnMin, relFluctVnMax, Form("#sigma_{v_{%i}}/#LTv_{%i}#GT", norder_, norder_), centCol[icent], centMark[icent], Form("grRelFluctVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
-
+      formatGraph(grStdDevVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), stdDevVnMin, stdDevVnMax, Form("#sigma_{v_{%i}}", norder_), centCol[icent], centMark[icent], Form("grStdDevVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grVn2VSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), vn2Min, vn2Max, Form("v_{%i}{2}", norder_), centCol[icent], centMark[icent], Form("grVn2VSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grVn4VSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), vn4Min, vn4Max, Form("v_{%i}{4}", norder_), centCol[icent], centMark[icent], Form("grVn4VSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grVn6VSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), vn6Min, vn6Max, Form("v_{%i}{6}", norder_), centCol[icent], centMark[icent], Form("grVn6VSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
@@ -669,6 +599,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
       grMeanVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
       grRelFluctVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
+      grStdDevVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
 
       grVn2VSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
       grVn4VSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
@@ -683,6 +614,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
       grMeanVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
       grRelFluctVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
+      grStdDevVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
 
       grVn2VSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
       grVn4VSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
@@ -697,6 +629,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grMeanVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grRelFluctVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
+      grStdDevVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
 
       grVn2VSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grVn4VSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
@@ -707,7 +640,6 @@ void makePhysics(){
       grVn8Vn4VSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grVn8Vn6VSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grG1ExpVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
-
 
       if( dosys_ ){
 
@@ -776,7 +708,7 @@ void makePhysics(){
   } //-- End cent loop
 
   //-- DRAW!!!!!
-  TLegend * legCent = new TLegend(0.0775, 0.1812, 0.9936, 0.6799);
+  TLegend * legCent = new TLegend(0.32, 0.22, 0.92, 0.56);
   legCent->SetFillStyle(0);
   legCent->SetBorderSize(0);
   legCent->SetNColumns(2);
@@ -826,29 +758,43 @@ void makePhysics(){
 
   //-- ========================== MomentVSQn plot ==========================
   for(int icent = 0; icent < NCENT; icent++){
-    cMomentVSQn[EPSymmBin]->cd(1);
+  
+    grMeanVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRMSVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRelFluctVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grStdDevVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+
+    grMeanVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRMSVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRelFluctVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grStdDevVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+
+    cMomentVSQn[EPSymmBin]->cd(1)->SetLeftMargin(0.2);
     if( icent == 0 ) grMeanVnVSQn[icent][EPSymmBin]->Draw("alp");
     else             grMeanVnVSQn[icent][EPSymmBin]->Draw("lpsame");
 
-    cMomentVSQn[EPSymmBin]->cd(2);
+    cMomentVSQn[EPSymmBin]->cd(2)->SetLeftMargin(0.2);
+    if( icent == 0 ) grStdDevVnVSQn[icent][EPSymmBin]->Draw("alp");
+    else             grStdDevVnVSQn[icent][EPSymmBin]->Draw("lpsame");
+
+    cMomentVSQn[EPSymmBin]->cd(3)->SetLeftMargin(0.2);
     if( icent == 0 ) grRMSVnVSQn[icent][EPSymmBin]->Draw("alp");
     else             grRMSVnVSQn[icent][EPSymmBin]->Draw("lpsame");
 
-    cMomentVSQn[EPSymmBin]->cd(3);
+    cMomentVSQn[EPSymmBin]->cd(4)->SetLeftMargin(0.2);
     if( icent == 0 ) grRelFluctVnVSQn[icent][EPSymmBin]->Draw("alp");
     else             grRelFluctVnVSQn[icent][EPSymmBin]->Draw("lpsame");
   }
 
-  cMomentVSQn[EPSymmBin]->cd(3);
-  rfLine->Draw("same");
-
   cMomentVSQn[EPSymmBin]->cd(4);
   legCent->Draw();
-  latex.DrawLatex(0.0775, 0.88, "CMS #it{Preliminary}");
-  latex.DrawLatex(0.0775, 0.8, Form("|#eta| < %.1f", tkEta) );
-  latex.DrawLatex(0.0775, 0.72, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
 
-  cMomentVSQn[EPSymmBin]->SaveAs( Form("plots/physics/cMomentVSQn_%s.pdf", EPSymmNames[EPSymmBin].data()) );
+  cMomentVSQn[EPSymmBin]->cd(1);
+  latex.DrawLatex(0.25, 0.88, "CMS #it{Preliminary}");
+  latex.DrawLatex(0.25, 0.81, Form("|#eta| < %.1f", tkEta) );
+  latex.DrawLatex(0.25, 0.74, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
+
+  cMomentVSQn[EPSymmBin]->SaveAs( Form("plots/cMomentVSQn_%s.pdf", EPSymmNames[EPSymmBin].data()) );
 
   //-- ========================== CumuVSQn plot ==========================
   for(int icent = 0; icent < NCENT; icent++){

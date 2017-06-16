@@ -116,8 +116,8 @@ namespace ebyese{
   };
   */
   TH1D hCentBins("hCentBins", "hCentBins", NCENT, centbinsDefault);
-  //const int centCol[]  = {kRed+2, kGreen+1, kBlue+2, kMagenta, kOrange-3, kRed, kCyan+2, kBlue, kMagenta+2, kCyan, kGreen+3, kOrange-2};
-  const int centCol[]  = {kBlack, 28, kRed,   kBlue,   kGreen+3, kMagenta+2, kOrange+2, kCyan+2, kBlue+2, kRed+3, kViolet-1, kGreen};
+  const int centCol[]  = {kRed+2, kGreen+1, kBlue+2, kMagenta, kOrange-3, kRed, kCyan+2, kBlue, kMagenta+2, kCyan, kGreen+3, kOrange-2};
+  //const int centCol[]  = {kBlack, 28, kRed,   kBlue,   kGreen+3, kMagenta+2, kOrange+2, kCyan+2, kBlue+2, kRed+3, kViolet-1, kGreen};
   const int centCole[] = {15,     27, kRed-7, kBlue-7, kGreen,   kMagenta,   kOrange+1, kCyan,   kBlue,   kRed, kViolet,   kGreen-7};
   const int centMark[] = {24, 29, 27, 34, 25, 20, 26, 33, 28, 23, 32, 21};
 

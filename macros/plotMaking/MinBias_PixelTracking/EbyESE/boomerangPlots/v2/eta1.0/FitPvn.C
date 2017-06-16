@@ -85,8 +85,8 @@ double pEllP(double * x, double * par){
 
 void FitPvn(){
 
-  bool dosys      = 0;
-  bool ATLAS      = 0;
+  bool dosys      = 1;
+  bool ATLAS      = 1;
   bool fixKn      = 0;
   bool fixAlpha   = 0;
   bool moscowFits = 0;
@@ -473,9 +473,9 @@ void FitPvn(){
   grFitAlpha = new TGraphErrors(NCENT, centBinCenter, fitAlpha, c_err, fitAlpha_err);
   grFitE0    = new TGraphErrors(NCENT, centBinCenter, fitE0,    c_err, fitE0_err);
 
-  formatGraph(grFitKn,    "Centrality %", 0., 0.75,  "k_{n}",        1, 20, "grFitKn");
-  formatGraph(grFitAlpha, "Centrality %", 0., 130,  "#alpha",       2, 21, "grFitAlpha");
-  formatGraph(grFitE0,    "Centrality %", 0., 0.5,  "#epsilon_{0}", 4, 34, "grFitE0");
+  formatGraph(grFitKn,    "Centrality %", 0., 0.75,  "k_{n}",       1, 20, "grFitKn");
+  formatGraph(grFitAlpha, "Centrality %", 0., 130,  "#alpha",       1, 21, "grFitAlpha");
+  formatGraph(grFitE0,    "Centrality %", 0., 0.6,  "#epsilon_{0}", 1, 34, "grFitE0");
 
   fOut->cd();
   grFitKn->Write();
@@ -495,9 +495,9 @@ void FitPvn(){
     grFitAlphaSys = new TGraphErrors(NCENT, centBinCenter, fitAlpha, centBinErr, fitAlpha_syserr);
     grFitE0Sys    = new TGraphErrors(NCENT, centBinCenter, fitE0,    centBinErr, fitE0_syserr);
 
-    formatGraph(grFitKnSys,    "Centrality %", 0., 0.75, "k_{n}",        1, 20, "grFitKnSys");
-    formatGraph(grFitAlphaSys, "Centrality %", 0., 120, "#alpha",       2, 21, "grFitAlphaSys");
-    formatGraph(grFitE0Sys,    "Centrality %", 0., 0.4, "#epsilon_{0}", 4, 34, "grFitE0Sys");
+    formatGraph(grFitKnSys,    "Centrality %", 0., 0.75, "k_{n}",       1, 20, "grFitKnSys");
+    formatGraph(grFitAlphaSys, "Centrality %", 0., 120, "#alpha",       1, 21, "grFitAlphaSys");
+    formatGraph(grFitE0Sys,    "Centrality %", 0., 0.6, "#epsilon_{0}", 1, 34, "grFitE0Sys");
 
     grFitKnSys->SetFillColor(17);
     grFitAlphaSys->SetFillColor(17);
@@ -510,26 +510,42 @@ void FitPvn(){
   grATLASEcc0  = new TGraphErrors("ecc0_ATLAS_green.txt", "%lg %lg %lg");
 
   formatGraph(grATLASKn,    "Centrality %", 0.1, 1.0,  "k_{n}",        1, 24, "grATLASKn");
-  formatGraph(grATLASAlpha, "Centrality %", 0.1, 120,  "#alpha",       2, 25, "grATLASAlpha");
-  formatGraph(grATLASEcc0,  "Centrality %", 0.1, 0.5,  "#epsilon_{0}", 4, 26, "grATLASE0");
+  formatGraph(grATLASAlpha, "Centrality %", 0.1, 120,  "#alpha",       1, 25, "grATLASAlpha");
+  formatGraph(grATLASEcc0,  "Centrality %", 0.1, 0.6,  "#epsilon_{0}", 1, 26, "grATLASE0");
+
+  TGraph * grKnTh = new TGraph("theoryResults/Yan_n_s019.txt", "%lg %lg");
+  grKnTh->SetLineColor(kGreen+1);
+  TGraph * grE0ThGlaub = new TGraph("theoryResults/GlaubE0.txt", "%lg %lg");
+  grE0ThGlaub->SetLineColor(4);
+  TGraph * grE0ThGlasma = new TGraph("theoryResults/GlasmaE0.txt", "%lg %lg");
+  grE0ThGlasma->SetLineColor(2);
+  TGraph * grAlphaThGlaub = new TGraph("theoryResults/GlaubAlpha.txt", "%lg %lg");
+  grAlphaThGlaub->SetLineColor(4);
+  TGraph * grAlphaThGlasma = new TGraph("theoryResults/GlasmaAlpha.txt", "%lg %lg");
+  grAlphaThGlasma->SetLineColor(2);
 
   TLegend * legKn = new TLegend(0.2, 0.2, 0.65, 0.35);
   legKn->SetBorderSize(0);
   legKn->SetFillStyle(0);
-  legKn->AddEntry(grFitKn,   "CMS",   "lp");
+  legKn->AddEntry(grFitKn,   "CMS 5.02 TeV",   "lp");
   legKn->AddEntry(grATLASKn, "ATLAS 2.76 TeV", "lp");
+  legKn->AddEntry(grKnTh,    "Hydro #eta/s = 0.19", "l");
 
-  TLegend * legAlpha = new TLegend(0.5, 0.75, 0.95, 0.9);
+  TLegend * legAlpha = new TLegend(0.52, 0.69, 0.99, 0.91);
   legAlpha->SetBorderSize(0);
   legAlpha->SetFillStyle(0);
-  legAlpha->AddEntry(grFitAlpha,   "CMS",   "lp");
-  legAlpha->AddEntry(grATLASAlpha, "ATLAS 2.76 TeV", "lp");
+  legAlpha->AddEntry(grFitAlpha,      "CMS 5.02 TeV",   "lp");
+  legAlpha->AddEntry(grATLASAlpha,    "ATLAS 2.76 TeV", "lp");
+  legAlpha->AddEntry(grAlphaThGlaub,  "Glauber", "l");
+  legAlpha->AddEntry(grAlphaThGlasma, "IP Glasma", "l");
 
-  TLegend * legEcc0 = new TLegend(0.2, 0.2, 0.65, 0.35);
+  TLegend * legEcc0 = new TLegend(0.18, 0.69, 0.66, 0.91);
   legEcc0->SetBorderSize(0);
   legEcc0->SetFillStyle(0);
-  legEcc0->AddEntry(grFitE0,     "CMS",   "lp");
-  legEcc0->AddEntry(grATLASEcc0, "ATLAS 2.76 TeV", "lp");
+  legEcc0->AddEntry(grFitE0,       "CMS 5.02 TeV",   "lp");
+  legEcc0->AddEntry(grATLASEcc0,   "ATLAS 2.76 TeV", "lp");
+  legEcc0->AddEntry(grE0ThGlaub,  "Glauber", "l");
+  legEcc0->AddEntry(grE0ThGlasma, "IP Glasma", "l");
 
   TLegend * legFit = new TLegend(0.18, 0.20, 0.63, 0.35);
   legFit->SetBorderSize(0);
@@ -537,14 +553,16 @@ void FitPvn(){
 
   //-- Fit parms vs npart
   if(dosys){
-    TCanvas * cParmSummary = new TCanvas("cParmSummary", "cParmSummary", 1000, 1000);
-    cParmSummary->Divide(2,2);
+    TCanvas * cParmSummary = new TCanvas("cParmSummary", "cParmSummary", 1500, 500);
+    cParmSummary->Divide(3,1);
 
     cParmSummary->cd(1);
     grFitKnSys->Draw("apE2");
     grFitKn->Draw("psame");
-    latex.DrawLatex(0.2, 0.76, Form("|#eta| < %.1f", tkEta));
-    latex.DrawLatex(0.2, 0.70, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+    grKnTh->Draw("same");
+    latex.DrawLatex(0.2, 0.88, "CMS #it{Preliminary}");
+    latex.DrawLatex(0.2, 0.82, Form("|#eta| < %.1f", tkEta));
+    latex.DrawLatex(0.2, 0.76, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
     if(ATLAS){
       grATLASKn->Draw("psame");
       legKn->Draw("same");
@@ -553,6 +571,8 @@ void FitPvn(){
     cParmSummary->cd(2);
     grFitE0Sys->Draw("apE2");
     grFitE0->Draw("psame");
+    grE0ThGlaub->Draw("same");
+    grE0ThGlasma->Draw("same");
     if(ATLAS){
       grATLASEcc0->Draw("psame");
       legEcc0->Draw("same");
@@ -561,18 +581,20 @@ void FitPvn(){
     cParmSummary->cd(3);
     grFitAlphaSys->Draw("apE2");
     grFitAlpha->Draw("psame");
+    grAlphaThGlaub->Draw("same");
+    grAlphaThGlasma->Draw("same");
     if(ATLAS){
       grATLASAlpha->Draw("psame");
       legAlpha->Draw("same");
     }
-
+    /*
     cParmSummary->cd(4);
     cParmSummary->cd(4)->SetLogy();
     grChi2EllP->Draw("ap");
     grChi2BG->Draw("psame");
     legFit->Draw();
     //lone->Draw("same");
-
+    */
     cParmSummary->SaveAs(Form("plots/unfolding/FitParmSummary_v%i.pdf",norder_));
   }
   else{

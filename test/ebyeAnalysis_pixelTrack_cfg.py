@@ -19,8 +19,8 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '75X_dataRun2_v12', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '75X_mcRun2_HeavyIon_v14', '')
 
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )  
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(500) )  
 process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
@@ -33,7 +33,7 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("EbyETree_ATLASComp.root")
+    fileName = cms.string("EbyETree_SMEARpt.root")
 )
 
 process.ebyeana.Subevent_Standard = cms.untracked.bool(True)
@@ -51,13 +51,13 @@ process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixel_TT_pt_
 #process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixel_z_minus_15_minus_3_pt_0_10.root")
 #process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixel_z_minus_3_3_pt_0_10.root")
 
-process.ebyeana.minvz_ = cms.untracked.double(-15.0)
-process.ebyeana.maxvz_ = cms.untracked.double(15.0)
+process.ebyeana.minvz_ = cms.untracked.double(-15.0) #####PAY ATTENTION!!!!!!! In the analyzer, the cut is: 
+process.ebyeana.maxvz_ = cms.untracked.double(15.0)  #####PAY ATTENTION!!!!!!! if( fabs(vz) < minvz_ || fabs(vz) > maxvz_ ) vZaccept = false;
 
 process.ebyeana.Branch_Run = cms.untracked.bool(False)
 
 process.ebyeana.nptbinsDefault_  = cms.untracked.int32(2)                           #####PAY ATTENTION!!!!!!!
-process.ebyeana.ptbinsDefault_   = cms.untracked.vdouble(0.5, 1.0, 20.0)            #####PAY ATTENTION!!!!!!!
+process.ebyeana.ptbinsDefault_   = cms.untracked.vdouble(0.3, 1.0, 3.0)             #####PAY ATTENTION!!!!!!!
 process.ebyeana.netabinsDefault_ = cms.untracked.int32(4)                           #####PAY ATTENTION!!!!!!!
 process.ebyeana.etabinsDefault_  = cms.untracked.vdouble(-2.4, -1.0, 0.0, 1.0, 2.4) #####PAY ATTENTION!!!!!!!
 

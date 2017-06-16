@@ -28,30 +28,40 @@ void crossHarmonicCorr(){
   bool dosys_      = 0;
   double sysWidth_ = 0.1;
 
+  double mar   = 0.2;
+  double offsx = 1.2;
+  double offsy = 1.6;
+
   bool looseChi2IterCut   = 0;
   bool nominalChi2IterCut = 1;
   bool tightChi2IterCut   = 0;
 
   double rmsV2Min      = 0.;
-  double rmsV2Max      = 0.2;
+  double rmsV2Max      = 0.17;
   double meanV2Min     = 0.;
-  double meanV2Max     = 0.2;
+  double meanV2Max     = 0.17;
   double relFluctV2Min = 0.0;
-  double relFluctV2Max = 0.7;
+  double relFluctV2Max = 0.79;
+  double stdDevV2Min    = 0.0;
+  double stdDevV2Max    = 0.041;
 
   double rmsV3Min      = 0.;
   double rmsV3Max      = 0.05;
   double meanV3Min     = 0.;
   double meanV3Max     = 0.05;
-  double relFluctV3Min = 0.4;
-  double relFluctV3Max = 0.7;
+  double relFluctV3Min = 0.0;
+  double relFluctV3Max = 0.79;
+  double stdDevV3Min    = 0.0;
+  double stdDevV3Max    = 0.03;
 
   double rmsV4Min      = 0.;
   double rmsV4Max      = 0.05;
   double meanV4Min     = 0.;
   double meanV4Max     = 0.05;
-  double relFluctV4Min = 0.4;
-  double relFluctV4Max = 0.7;
+  double relFluctV4Min = 0.0;
+  double relFluctV4Max = 0.79;
+  double stdDevV4Min    = 0.0;
+  double stdDevV4Max    = 0.02;
 
   TLatex latex;
 
@@ -69,6 +79,7 @@ void crossHarmonicCorr(){
   TH1D * hVarianceOfMean_RMSVn[NVN][NEPSymm][NQN];
   TH1D * hVarianceOfMean_MeanVn[NVN][NEPSymm][NQN];
   TH1D * hVarianceOfMean_RelFluctVn[NVN][NEPSymm][NQN];
+  TH1D * hVarianceOfMean_StdDevVn[NVN][NEPSymm][NQN];
 
   //-- Systematic Errors
   TFile * fRelErr_Regularization[NVN];
@@ -108,18 +119,22 @@ void crossHarmonicCorr(){
   double rmsVn_vs_vm[NVN][NCENT][NEPSymm][NQN];
   double meanVn_vs_vm[NVN][NCENT][NEPSymm][NQN];
   double relFluctVn_vs_vm[NVN][NCENT][NEPSymm][NQN];
+  double stdDevVn_vs_vm[NVN][NCENT][NEPSymm][NQN];
 
   double rmsVn_vs_vm_statErr[NVN][NCENT][NEPSymm][NQN];
   double meanVn_vs_vm_statErr[NVN][NCENT][NEPSymm][NQN];
   double relFluctVn_vs_vm_statErr[NVN][NCENT][NEPSymm][NQN];
+  double stdDevVn_vs_vm_statErr[NVN][NCENT][NEPSymm][NQN];
 
   double rmsVn_vs_vm_sysErr[NVN][NCENT][NEPSymm][NQN];
   double meanVn_vs_vm_sysErr[NVN][NCENT][NEPSymm][NQN];
   double relFluctVn_vs_vm_sysErr[NVN][NCENT][NEPSymm][NQN];
+  double stdDevVn_vs_vm_sysErr[NVN][NCENT][NEPSymm][NQN];
 
   TGraphErrors * grRMSV3VSV2[NCENT][NEPSymm];
   TGraphErrors * grMeanV3VSV2[NCENT][NEPSymm];
   TGraphErrors * grRelFluctV3VSV2[NCENT][NEPSymm];
+  TGraphErrors * grStdDevV3VSV2[NCENT][NEPSymm];
 
   TGraphErrors * grRMSV3VSV2_DoSys[NCENT][NEPSymm];
   TGraphErrors * grMeanV3VSV2_DoSys[NCENT][NEPSymm];
@@ -128,6 +143,7 @@ void crossHarmonicCorr(){
   TGraphErrors * grRMSV4VSV2[NCENT][NEPSymm];
   TGraphErrors * grMeanV4VSV2[NCENT][NEPSymm];
   TGraphErrors * grRelFluctV4VSV2[NCENT][NEPSymm];
+  TGraphErrors * grStdDevV4VSV2[NCENT][NEPSymm];
 
   TGraphErrors * grRMSV4VSV2_DoSys[NCENT][NEPSymm];
   TGraphErrors * grMeanV4VSV2_DoSys[NCENT][NEPSymm];
@@ -189,6 +205,7 @@ void crossHarmonicCorr(){
 	hVarianceOfMean_RMSVn[ivn][iEP][iqn]      = (TH1D*) fStatErr[ivn]->Get( Form("hVarianceOfMean_RMSVn_%s_qbin%i",      EPSymmNames[iEP].data(), iqn) );
 	hVarianceOfMean_MeanVn[ivn][iEP][iqn]     = (TH1D*) fStatErr[ivn]->Get( Form("hVarianceOfMean_MeanVn_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
 	hVarianceOfMean_RelFluctVn[ivn][iEP][iqn] = (TH1D*) fStatErr[ivn]->Get( Form("hVarianceOfMean_RelFluctVn_%s_qbin%i", EPSymmNames[iEP].data(), iqn) );
+	hVarianceOfMean_StdDevVn[ivn][iEP][iqn]   = (TH1D*) fStatErr[ivn]->Get( Form("hVarianceOfMean_StDevVn_%s_qbin%i",    EPSymmNames[iEP].data(), iqn) );
       }
     }
 
@@ -285,6 +302,7 @@ void crossHarmonicCorr(){
 	  double rmsStatErr      = sqrt( hVarianceOfMean_RMSVn[ivn][iEP][iqn]->GetBinContent(icent+1) );
 	  double meanStatErr     = sqrt( hVarianceOfMean_MeanVn[ivn][iEP][iqn]->GetBinContent(icent+1) );
 	  double relFluctStatErr = sqrt( hVarianceOfMean_RelFluctVn[ivn][iEP][iqn]->GetBinContent(icent+1) );
+	  double stdDevStatErr   = sqrt( hVarianceOfMean_StdDevVn[ivn][iEP][iqn]->GetBinContent(icent+1) );
 
 	  //-- Sys Errors
 	  if( dosys_ ){
@@ -331,10 +349,12 @@ void crossHarmonicCorr(){
 	  rmsVn_vs_vm[ivn][icent][iEP][iqn]      = rms;
 	  meanVn_vs_vm[ivn][icent][iEP][iqn]     = mean;
 	  relFluctVn_vs_vm[ivn][icent][iEP][iqn] = relFluct;
+	  stdDevVn_vs_vm[ivn][icent][iEP][iqn]   = stdev;
 
 	  rmsVn_vs_vm_statErr[ivn][icent][iEP][iqn]      = rmsStatErr;
 	  meanVn_vs_vm_statErr[ivn][icent][iEP][iqn]     = meanStatErr;
 	  relFluctVn_vs_vm_statErr[ivn][icent][iEP][iqn] = relFluctStatErr;
+	  stdDevVn_vs_vm_statErr[ivn][icent][iEP][iqn] = stdDevStatErr;
 
 	} //-- End QN loop
 
@@ -344,17 +364,19 @@ void crossHarmonicCorr(){
 	  grRMSV3VSV2[icent][iEP]      = new TGraphErrors(NQN, rmsVn_vs_vm[0][icent][iEP],      rmsVn_vs_vm[1][icent][iEP],      rmsVn_vs_vm_statErr[0][icent][iEP],      rmsVn_vs_vm_statErr[1][icent][iEP]);
 	  grMeanV3VSV2[icent][iEP]     = new TGraphErrors(NQN, meanVn_vs_vm[0][icent][iEP],     meanVn_vs_vm[1][icent][iEP],     meanVn_vs_vm_statErr[0][icent][iEP],     meanVn_vs_vm_statErr[1][icent][iEP]);
 	  grRelFluctV3VSV2[icent][iEP] = new TGraphErrors(NQN, relFluctVn_vs_vm[0][icent][iEP], relFluctVn_vs_vm[1][icent][iEP], relFluctVn_vs_vm_statErr[0][icent][iEP], relFluctVn_vs_vm_statErr[1][icent][iEP]);
+	  grStdDevV3VSV2[icent][iEP]   = new TGraphErrors(NQN, stdDevVn_vs_vm[0][icent][iEP],   stdDevVn_vs_vm[1][icent][iEP],   stdDevVn_vs_vm_statErr[0][icent][iEP],   stdDevVn_vs_vm_statErr[1][icent][iEP]);
 
 	  grRMSV4VSV2[icent][iEP]      = new TGraphErrors(NQN, rmsVn_vs_vm[0][icent][iEP],      rmsVn_vs_vm[2][icent][iEP],      rmsVn_vs_vm_statErr[0][icent][iEP],      rmsVn_vs_vm_statErr[2][icent][iEP]);
           grMeanV4VSV2[icent][iEP]     = new TGraphErrors(NQN, meanVn_vs_vm[0][icent][iEP],     meanVn_vs_vm[2][icent][iEP],     meanVn_vs_vm_statErr[0][icent][iEP],     meanVn_vs_vm_statErr[2][icent][iEP]);
           grRelFluctV4VSV2[icent][iEP] = new TGraphErrors(NQN, relFluctVn_vs_vm[0][icent][iEP], relFluctVn_vs_vm[2][icent][iEP], relFluctVn_vs_vm_statErr[0][icent][iEP], relFluctVn_vs_vm_statErr[2][icent][iEP]);
+	  grStdDevV4VSV2[icent][iEP]   = new TGraphErrors(NQN, stdDevVn_vs_vm[0][icent][iEP],   stdDevVn_vs_vm[2][icent][iEP],   stdDevVn_vs_vm_statErr[0][icent][iEP],   stdDevVn_vs_vm_statErr[2][icent][iEP]);
 
 	  //-- Format Graphs
 
 	  //-- V3 vs V2
 	  grRMSV3VSV2[icent][iEP]->GetXaxis()->SetTitle( "#sqrt{#LTv_{2}^{2}#GT}" );
 	  grRMSV3VSV2[icent][iEP]->GetXaxis()->SetLimits(rmsV2Min, rmsV2Max);
-	  grRMSV3VSV2[icent][iEP]->GetXaxis()->SetNdivisions(509);
+	  grRMSV3VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
 	  grRMSV3VSV2[icent][iEP]->GetYaxis()->SetTitle( "#sqrt{#LTv_{3}^{2}#GT}" );
 	  grRMSV3VSV2[icent][iEP]->GetYaxis()->SetRangeUser(rmsV3Min, rmsV3Max);
 	  grRMSV3VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
@@ -364,7 +386,7 @@ void crossHarmonicCorr(){
 
 	  grMeanV3VSV2[icent][iEP]->GetXaxis()->SetTitle( "#LTv_{2}#GT" );
           grMeanV3VSV2[icent][iEP]->GetXaxis()->SetLimits(meanV2Min, meanV2Max);
-          grMeanV3VSV2[icent][iEP]->GetXaxis()->SetNdivisions(509);
+          grMeanV3VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
           grMeanV3VSV2[icent][iEP]->GetYaxis()->SetTitle( "#LTv_{3}#GT" );
           grMeanV3VSV2[icent][iEP]->GetYaxis()->SetRangeUser(meanV3Min, meanV3Max);
 	  grMeanV3VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
@@ -374,7 +396,7 @@ void crossHarmonicCorr(){
 
 	  grRelFluctV3VSV2[icent][iEP]->GetXaxis()->SetTitle( "#sigma_{v_{2}} / #LTv_{2}#GT" );
           grRelFluctV3VSV2[icent][iEP]->GetXaxis()->SetLimits(relFluctV2Min, relFluctV2Max);
-          grRelFluctV3VSV2[icent][iEP]->GetXaxis()->SetNdivisions(509);
+          grRelFluctV3VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
           grRelFluctV3VSV2[icent][iEP]->GetYaxis()->SetTitle( "#sigma_{v_{3}} / #LTv_{3}#GT" );
 	  grRelFluctV3VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
           grRelFluctV3VSV2[icent][iEP]->GetYaxis()->SetRangeUser(relFluctV3Min, relFluctV3Max);
@@ -382,10 +404,20 @@ void crossHarmonicCorr(){
           grRelFluctV3VSV2[icent][iEP]->SetMarkerColor( centCol[icent] );
           grRelFluctV3VSV2[icent][iEP]->SetMarkerStyle( centMark[icent] );
 
+	  grStdDevV3VSV2[icent][iEP]->GetXaxis()->SetTitle( "#sigma_{v_{2}}" );
+          grStdDevV3VSV2[icent][iEP]->GetXaxis()->SetLimits(stdDevV2Min, stdDevV2Max);
+          grStdDevV3VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
+          grStdDevV3VSV2[icent][iEP]->GetYaxis()->SetTitle( "#sigma_{v_{3}}" );
+          grStdDevV3VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
+          grStdDevV3VSV2[icent][iEP]->GetYaxis()->SetRangeUser(stdDevV3Min, stdDevV3Max);
+          grStdDevV3VSV2[icent][iEP]->SetLineColor( centCol[icent] );
+          grStdDevV3VSV2[icent][iEP]->SetMarkerColor( centCol[icent] );
+          grStdDevV3VSV2[icent][iEP]->SetMarkerStyle( centMark[icent] );
+
 	  //-- V4 vs V2
 	  grRMSV4VSV2[icent][iEP]->GetXaxis()->SetTitle( "#sqrt{#LTv_{2}^{2}#GT}" );
           grRMSV4VSV2[icent][iEP]->GetXaxis()->SetLimits(rmsV2Min, rmsV2Max);
-          grRMSV4VSV2[icent][iEP]->GetXaxis()->SetNdivisions(509);
+          grRMSV4VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
           grRMSV4VSV2[icent][iEP]->GetYaxis()->SetTitle( "#sqrt{#LTv_{4}^{2}#GT}" );
 	  grRMSV4VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
           grRMSV4VSV2[icent][iEP]->GetYaxis()->SetRangeUser(rmsV4Min, rmsV4Max);
@@ -395,7 +427,7 @@ void crossHarmonicCorr(){
 
           grMeanV4VSV2[icent][iEP]->GetXaxis()->SetTitle( "#LTv_{2}#GT" );
           grMeanV4VSV2[icent][iEP]->GetXaxis()->SetLimits(meanV2Min, meanV2Max);
-          grMeanV4VSV2[icent][iEP]->GetXaxis()->SetNdivisions(509);
+          grMeanV4VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
           grMeanV4VSV2[icent][iEP]->GetYaxis()->SetTitle( "#LTv_{4}#GT" );
           grMeanV4VSV2[icent][iEP]->GetYaxis()->SetRangeUser(meanV4Min, meanV4Max);
 	  grMeanV4VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
@@ -405,7 +437,7 @@ void crossHarmonicCorr(){
 
           grRelFluctV4VSV2[icent][iEP]->GetXaxis()->SetTitle( "#sigma_{v_{2}} / #LTv_{2}#GT" );
           grRelFluctV4VSV2[icent][iEP]->GetXaxis()->SetLimits(relFluctV2Min, relFluctV2Max);
-          grRelFluctV4VSV2[icent][iEP]->GetXaxis()->SetNdivisions(509);
+          grRelFluctV4VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
           grRelFluctV4VSV2[icent][iEP]->GetYaxis()->SetTitle( "#sigma_{v_{4}} / #LTv_{4}#GT" );
           grRelFluctV4VSV2[icent][iEP]->GetYaxis()->SetRangeUser(relFluctV4Min, relFluctV4Max);
 	  grRelFluctV4VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
@@ -413,6 +445,15 @@ void crossHarmonicCorr(){
           grRelFluctV4VSV2[icent][iEP]->SetMarkerColor( centCol[icent] );
           grRelFluctV4VSV2[icent][iEP]->SetMarkerStyle( centMark[icent] );
 
+	  grStdDevV4VSV2[icent][iEP]->GetXaxis()->SetTitle( "#sigma_{v_{2}}" );
+          grStdDevV4VSV2[icent][iEP]->GetXaxis()->SetLimits(stdDevV2Min, stdDevV2Max);
+          grStdDevV4VSV2[icent][iEP]->GetXaxis()->SetNdivisions(507);
+          grStdDevV4VSV2[icent][iEP]->GetYaxis()->SetTitle( "#sigma_{v_{4}}" );
+          grStdDevV4VSV2[icent][iEP]->GetYaxis()->SetNdivisions(509);
+          grStdDevV4VSV2[icent][iEP]->GetYaxis()->SetRangeUser(stdDevV4Min, stdDevV4Max);
+          grStdDevV4VSV2[icent][iEP]->SetLineColor( centCol[icent] );
+          grStdDevV4VSV2[icent][iEP]->SetMarkerColor( centCol[icent] );
+          grStdDevV4VSV2[icent][iEP]->SetMarkerStyle( centMark[icent] );
 
 	  if( dosys_ ){
 
@@ -429,7 +470,7 @@ void crossHarmonicCorr(){
 	    //-- V3 vs V2
 	    grRMSV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetTitle( "#sqrt{#LTv_{2}^{2}#GT}" );
 	    grRMSV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetLimits(rmsV2Min, rmsV2Max);
-	    grRMSV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(509);
+	    grRMSV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(507);
 	    grRMSV3VSV2_DoSys[icent][iEP]->GetYaxis()->SetTitle( "#sqrt{#LTv_{3}^{2}#GT}" );
 	    grRMSV3VSV2_DoSys[icent][iEP]->GetYaxis()->SetRangeUser(rmsV3Min, rmsV3Max);
 	    grRMSV3VSV2_DoSys[icent][iEP]->SetLineColor( centCol[icent] );
@@ -439,7 +480,7 @@ void crossHarmonicCorr(){
 
 	    grMeanV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetTitle( "#LTv_{2}#GT" );
 	    grMeanV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetLimits(meanV2Min, meanV2Max);
-	    grMeanV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(509);
+	    grMeanV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(507);
 	    grMeanV3VSV2_DoSys[icent][iEP]->GetYaxis()->SetTitle( "#LTv_{3}#GT" );
 	    grMeanV3VSV2_DoSys[icent][iEP]->GetYaxis()->SetRangeUser(meanV3Min, meanV3Max);
 	    grMeanV3VSV2_DoSys[icent][iEP]->SetLineColor( centCol[icent] );
@@ -449,7 +490,7 @@ void crossHarmonicCorr(){
 
 	    grRelFluctV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetTitle( "#sigma_{v_{2}} / #LTv_{2}#GT" );
 	    grRelFluctV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetLimits(relFluctV2Min, relFluctV2Max);
-	    grRelFluctV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(509);
+	    grRelFluctV3VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(507);
 	    grRelFluctV3VSV2_DoSys[icent][iEP]->GetYaxis()->SetTitle( "#sigma_{v_{3}} / #LTv_{3}#GT" );
 	    grRelFluctV3VSV2_DoSys[icent][iEP]->GetYaxis()->SetRangeUser(relFluctV3Min, relFluctV3Max);
 	    grRelFluctV3VSV2_DoSys[icent][iEP]->SetLineColor( centCol[icent] );
@@ -460,7 +501,7 @@ void crossHarmonicCorr(){
 	    //-- V4 vs V2
 	    grRMSV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetTitle( "#sqrt{#LTv_{2}^{2}#GT}" );
 	    grRMSV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetLimits(rmsV2Min, rmsV2Max);
-	    grRMSV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(509);
+	    grRMSV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(507);
 	    grRMSV4VSV2_DoSys[icent][iEP]->GetYaxis()->SetTitle( "#sqrt{#LTv_{4}^{2}#GT}" );
 	    grRMSV4VSV2_DoSys[icent][iEP]->GetYaxis()->SetRangeUser(rmsV4Min, rmsV4Max);
 	    grRMSV4VSV2_DoSys[icent][iEP]->SetLineColor( centCol[icent] );
@@ -470,7 +511,7 @@ void crossHarmonicCorr(){
 
 	    grMeanV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetTitle( "#LTv_{2}#GT" );
 	    grMeanV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetLimits(meanV2Min, meanV2Max);
-	    grMeanV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(509);
+	    grMeanV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(507);
 	    grMeanV4VSV2_DoSys[icent][iEP]->GetYaxis()->SetTitle( "#LTv_{4}#GT" );
 	    grMeanV4VSV2_DoSys[icent][iEP]->GetYaxis()->SetRangeUser(meanV4Min, meanV4Max);
 	    grMeanV4VSV2_DoSys[icent][iEP]->SetLineColor( centCol[icent] );
@@ -480,7 +521,7 @@ void crossHarmonicCorr(){
 
 	    grRelFluctV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetTitle( "#sigma_{v_{2}} / #LTv_{2}#GT" );
 	    grRelFluctV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetLimits(relFluctV2Min, relFluctV2Max);
-	    grRelFluctV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(509);
+	    grRelFluctV4VSV2_DoSys[icent][iEP]->GetXaxis()->SetNdivisions(507);
 	    grRelFluctV4VSV2_DoSys[icent][iEP]->GetYaxis()->SetTitle( "#sigma_{v_{4}} / #LTv_{4}#GT" );
 	    grRelFluctV4VSV2_DoSys[icent][iEP]->GetYaxis()->SetRangeUser(relFluctV4Min, relFluctV4Max);
 	    grRelFluctV4VSV2_DoSys[icent][iEP]->SetLineColor( centCol[icent] );
@@ -497,7 +538,7 @@ void crossHarmonicCorr(){
   } //-- End vn loop
 
   //-- DRAW!!!!!
-  TLegend * legCent = new TLegend(0.0775, 0.1812, 0.9936, 0.6799);
+  TLegend * legCent = new TLegend(0.32, 0.22, 0.92, 0.56);
   legCent->SetFillStyle(0);
   legCent->SetBorderSize(0);
   legCent->SetNColumns(2);
@@ -536,55 +577,86 @@ void crossHarmonicCorr(){
 
   //-- ========================== Moment_V3vsV2 plot ==========================
   for(int icent = 0; icent < NCENT; icent++){
-    cMoment_V3vsV2[EPSymmBin]->cd(1);
+
+    grMeanV3VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRMSV3VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRelFluctV3VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grStdDevV3VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+
+    grMeanV3VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRMSV3VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRelFluctV3VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grStdDevV3VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+
+    cMoment_V3vsV2[EPSymmBin]->cd(1)->SetLeftMargin(0.2);
     if( icent == 0 ) grMeanV3VSV2[icent][EPSymmBin]->Draw("alp");
     else             grMeanV3VSV2[icent][EPSymmBin]->Draw("lpsame");
 
-    cMoment_V3vsV2[EPSymmBin]->cd(2);
+    cMoment_V3vsV2[EPSymmBin]->cd(2)->SetLeftMargin(0.2);
+    if( icent == 0 ) grStdDevV3VSV2[icent][EPSymmBin]->Draw("alp");
+    else             grStdDevV3VSV2[icent][EPSymmBin]->Draw("lpsame");
+
+    cMoment_V3vsV2[EPSymmBin]->cd(3)->SetLeftMargin(0.2);
     if( icent == 0 ) grRMSV3VSV2[icent][EPSymmBin]->Draw("alp");
     else             grRMSV3VSV2[icent][EPSymmBin]->Draw("lpsame");
 
-    cMoment_V3vsV2[EPSymmBin]->cd(3);
+    cMoment_V3vsV2[EPSymmBin]->cd(4)->SetLeftMargin(0.2);
     if( icent == 0 ) grRelFluctV3VSV2[icent][EPSymmBin]->Draw("alp");
     else             grRelFluctV3VSV2[icent][EPSymmBin]->Draw("lpsame");
   }
 
-  cMoment_V3vsV2[EPSymmBin]->cd(3);
-  rfLine->Draw("same");
-
   cMoment_V3vsV2[EPSymmBin]->cd(4);
   legCent->Draw();
-  latex.DrawLatex(0.0775, 0.88, "CMS #it{Preliminary}");
-  latex.DrawLatex(0.0775, 0.8, Form("|#eta| < %.1f", tkEta) );
-  latex.DrawLatex(0.0775, 0.72, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
+
+  cMoment_V3vsV2[EPSymmBin]->cd(1);
+  latex.DrawLatex(0.25, 0.88, "CMS #it{Preliminary}");
+  latex.DrawLatex(0.25, 0.81, Form("|#eta| < %.1f", tkEta) );
+  latex.DrawLatex(0.25, 0.74, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
 
   cMoment_V3vsV2[EPSymmBin]->SaveAs( Form("plots/cMoment_V3vsV2_%s.pdf", EPSymmNames[EPSymmBin].data()) );
 
   //-- ========================== Moment_V4vsV2 plot ==========================
   for(int icent = 0; icent < NCENT; icent++){
-    cMoment_V4vsV2[EPSymmBin]->cd(1);
+    grMeanV4VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRMSV4VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRelFluctV4VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grStdDevV4VSV2[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+
+    grMeanV4VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRMSV4VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRelFluctV4VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grStdDevV4VSV2[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+
+    cMoment_V4vsV2[EPSymmBin]->cd(1)->SetLeftMargin(0.2);
     if( icent == 0 ) grMeanV4VSV2[icent][EPSymmBin]->Draw("alp");
     else             grMeanV4VSV2[icent][EPSymmBin]->Draw("lpsame");
 
-    cMoment_V4vsV2[EPSymmBin]->cd(2);
+    cMoment_V4vsV2[EPSymmBin]->cd(2)->SetLeftMargin(0.2);
+    if( icent == 0 ) grStdDevV4VSV2[icent][EPSymmBin]->Draw("alp");
+    else             grStdDevV4VSV2[icent][EPSymmBin]->Draw("lpsame");
+
+    cMoment_V4vsV2[EPSymmBin]->cd(3)->SetLeftMargin(0.2);
     if( icent == 0 ) grRMSV4VSV2[icent][EPSymmBin]->Draw("alp");
     else             grRMSV4VSV2[icent][EPSymmBin]->Draw("lpsame");
 
-    cMoment_V4vsV2[EPSymmBin]->cd(3);
+    cMoment_V4vsV2[EPSymmBin]->cd(4)->SetLeftMargin(0.2);
     if( icent == 0 ) grRelFluctV4VSV2[icent][EPSymmBin]->Draw("alp");
     else             grRelFluctV4VSV2[icent][EPSymmBin]->Draw("lpsame");
   }
 
   cMoment_V4vsV2[EPSymmBin]->cd(3);
-  rfLine->Draw("same");
+  //rfLine->Draw("same");                                                                                                                                                                                                          
 
   cMoment_V4vsV2[EPSymmBin]->cd(4);
   legCent->Draw();
-  latex.DrawLatex(0.0775, 0.88, "CMS #it{Preliminary}");
-  latex.DrawLatex(0.0775, 0.8, Form("|#eta| < %.1f", tkEta) );
-  latex.DrawLatex(0.0775, 0.72, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
+
+  cMoment_V4vsV2[EPSymmBin]->cd(1);
+  latex.DrawLatex(0.25, 0.88, "CMS #it{Preliminary}");
+  latex.DrawLatex(0.25, 0.81, Form("|#eta| < %.1f", tkEta) );
+  latex.DrawLatex(0.25, 0.74, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
 
   cMoment_V4vsV2[EPSymmBin]->SaveAs( Form("plots/cMoment_V4vsV2_%s.pdf", EPSymmNames[EPSymmBin].data()) );
+
 
   //-- ========================== *_Big plots ==========================
   for(int icent = 0; icent < NCENT; icent++){

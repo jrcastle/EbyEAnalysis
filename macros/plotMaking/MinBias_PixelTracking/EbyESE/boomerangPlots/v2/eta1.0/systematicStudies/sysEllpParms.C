@@ -83,8 +83,8 @@ void sysEllpParms(){
     e0Guess[5]  = 0.17;   e0Guess[6]  = 0.18;  e0Guess[7] = 0.19;  e0Guess[8] = 0.19;  e0Guess[9] = 0.19;
     e0Guess[10] = 0.19;   e0Guess[11] = 0.19;
   }
-  double sysMin = 0.8;
-  double sysMax = 1.2;
+  double sysMin = 0.5;
+  double sysMax = 1.5;
 
   //-- Nominal
   TFile * fNominal;
@@ -1175,17 +1175,14 @@ void sysEllpParms(){
   cSysReg->cd(1);
   grFitKn_RatioToNom_SysReg->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysReg");
 
   cSysReg->cd(2);
   grFitE0_RatioToNom_SysReg->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysReg");
 
   cSysReg->cd(3);
   grFitAlpha_RatioToNom_SysReg->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysReg");
 
   cSysReg->SaveAs("../plots/systematicStudies/cSysFitParms_SysReg.pdf");
 
@@ -1196,19 +1193,16 @@ void sysEllpParms(){
   cSysResp->cd(1);
   grFitKn_RatioToNom_SysResp->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysResp");
 
   cSysResp->cd(2);
   grFitE0_RatioToNom_SysResp->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysResp");
 
   cSysResp->cd(3);
   grFitAlpha_RatioToNom_SysResp->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysResp");
 
-  cSysReg->SaveAs("../plots/systematicStudies/cSysFitParms_SysResp.pdf");
+  cSysResp->SaveAs("../plots/systematicStudies/cSysFitParms_SysResp.pdf");
 
   //-- SysNewCC
   TCanvas * cSysNewCC = new TCanvas("cSysNewCC", "cSysNewCC", 1500, 500);
@@ -1217,19 +1211,16 @@ void sysEllpParms(){
   cSysNewCC->cd(1);
   grFitKn_RatioToNom_SysNewCC->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysNewCC");
 
   cSysNewCC->cd(2);
   grFitE0_RatioToNom_SysNewCC->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysNewCC");
 
   cSysNewCC->cd(3);
   grFitAlpha_RatioToNom_SysNewCC->Draw("ap");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysNewCC");
 
-  cSysReg->SaveAs("../plots/systematicStudies/cSysFitParms_SysNewCC.pdf");
+  cSysNewCC->SaveAs("../plots/systematicStudies/cSysFitParms_SysNewCC.pdf");
 
   //-- SysTkQ
   TLegend * legKnTkQ = new TLegend(0.20, 0.77, 0.64, 0.94);
@@ -1254,24 +1245,21 @@ void sysEllpParms(){
   grFitKn_RatioToNom_LooseSysTkQ->Draw("ap");
   grFitKn_RatioToNom_TightSysTkQ->Draw("psame");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysTkQ");
   legKnTkQ->Draw("same");
 
   cSysTkQ->cd(2);
   grFitE0_RatioToNom_LooseSysTkQ->Draw("ap");
   grFitE0_RatioToNom_TightSysTkQ->Draw("psame");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysTkQ");
   legE0TkQ->Draw("same");
 
   cSysTkQ->cd(3);
   grFitAlpha_RatioToNom_LooseSysTkQ->Draw("ap");
   grFitAlpha_RatioToNom_TightSysTkQ->Draw("psame");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysTkQ");
   legAlphaTkQ->Draw("same");
 
-  cSysReg->SaveAs("../plots/systematicStudies/cSysFitParms_SysTkQ.pdf");
+  cSysTkQ->SaveAs("../plots/systematicStudies/cSysFitParms_SysTkQ.pdf");
 
   //-- SysVtx
   TLegend * legKnVtx = new TLegend(0.20, 0.77, 0.64, 0.94);
@@ -1296,23 +1284,20 @@ void sysEllpParms(){
   grFitKn_RatioToNom_Vtx3SysVtx->Draw("ap");
   grFitKn_RatioToNom_Vtx3_15SysVtx->Draw("psame");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysVtx");
   legKnVtx->Draw("same");
 
   cSysVtx->cd(2);
   grFitE0_RatioToNom_Vtx3SysVtx->Draw("ap");
   grFitE0_RatioToNom_Vtx3_15SysVtx->Draw("psame");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysVtx");
   legE0Vtx->Draw("same");
 
   cSysVtx->cd(3);
   grFitAlpha_RatioToNom_Vtx3SysVtx->Draw("ap");
   grFitAlpha_RatioToNom_Vtx3_15SysVtx->Draw("psame");
   lone->Draw("same");
-  latex.DrawLatex(0.2, 0.2, "SysVtx");
   legAlphaVtx->Draw("same");
 
-  cSysReg->SaveAs("../plots/systematicStudies/cSysFitParms_SysVtx.pdf");
+  cSysVtx->SaveAs("../plots/systematicStudies/cSysFitParms_SysVtx.pdf");
 
 }

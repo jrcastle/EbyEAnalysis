@@ -164,7 +164,8 @@ void makeVNDet(){
       
     //-- Calculate centbin
     if( centval > cent_max[NCENT-1]) continue;
-    int icent = hCentBins.FindBin(centval)-1;
+    //int icent = hCentBins.FindBin(centval)-1;
+    int icent = 0;
 
     //-- Reset Raw and sumw values
     VNRawX_0[icent]     = 0.;

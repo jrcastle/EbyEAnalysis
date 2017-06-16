@@ -439,6 +439,13 @@ EbyEAnalyzer::HFQVectors(const edm::Event& iEvent)
 
     } //-- End calo tower loop
 
+    //int evt = iEvent.id().event();
+    //int lumi = iEvent.id().luminosityBlock();
+    //double q2x = (qnHFx_EP[0] + qnHFx_EP[1]) / (sumET_EP[0] + sumET_EP[1]);
+    //double q2y = (qnHFy_EP[0] + qnHFy_EP[1]) / (sumET_EP[0] + sumET_EP[1]);
+    //double q2 = sqrt(q2x*q2x + q2y*q2y);
+    //if(q2 > 0.2) std::cout << Form("Run = %i\t", runno_) << Form("Lumi = %i\t", lumi) << Form("Event = %i\t", evt) << Form("q2 = %.2f", q2) << std::endl;
+
   } //-- End if(caloCollection_.isValid())
 
 }
@@ -621,9 +628,9 @@ EbyEAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     bool vZaccept = true;
     bool vTrkSize = true;
 
-    if( (int) recoV.size() > nvtx_ )         vSize    = false;
-    if( vz < minvz_ || vz > maxvz_ )         vZaccept = false;
-    if( recoV[primaryvtx].tracksSize() < 1 ) vTrkSize = false;
+    if( (int) recoV.size() > nvtx_ )             vSize    = false;
+    if( fabs(vz) < minvz_ || fabs(vz) > maxvz_ ) vZaccept = false;
+    if( recoV[primaryvtx].tracksSize() < 1 )     vTrkSize = false;
 
     if( !vSize || !vZaccept || !vTrkSize ) return;
 

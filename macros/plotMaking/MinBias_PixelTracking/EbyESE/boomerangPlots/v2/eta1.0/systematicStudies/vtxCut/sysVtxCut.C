@@ -1001,14 +1001,15 @@ void sysVtxCut(){
 
   //-- Save the unfolded distns for when the cutoff is chi2=2.
   for(int icent = 0; icent < NCENT; icent++){
+
+    std::cout << Form("c%i\tVz < 3 iter = %i\t3<Vz<15 iter = %i", icent, iter[iterCutoffVtx3[icent]], iter[iterCutoffVtx3_15[icent]]) << std::endl;
+
     int i = iterCutoffVtx3[icent];
-    std::cout<<i<<std::endl;
     hUnfoldVtx3[icent][i]->SetLineColor(1);
     hUnfoldVtx3[icent][i]->SetMarkerColor(1);
     hUnfoldVtx3[icent][i]->Write( Form("hFinalUnfold_Vtx3SysVtx_c%i", icent) );
 
     i = iterCutoffVtx3_15[icent];
-    std::cout<<i<<std::endl;
     hUnfoldVtx3_15[icent][i]->SetLineColor(1);
     hUnfoldVtx3_15[icent][i]->SetMarkerColor(1);
     hUnfoldVtx3_15[icent][i]->Write( Form("hFinalUnfold_Vtx3_15SysVtx_c%i", icent) );

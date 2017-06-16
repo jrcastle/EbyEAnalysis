@@ -185,8 +185,8 @@ void ReadTree_normDet(){
 
     //-- Calculate centbin
     if( centval > cent_max[NCENT-1]) continue;
-    int icent = hCentBins.FindBin(centval)-1;
-
+    //int icent = hCentBins.FindBin(centval)-1;
+    int icent = 0;
     //-- Reset raw and sumw values
     VnRaw_x_0    = 0;
     VnRaw_y_0    = 0;

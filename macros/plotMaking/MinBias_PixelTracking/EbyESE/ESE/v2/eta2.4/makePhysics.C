@@ -29,6 +29,10 @@ void makePhysics(){
   bool dosys_      = 1;
   double sysWidth_ = 0.01;
 
+  double mar   = 0.2;
+  double offsx = 1.2;
+  double offsy = 1.6;
+
   bool looseChi2IterCut   = 0;
   bool nominalChi2IterCut = 1;
   bool tightChi2IterCut   = 0;
@@ -37,11 +41,13 @@ void makePhysics(){
   double qnmax = 0.26;
 
   double rmsVnMin      = 0.;
-  double rmsVnMax      = 0.2;
+  double rmsVnMax      = 0.17;
   double meanVnMin     = 0.;
-  double meanVnMax     = 0.2;
-  double relFluctVnMin = 0.;
-  double relFluctVnMax = 0.7;
+  double meanVnMax     = 0.17;
+  double relFluctVnMin = 0.0;
+  double relFluctVnMax = 0.79;
+  double stdDevVnMin    = 0.0;
+  double stdDevVnMax    = 0.041;
 
   double vn2Min = 0.;
   double vn2Max = 0.2;
@@ -85,6 +91,7 @@ void makePhysics(){
   TH1D * hVarianceOfMean_RMSVn[NEPSymm][NQN];
   TH1D * hVarianceOfMean_MeanVn[NEPSymm][NQN];
   TH1D * hVarianceOfMean_RelFluctVn[NEPSymm][NQN];
+  TH1D * hVarianceOfMean_StdDevVn[NEPSymm][NQN];
   TH1D * hVarianceOfMean_Vn2[NEPSymm][NQN];
   TH1D * hVarianceOfMean_Vn4[NEPSymm][NQN];
   TH1D * hVarianceOfMean_Vn6[NEPSymm][NQN];
@@ -145,10 +152,12 @@ void makePhysics(){
   double rmsVn_vs_qn[NCENT][NEPSymm][NQN];
   double meanVn_vs_qn[NCENT][NEPSymm][NQN];
   double relFluctVn_vs_qn[NCENT][NEPSymm][NQN];
+  double stdDevVn_vs_qn[NCENT][NEPSymm][NQN];
 
   double rmsVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
   double meanVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
   double relFluctVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
+  double stdDevVn_vs_qn_statErr[NCENT][NEPSymm][NQN];
 
   double rmsVn_vs_qn_sysErr[NCENT][NEPSymm][NQN];
   double meanVn_vs_qn_sysErr[NCENT][NEPSymm][NQN];
@@ -157,6 +166,7 @@ void makePhysics(){
   TGraphErrors * grRMSVnVSQn[NCENT][NEPSymm];
   TGraphErrors * grMeanVnVSQn[NCENT][NEPSymm];
   TGraphErrors * grRelFluctVnVSQn[NCENT][NEPSymm];
+  TGraphErrors * grStdDevVnVSQn[NCENT][NEPSymm];
 
   TGraphErrors * grRMSVnVSQn_DoSys[NCENT][NEPSymm];
   TGraphErrors * grMeanVnVSQn_DoSys[NCENT][NEPSymm];
@@ -273,6 +283,7 @@ void makePhysics(){
       hVarianceOfMean_RMSVn[iEP][iqn]      = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_RMSVn_%s_qbin%i",      EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_MeanVn[iEP][iqn]     = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_MeanVn_%s_qbin%i",     EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_RelFluctVn[iEP][iqn] = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_RelFluctVn_%s_qbin%i", EPSymmNames[iEP].data(), iqn) );
+      hVarianceOfMean_StdDevVn[iEP][iqn]   = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_StDevVn_%s_qbin%i",    EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_Vn2[iEP][iqn]        = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_Vn2_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_Vn4[iEP][iqn]        = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_Vn4_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
       hVarianceOfMean_Vn6[iEP][iqn]        = (TH1D*) fStatErr->Get( Form("hVarianceOfMean_Vn6_%s_qbin%i",        EPSymmNames[iEP].data(), iqn) );
@@ -435,6 +446,7 @@ void makePhysics(){
 	double rmsStatErr      = sqrt( hVarianceOfMean_RMSVn[iEP][iqn]->GetBinContent(icent+1) );
 	double meanStatErr     = sqrt( hVarianceOfMean_MeanVn[iEP][iqn]->GetBinContent(icent+1) );
 	double relFluctStatErr = sqrt( hVarianceOfMean_RelFluctVn[iEP][iqn]->GetBinContent(icent+1) );
+	double stdDevStatErr   = sqrt( hVarianceOfMean_StdDevVn[iEP][iqn]->GetBinContent(icent+1) );
 
 	double vn2StatErr = sqrt( hVarianceOfMean_Vn2[iEP][iqn]->GetBinContent(icent+1) );
 	double vn4StatErr = sqrt( hVarianceOfMean_Vn4[iEP][iqn]->GetBinContent(icent+1) );
@@ -523,10 +535,12 @@ void makePhysics(){
 	rmsVn_vs_qn[icent][iEP][iqn]      = rms;
 	meanVn_vs_qn[icent][iEP][iqn]     = mean;
 	relFluctVn_vs_qn[icent][iEP][iqn] = relFluct;
+	stdDevVn_vs_qn[icent][iEP][iqn]   = stdev;
 
 	rmsVn_vs_qn_statErr[icent][iEP][iqn]      = rmsStatErr;
 	meanVn_vs_qn_statErr[icent][iEP][iqn]     = meanStatErr;
 	relFluctVn_vs_qn_statErr[icent][iEP][iqn] = relFluctStatErr;
+	stdDevVn_vs_qn_statErr[icent][iEP][iqn]   = stdDevStatErr;
 
 	vn2_vs_qn[icent][iEP][iqn] = vn2;
 	vn4_vs_qn[icent][iEP][iqn] = vn4;
@@ -554,6 +568,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]      = new TGraphErrors(NQN, qnBinCenter[icent][iEP], rmsVn_vs_qn[icent][iEP],      qnBinCentere[icent][iEP], rmsVn_vs_qn_statErr[icent][iEP]);
       grMeanVnVSQn[icent][iEP]     = new TGraphErrors(NQN, qnBinCenter[icent][iEP], meanVn_vs_qn[icent][iEP],     qnBinCentere[icent][iEP], meanVn_vs_qn_statErr[icent][iEP]);
       grRelFluctVnVSQn[icent][iEP] = new TGraphErrors(NQN, qnBinCenter[icent][iEP], relFluctVn_vs_qn[icent][iEP], qnBinCentere[icent][iEP], relFluctVn_vs_qn_statErr[icent][iEP]);
+      grStdDevVnVSQn[icent][iEP]   = new TGraphErrors(NQN, qnBinCenter[icent][iEP], stdDevVn_vs_qn[icent][iEP],   qnBinCentere[icent][iEP], stdDevVn_vs_qn_statErr[icent][iEP]);
 
       grVn2VSQn[icent][iEP] = new TGraphErrors(NQN, qnBinCenter[icent][iEP], vn2_vs_qn[icent][iEP], qnBinCentere[icent][iEP], vn2_vs_qn_statErr[icent][iEP]);
       grVn4VSQn[icent][iEP] = new TGraphErrors(NQN, qnBinCenter[icent][iEP], vn4_vs_qn[icent][iEP], qnBinCentere[icent][iEP], vn4_vs_qn_statErr[icent][iEP]);
@@ -569,7 +584,7 @@ void makePhysics(){
       formatGraph(grRMSVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), rmsVnMin, rmsVnMax, Form("#sqrt{#LTv_{%i}^{2}#GT}", norder_), centCol[icent], centMark[icent], Form("grRMSVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grMeanVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), meanVnMin, meanVnMax, Form("#LTv_{%i}#GT", norder_), centCol[icent], centMark[icent], Form("grMeanVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grRelFluctVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), relFluctVnMin, relFluctVnMax, Form("#sigma_{v_{%i}}/#LTv_{%i}#GT", norder_, norder_), centCol[icent], centMark[icent], Form("grRelFluctVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
-
+      formatGraph(grStdDevVnVSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), stdDevVnMin, stdDevVnMax, Form("#sigma_{v_{%i}}", norder_), centCol[icent], centMark[icent], Form("grStdDevVnVSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grVn2VSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), vn2Min, vn2Max, Form("v_{%i}{2}", norder_), centCol[icent], centMark[icent], Form("grVn2VSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grVn4VSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), vn4Min, vn4Max, Form("v_{%i}{4}", norder_), centCol[icent], centMark[icent], Form("grVn4VSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
       formatGraph(grVn6VSQn[icent][iEP], Form("q_{%i}", QnBinOrder_), vn6Min, vn6Max, Form("v_{%i}{6}", norder_), centCol[icent], centMark[icent], Form("grVn6VSQn_%s_c%i", EPSymmNames[iEP].data(), icent ));
@@ -584,6 +599,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
       grMeanVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
       grRelFluctVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
+      grStdDevVnVSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
 
       grVn2VSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
       grVn4VSQn[icent][iEP]->GetXaxis()->SetLimits(qnmin, qnmax);
@@ -598,6 +614,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
       grMeanVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
       grRelFluctVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
+      grStdDevVnVSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
 
       grVn2VSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
       grVn4VSQn[icent][iEP]->GetXaxis()->SetNdivisions(509);
@@ -612,6 +629,7 @@ void makePhysics(){
       grRMSVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grMeanVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grRelFluctVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
+      grStdDevVnVSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
 
       grVn2VSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
       grVn4VSQn[icent][iEP]->GetYaxis()->SetNdivisions(509);
@@ -690,7 +708,7 @@ void makePhysics(){
   } //-- End cent loop
 
   //-- DRAW!!!!!
-  TLegend * legCent = new TLegend(0.0775, 0.1812, 0.9936, 0.6799);
+  TLegend * legCent = new TLegend(0.46, 0.61, 0.95, 0.90);
   legCent->SetFillStyle(0);
   legCent->SetBorderSize(0);
   legCent->SetNColumns(2);
@@ -740,29 +758,43 @@ void makePhysics(){
 
   //-- ========================== MomentVSQn plot ==========================
   for(int icent = 0; icent < NCENT; icent++){
-    cMomentVSQn[EPSymmBin]->cd(1);
+  
+    grMeanVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRMSVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grRelFluctVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+    grStdDevVnVSQn[icent][EPSymmBin]->GetXaxis()->SetTitleOffset(offsx);
+
+    grMeanVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRMSVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grRelFluctVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+    grStdDevVnVSQn[icent][EPSymmBin]->GetYaxis()->SetTitleOffset(offsy);
+
+    cMomentVSQn[EPSymmBin]->cd(1)->SetLeftMargin(0.2);
     if( icent == 0 ) grMeanVnVSQn[icent][EPSymmBin]->Draw("alp");
     else             grMeanVnVSQn[icent][EPSymmBin]->Draw("lpsame");
 
-    cMomentVSQn[EPSymmBin]->cd(2);
+    cMomentVSQn[EPSymmBin]->cd(2)->SetLeftMargin(0.2);
+    if( icent == 0 ) grStdDevVnVSQn[icent][EPSymmBin]->Draw("alp");
+    else             grStdDevVnVSQn[icent][EPSymmBin]->Draw("lpsame");
+
+    cMomentVSQn[EPSymmBin]->cd(3)->SetLeftMargin(0.2);
     if( icent == 0 ) grRMSVnVSQn[icent][EPSymmBin]->Draw("alp");
     else             grRMSVnVSQn[icent][EPSymmBin]->Draw("lpsame");
 
-    cMomentVSQn[EPSymmBin]->cd(3);
+    cMomentVSQn[EPSymmBin]->cd(4)->SetLeftMargin(0.2);
     if( icent == 0 ) grRelFluctVnVSQn[icent][EPSymmBin]->Draw("alp");
     else             grRelFluctVnVSQn[icent][EPSymmBin]->Draw("lpsame");
   }
 
-  cMomentVSQn[EPSymmBin]->cd(3);
-  rfLine->Draw("same");
-
   cMomentVSQn[EPSymmBin]->cd(4);
   legCent->Draw();
-  latex.DrawLatex(0.0775, 0.88, "CMS #it{Preliminary}");
-  latex.DrawLatex(0.0775, 0.8, Form("|#eta| < %.1f", tkEta) );
-  latex.DrawLatex(0.0775, 0.72, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
 
-  cMomentVSQn[EPSymmBin]->SaveAs( Form("plots/physics/cMomentVSQn_%s.pdf", EPSymmNames[EPSymmBin].data()) );
+  cMomentVSQn[EPSymmBin]->cd(1);
+  latex.DrawLatex(0.25, 0.88, "CMS #it{Preliminary}");
+  latex.DrawLatex(0.25, 0.82, Form("|#eta| < %.1f", tkEta) );
+  latex.DrawLatex(0.25, 0.76, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]) );
+
+  cMomentVSQn[EPSymmBin]->SaveAs( Form("plots/cMomentVSQn_%s.pdf", EPSymmNames[EPSymmBin].data()) );
 
   //-- ========================== CumuVSQn plot ==========================
   for(int icent = 0; icent < NCENT; icent++){
