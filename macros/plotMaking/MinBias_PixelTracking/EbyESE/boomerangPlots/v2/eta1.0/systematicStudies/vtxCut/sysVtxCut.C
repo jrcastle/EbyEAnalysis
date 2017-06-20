@@ -333,7 +333,7 @@ void sysVtxCut(){
       hRefoldVtx3[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldVtx3[icent][i]->Chi2Test(hObsVtx3[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldVtx3[icent][i]->Chi2Test(hObsVtx3[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
 	iterCutoffVtx3[icent] = i;
@@ -431,7 +431,7 @@ void sysVtxCut(){
       hRefoldVtx3_15[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldVtx3_15[icent][i]->Chi2Test(hObsVtx3_15[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldVtx3_15[icent][i]->Chi2Test(hObsVtx3_15[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffVtx3_15[icent] = i;
@@ -530,7 +530,7 @@ void sysVtxCut(){
       hRefoldVtx15[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldVtx15[icent][i]->Chi2Test(hObsVtx15[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldVtx15[icent][i]->Chi2Test(hObsVtx15[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffVtx15[icent] = i;

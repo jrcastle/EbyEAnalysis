@@ -257,7 +257,7 @@ void sysChi2Cutoff(){
       else                                 vn46_vn68 = (vn4 - vn6)/(vn6 - vn8);
 
       //-- Calculate the refold chi2
-      double chi2NDF_Refold = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
       chi2NDF[icent][i] = chi2NDF_Refold;
 
       //-- loop over the scenarios and choose the iteration for each

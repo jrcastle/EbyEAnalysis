@@ -184,7 +184,7 @@ void ebyeCumuSkew(){
       hRefold[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      chi2NDF_Refold[icent][i] = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF"); 
+      chi2NDF_Refold[icent][i] = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF"); 
 
       if( chi2NDF_Refold[icent][i] < 1.2 ){
 	iterCutoff[icent] = i;

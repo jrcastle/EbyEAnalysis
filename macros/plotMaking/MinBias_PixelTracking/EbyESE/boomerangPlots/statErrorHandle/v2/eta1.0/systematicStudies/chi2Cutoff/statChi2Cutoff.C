@@ -122,7 +122,7 @@ void statChi2Cutoff(){
 	hRefold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hrefold%i_c%i", iter[i], icent) );
 
 
-	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "CHI2/NDF");
+	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "UWCHI2/NDF");
 
 	//-- loop over the scenarios and choose the iteration for each
 	for(int ichi = 0; ichi < NCHI2; ichi++){

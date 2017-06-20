@@ -257,9 +257,9 @@ void unfoldAssess(){
       unfold_stDeve[icent][i] = uSige;
 
       //-- Chi squares
-      if( i == 0 ) chi2NDF_Iteration[icent][i] = hUnfold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
-      else         chi2NDF_Iteration[icent][i] = hUnfold[icent][i]->Chi2Test(hUnfold[icent][i-1], "CHI2/NDF");;
-      chi2NDF_Refold[icent][i] = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF"); 
+      if( i == 0 ) chi2NDF_Iteration[icent][i] = hUnfold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
+      else         chi2NDF_Iteration[icent][i] = hUnfold[icent][i]->Chi2Test(hUnfold[icent][i-1], "UWCHI2/NDF");;
+      chi2NDF_Refold[icent][i] = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF"); 
 
       if( chi2NDF_Refold[icent][i] <= 1.2 && !iterCutoff[icent] ){
 	iterCutoff[icent] = true;

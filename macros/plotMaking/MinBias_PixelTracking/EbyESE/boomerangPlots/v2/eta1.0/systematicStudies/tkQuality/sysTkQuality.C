@@ -333,7 +333,7 @@ void sysTkQuality(){
       hRefoldLoose[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldLoose[icent][i]->Chi2Test(hObsLoose[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldLoose[icent][i]->Chi2Test(hObsLoose[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
 	iterCutoffLoose[icent] = i;
@@ -434,7 +434,7 @@ void sysTkQuality(){
       hRefoldTight[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldTight[icent][i]->Chi2Test(hObsTight[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldTight[icent][i]->Chi2Test(hObsTight[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffTight[icent] = i;
@@ -533,7 +533,7 @@ void sysTkQuality(){
       hRefoldNominal[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefoldNominal[icent][i]->Chi2Test(hObsNominal[icent], "CHI2/NDF");
+      double chi2NDF_Refold = hRefoldNominal[icent][i]->Chi2Test(hObsNominal[icent], "UWCHI2/NDF");
 
       if( chi2NDF_Refold < 1.2 ){
         iterCutoffNominal[icent] = i;

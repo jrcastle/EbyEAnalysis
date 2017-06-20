@@ -191,8 +191,8 @@ void sysRespEl(){
       hRefoldDoSys[icent][i]->SetMarkerColor(col[i]);
 
       //-- Chi squares
-      double chi2NDF_Refold       = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
-      double chi2NDF_Refold_DoSys = hRefoldDoSys[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
+      double chi2NDF_Refold       = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
+      double chi2NDF_Refold_DoSys = hRefoldDoSys[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
       std::cout << "chi2NDF_Refold_DoSys  = " << chi2NDF_Refold_DoSys << std::endl;
 
       //-- Normal unfolding chi2 check

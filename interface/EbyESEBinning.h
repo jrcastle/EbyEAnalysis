@@ -16,12 +16,19 @@ using namespace std;
 namespace ebyese{
 
   //-- Analyzer output tree
-  const TString fAnaTreeName                = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel.root";
-  const TString fAnaTreeNameNewCC           = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewCCTune_2pct.root";
-  const TString fAnaTreeNameTkQLoose        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_loose.root";
-  const TString fAnaTreeNameTkQTight        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_tight.root";
-  const TString fAnaTreeNameVtx3_15         = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx3_15.root";
-  const TString fAnaTreeNameVtx_leq_3       = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx_leq_3.root";
+  const TString fAnaTreeNameTkQLoose        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelLoose.root";
+  const TString fAnaTreeNameTkQTight        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelTight.root";
+  const TString fAnaTreeName                = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelNominal.root";
+  const TString fAnaTreeNameVtx_leq_3       = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelNarrow.root";
+  const TString fAnaTreeNameVtx3_15         = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelWide.root";
+  const TString fAnaTreeNameNewCC           = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelCC2pct.root";
+
+  //const TString fAnaTreeName                = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel.root";
+  //const TString fAnaTreeNameNewCC           = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewCCTune_2pct.root";
+  //const TString fAnaTreeNameTkQLoose        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_loose.root";
+  //const TString fAnaTreeNameTkQTight        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_pixel_tight.root";
+  //const TString fAnaTreeNameVtx3_15         = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx3_15.root";
+  //const TString fAnaTreeNameVtx_leq_3       = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_vtx_leq_3.root";
   const TString fAnaTreeNamePtRes           = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_SMEARpt.root";
   const TString fAnaTreeNameHIJING          = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_HIJING.root";
   const TString fAnaTreeNameHIJINGNoFlow    = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_HIJING_NoFlow.root";

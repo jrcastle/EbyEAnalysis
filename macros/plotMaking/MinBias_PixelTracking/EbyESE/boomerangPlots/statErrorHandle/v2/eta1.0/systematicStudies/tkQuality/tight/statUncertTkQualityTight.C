@@ -114,7 +114,7 @@ void statUncertTkQualityTight(){
 	hUnfold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hreco%i_c%i",   iter[i], icent) );
 	hRefold[icent][iS][i] = (TH1D*) fUnf[iS]->Get( Form("hrefold%i_c%i", iter[i], icent) );
 
-	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "CHI2/NDF");
+	double chi2Refold = hRefold[icent][iS][i]->Chi2Test(hObs[icent][iS], "UWCHI2/NDF");
 	if( chi2Refold < 1.2 ){
 	  iterCutoff[icent][iS] = i;
 	  break;

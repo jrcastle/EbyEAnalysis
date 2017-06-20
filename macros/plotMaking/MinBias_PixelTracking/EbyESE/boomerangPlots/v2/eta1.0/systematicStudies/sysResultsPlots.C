@@ -257,7 +257,7 @@ void sysResultsPlots(){
       hRefold[icent][i] = (TH1D*) fUnfold->Get( Form("hrefold%i_c%i", iter[i], icent) );
 
       //-- Chi squares
-      double chi2NDF_Refold = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF"); 
+      double chi2NDF_Refold = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF"); 
 
       if( chi2NDF_Refold < 1.2 ){
 	iterCutoff[icent] = i;

@@ -237,8 +237,8 @@ void sysUnfoldDistns(){
       hRefold[icent][i]->SetLineColor(col[i]);
       hRefold[icent][i]->SetLineWidth(2);
       hRefoldGaussResp[icent][i] = (TH1D*) fUnfoldGaussResp->Get( Form("hrefold%i_c%i", iter[i], icent) );
-      double chi2    = hRefold[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
-      double chi2GRP = hRefoldGaussResp[icent][i]->Chi2Test(hObs[icent], "CHI2/NDF");
+      double chi2    = hRefold[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
+      double chi2GRP = hRefoldGaussResp[icent][i]->Chi2Test(hObs[icent], "UWCHI2/NDF");
 
       refoldChi2[icent][i] = chi2;
 
@@ -282,7 +282,7 @@ void sysUnfoldDistns(){
     for(int i = 0; i < NITER; i++){
       hUnfoldVtx3[icent][i] = (TH1D*) fUnfoldVtx3->Get( Form("hreco%i_c%i", iter[i], icent) );
       hRefoldVtx3[icent][i] = (TH1D*) fUnfoldVtx3->Get( Form("hrefold%i_c%i", iter[i], icent) );
-      double chi2 = hRefoldVtx3[icent][i]->Chi2Test(hObsVtx3[icent], "CHI2/NDF");
+      double chi2 = hRefoldVtx3[icent][i]->Chi2Test(hObsVtx3[icent], "UWCHI2/NDF");
 
       if( chi2 < 1.2 && !iterCut ){
         hFinalUnfSysVtx3[icent] = (TH1D*) hUnfoldVtx3[icent][i]->Clone( Form("hFinalUnfSysVtx3_c%i", icent) );
@@ -300,7 +300,7 @@ void sysUnfoldDistns(){
     for(int i = 0; i < NITER; i++){
       hUnfoldVtx3_15[icent][i] = (TH1D*) fUnfoldVtx3_15->Get( Form("hreco%i_c%i", iter[i], icent) );
       hRefoldVtx3_15[icent][i] = (TH1D*) fUnfoldVtx3_15->Get( Form("hrefold%i_c%i", iter[i], icent) );
-      double chi2 = hRefoldVtx3_15[icent][i]->Chi2Test(hObsVtx3_15[icent], "CHI2/NDF");
+      double chi2 = hRefoldVtx3_15[icent][i]->Chi2Test(hObsVtx3_15[icent], "UWCHI2/NDF");
 
       if( chi2 < 1.2 && !iterCut ){
         hFinalUnfSysVtx3_15[icent] = (TH1D*) hUnfoldVtx3_15[icent][i]->Clone( Form("hFinalUnfSysVtx3_15_c%i", icent) );
@@ -318,7 +318,7 @@ void sysUnfoldDistns(){
     for(int i = 0; i < NITER; i++){
       hUnfoldTkLoose[icent][i] = (TH1D*) fUnfoldTkLoose->Get( Form("hreco%i_c%i", iter[i], icent) );
       hRefoldTkLoose[icent][i] = (TH1D*) fUnfoldTkLoose->Get( Form("hrefold%i_c%i", iter[i], icent) );
-      double chi2 = hRefoldTkLoose[icent][i]->Chi2Test(hObsTkLoose[icent], "CHI2/NDF");
+      double chi2 = hRefoldTkLoose[icent][i]->Chi2Test(hObsTkLoose[icent], "UWCHI2/NDF");
 
       if( chi2 < 1.2 && !iterCut ){
         hFinalUnfSysTkLoose[icent] = (TH1D*) hUnfoldTkLoose[icent][i]->Clone( Form("hFinalUnfSysTkLoose_c%i", icent) );
@@ -335,7 +335,7 @@ void sysUnfoldDistns(){
     for(int i = 0; i < NITER; i++){
       hUnfoldTkTight[icent][i] = (TH1D*) fUnfoldTkTight->Get( Form("hreco%i_c%i", iter[i], icent) );
       hRefoldTkTight[icent][i] = (TH1D*) fUnfoldTkTight->Get( Form("hrefold%i_c%i", iter[i], icent) );
-      double chi2 = hRefoldTkTight[icent][i]->Chi2Test(hObsTkTight[icent], "CHI2/NDF");
+      double chi2 = hRefoldTkTight[icent][i]->Chi2Test(hObsTkTight[icent], "UWCHI2/NDF");
 
       if( chi2 < 1.2 && !iterCut ){
         hFinalUnfSysTkTight[icent] = (TH1D*) hUnfoldTkTight[icent][i]->Clone( Form("hFinalUnfSysTkTight_c%i", icent) );
@@ -352,7 +352,7 @@ void sysUnfoldDistns(){
     for(int i = 0; i < NITER; i++){
       hUnfoldNewCC[icent][i] = (TH1D*) fUnfoldNewCC->Get( Form("hreco%i_c%i", iter[i], icent) );
       hRefoldNewCC[icent][i] = (TH1D*) fUnfoldNewCC->Get( Form("hrefold%i_c%i", iter[i], icent) );
-      double chi2 = hRefoldNewCC[icent][i]->Chi2Test(hObsNewCC[icent], "CHI2/NDF");
+      double chi2 = hRefoldNewCC[icent][i]->Chi2Test(hObsNewCC[icent], "UWCHI2/NDF");
 
       if( chi2 < 1.2 && !iterCut ){
         hFinalUnfSysNewCC[icent] = (TH1D*) hUnfoldNewCC[icent][i]->Clone( Form("hFinalUnfSysNewCC_c%i", icent) );

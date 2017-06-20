@@ -254,7 +254,7 @@ void sysClusCompatTune(){
       hRefoldDefault[icent][i] = (TH1D*) fUnfDefault->Get( Form("hrefold%i_c%i", iter[i], icent) );
       hRefoldDefault[icent][i]->SetName( Form("hrefolDefault%i_c%i", iter[i], icent) );
 
-      double chi2Default = hRefoldDefault[icent][i]->Chi2Test(hObsDefault[icent], "CHI2/NDF");
+      double chi2Default = hRefoldDefault[icent][i]->Chi2Test(hObsDefault[icent], "UWCHI2/NDF");
       if( chi2Default <= 1.2 && !stopFoundDefault ){
 	stopFoundDefault = 1;
 	iterCutDefault[icent] = i;
@@ -270,7 +270,7 @@ void sysClusCompatTune(){
       hRefold2pct[icent][i] = (TH1D*) fUnf2pct->Get( Form("hrefold%i_c%i", iter[i], icent) );
       hRefold2pct[icent][i]->SetName( Form("hrefol2pct%i_c%i", iter[i], icent) );
 
-      double chi22pct = hRefold2pct[icent][i]->Chi2Test(hObs2pct[icent], "CHI2/NDF");
+      double chi22pct = hRefold2pct[icent][i]->Chi2Test(hObs2pct[icent], "UWCHI2/NDF");
       if( chi22pct <= 1.2 && !stopFound2pct ){
         stopFound2pct = 1;
         iterCut2pct[icent] = i;
