@@ -29,6 +29,7 @@ void sysUnfoldDistns(){
   TFile * fUnfold;
   TH1D * hUnfold[NCENT][NITER];
   TH1D * hRefold[NCENT][NITER];
+  int finalIter[NCENT];
 
   TFile * fStat;
   TH1D * hVarianceOfMean_Bin[NCENT];
@@ -210,7 +211,7 @@ void sysUnfoldDistns(){
   cFinalUnfold->Divide(4,3);
 
   //-- Grab the file that has the cov matrices
-  fCov = new TFile( Form("../UnfoldResults/dataResp/data%i_CovMatrix.root", norder_) );
+  //fCov = new TFile( Form("../UnfoldResults/dataResp/data%i_CovMatrix.root", norder_) );
 
   hNormFactor = new TH1D("hNormFactor","hNormFactor", NCENT, centbinsDefault);
 
@@ -218,7 +219,7 @@ void sysUnfoldDistns(){
   for(int icent = 0; icent < NCENT; icent++){
 
     //-- Get the Response matrix
-    hResponse[icent] = (TH2D*) fCov->Get( Form("hresp_c%i", icent) );
+    hResponse[icent] = (TH2D*) fUnfold->Get( Form("hresp_c%i", icent) );
 
     //-- -------------- Real Dists --------------
     hObs[icent] = (TH1D*) fAna->Get( Form("qwebye/hVnFull_c%i", icent) );
@@ -246,14 +247,16 @@ void sysUnfoldDistns(){
 	hFinalUnf[icent] = (TH1D*) hUnfold[icent][i]->Clone( Form("hFinalUnf_c%i", icent) );
 	hFinalUnfSysResp[icent] = (TH1D*) hUnfoldResp[icent][i]->Clone( Form("hFinalUnfSysResp_c%i", icent) );
 	iterCut = 1;
+	finalIter[icent] = i;
 	//-- Grab the cov matrix
-	hCovMatrix[icent] = (TH2D*) fCov->Get( Form("hCovMat%i_c%i", iter[i], icent) );
+	hCovMatrix[icent] = (TH2D*) fUnfold->Get( Form("hCovMat%i_c%i", iter[i], icent) );
       }
       if( i == NITER - 1 && !iterCut){
 	hFinalUnf[icent] = (TH1D*) hUnfold[icent][i]->Clone( Form("hFinalUnf_c%i", icent) );
 	hFinalUnfSysResp[icent] = (TH1D*) hUnfoldResp[icent][i]->Clone( Form("hFinalUnfSysResp_c%i", icent) );
+	finalIter[icent] = i;
 	//-- Grab the cov matrix
-	hCovMatrix[icent] = (TH2D*) fCov->Get( Form("hCovMat%i_c%i", iter[i], icent) );
+	hCovMatrix[icent] = (TH2D*) fUnfold->Get( Form("hCovMat%i_c%i", iter[i], icent) );
       }
 
       //-- -------------- Reg --------------
@@ -1064,7 +1067,7 @@ void sysUnfoldDistns(){
     double m = 0.37;
     hDummy->GetXaxis()->SetTitle("v_{2}");
     hDummy->GetXaxis()->CenterTitle();
-    hDummy->GetXaxis()->SetRange(0, hFinalUnfoldSys[icent]->FindBin(m));
+    hDummy->GetXaxis()->SetRange(1, hFinalUnfoldSys[icent]->FindBin(m));
     hDummy->GetXaxis()->SetNdivisions(507);
     hDummy->GetXaxis()->SetLabelFont(43);
     hDummy->GetXaxis()->SetLabelSize(38);
@@ -1144,10 +1147,20 @@ void sysUnfoldDistns(){
 
 
   //-- Select only three cents 
-  TLegend * legUnfObs3 = new TLegend(0.48, 0.79, 0.68, 0.99);
+  for(int c = 0; c < NCENT; c++){
+    int i = finalIter[c];
+    hRefold[c][i]->SetLineColor(4);
+    hRefold[c][i]->SetLineStyle(1);
+    hRefold[c][i]->SetLineWidth(1);
+    hRefold[c][i]->Scale(1./hRefold[c][i]->Integral());
+    hRefold[c][i]->GetXaxis()->SetRange(0,NBins);
+  }
+
+  TLegend * legUnfObs3 = new TLegend(0.48, 0.74, 0.68, 0.97);
   legInit(legUnfObs3);
-  legUnfObs3->AddEntry(hObs[0],      "Observed p(v_{2})", "lp");
-  legUnfObs3->AddEntry(hFinalUnf[0], "Unfolded p(v_{2})", "lp");
+  legUnfObs3->AddEntry(hObs[0],                  "Observed p(v_{2})", "lp");
+  legUnfObs3->AddEntry(hFinalUnf[0],             "Unfolded p(v_{2})", "lp");
+  legUnfObs3->AddEntry(hRefold[0][finalIter[0]], "Refolded p(v_{2})", "l");
 
   TCanvas * cFinalUnfoldMerged3 = new TCanvas("cFinalUnfoldMerged3", "cFinalUnfoldMerged3", 1500, 600);
   cFinalUnfoldMerged3->SetLeftMargin(0.18);
@@ -1163,35 +1176,41 @@ void sysUnfoldDistns(){
   hDummy->GetYaxis()->SetTitleOffset(1.4);
 
   int c = 1;
+  int i = finalIter[c];
   cFinalUnfoldMerged3->cd(1);
   cFinalUnfoldMerged3->cd(1)->SetLogy();
   hDummy->Draw();
   hFinalUnfoldSys[c]->Draw("e2same");
   hFinalUnf[c]->Draw("same");
   hObs[c]->Draw("same");
+  hRefold[c][i]->Draw("same");
   latex4.DrawLatex(0.465, 0.91, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex4.DrawLatex(0.77, 0.81, Form("|#eta| < %.1f", tkEta));
   latex4.DrawLatex(0.26, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
 
   c = 6;
+  i =finalIter[c];
   cFinalUnfoldMerged3->cd(2);
   cFinalUnfoldMerged3->cd(2)->SetLogy();
   hDummy->Draw();
   hFinalUnfoldSys[c]->Draw("e2same");
   hFinalUnf[c]->Draw("same");
   hObs[c]->Draw("same");
+  hRefold[c][i]->Draw("same");
   legUnfObs3->Draw("same");
   legUnfObs3->SetTextFont(43);
   legUnfObs3->SetTextSize(32); 
   latex4.DrawLatex(0.05, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
 
   c = 11;
+  i =finalIter[c];
   cFinalUnfoldMerged3->cd(3);
   cFinalUnfoldMerged3->cd(3)->SetLogy();
   hDummy->Draw();
   hFinalUnfoldSys[c]->Draw("e2same");
   hFinalUnf[c]->Draw("same");
   hObs[c]->Draw("same");
+  hRefold[c][i]->Draw("same");
   latex4.DrawLatex(0.05, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
 
   cFinalUnfoldMerged3->cd(0);
