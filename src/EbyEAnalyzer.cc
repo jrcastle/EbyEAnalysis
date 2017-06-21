@@ -154,7 +154,7 @@ private:
   double d0Cut_;
   double ptResCut_;
   double pixChi2NLayerCut_;
-  double pixd0Cut_;
+  double pixdZCut_;
 
   bool useTeff_;
   TrackCorrector3D * teff;
@@ -243,27 +243,30 @@ EbyEAnalyzer::EbyEAnalyzer(const edm::ParameterSet& iConfig):
   //-- Set Track quality cuts
   if( trackQualityCuts_ == 1){
     //-- Nominal Cuts
+    std::cout << "Using nominal track selection" << std::endl;
     dzCut_            = 3.0;
     d0Cut_            = 3.0;
     ptResCut_         = 0.1;
     pixChi2NLayerCut_ = 12;
-    pixd0Cut_         = 8;
+    pixdZCut_         = 8;
   }
   if( trackQualityCuts_ == 2){
     //-- Loose Cuts
+    std::cout << "Using loose track selection" << std::endl;
     dzCut_            = 5.0;
     d0Cut_            = 5.0;
     ptResCut_         = 0.1;
     pixChi2NLayerCut_ = 18;
-    pixd0Cut_         = 10;
+    pixdZCut_         = 10;
   }
   if( trackQualityCuts_ == 3){
     //-- Tight Cuts
+    std::cout << "Using tight track selection" << std::endl;
     dzCut_            = 2.0;
     d0Cut_            = 2.0;
     ptResCut_         = 0.05;
     pixChi2NLayerCut_ = 9;
-    pixd0Cut_         = 6;
+    pixdZCut_         = 6;
   }
 
   //-- Set efficiency table
@@ -519,7 +522,7 @@ EbyEAnalyzer::RECOTrackerQVectors(const edm::Event& iEvent, math::XYZPoint vv1)
     if( pixTrax ){
       //-- Pixel track cuts
       if( (chi2NDF/(double)nLayers) > pixChi2NLayerCut_) continue;
-      if( fabs( dz/dzerror ) > pixd0Cut_)                continue;
+      if( fabs( dz/dzerror ) > pixdZCut_)                continue;
     }
     else{
       //-- General track cuts

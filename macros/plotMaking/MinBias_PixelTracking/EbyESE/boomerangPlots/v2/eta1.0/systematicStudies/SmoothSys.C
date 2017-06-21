@@ -1371,59 +1371,59 @@ void SmoothSys(){
     SmoothSysTotG1E       -> SetBinContent(icent+1, sysTotG1E);
 
     if(centBinCenter[icent] < 10. && centBinCenter[icent] > 5.){
-      aveSys_00_10_Vn2       += sysRegVn2;
-      aveSys_00_10_Vn4       += sysRegVn4;
-      aveSys_00_10_Vn6       += sysRegVn6;
-      aveSys_00_10_Vn8       += sysRegVn8;
-      aveSys_00_10_Vn6Vn4    += sysRegVn6Vn4;
-      aveSys_00_10_Vn8Vn4    += sysRegVn8Vn4;
-      aveSys_00_10_Vn8Vn6    += sysRegVn8Vn6;
-      aveSys_00_10_Vn46_Vn68 += sysRegVn46_Vn68;  
-      aveSys_00_10_G1E       += sysRegG1E;
+      aveSys_00_10_Vn2       += sysTotVn2;
+      aveSys_00_10_Vn4       += sysTotVn4;
+      aveSys_00_10_Vn6       += sysTotVn6;
+      aveSys_00_10_Vn8       += sysTotVn8;
+      aveSys_00_10_Vn6Vn4    += sysTotVn6Vn4;
+      aveSys_00_10_Vn8Vn4    += sysTotVn8Vn4;
+      aveSys_00_10_Vn8Vn6    += sysTotVn8Vn6;
+      aveSys_00_10_Vn46_Vn68 += sysTotVn46_Vn68;  
+      aveSys_00_10_G1E       += sysTotG1E;
     }
     if(centBinCenter[icent] > 10. && centBinCenter[icent] < 20.){
-      aveSys_10_20_Vn2       += sysRegVn2;
-      aveSys_10_20_Vn4       += sysRegVn4;
-      aveSys_10_20_Vn6       += sysRegVn6;
-      aveSys_10_20_Vn8       += sysRegVn8;
-      aveSys_10_20_Vn6Vn4    += sysRegVn6Vn4;
-      aveSys_10_20_Vn8Vn4    += sysRegVn8Vn4;
-      aveSys_10_20_Vn8Vn6    += sysRegVn8Vn6;
-      aveSys_10_20_Vn46_Vn68 += sysRegVn46_Vn68;
-      aveSys_10_20_G1E       += sysRegG1E;
+      aveSys_10_20_Vn2       += sysTotVn2;
+      aveSys_10_20_Vn4       += sysTotVn4;
+      aveSys_10_20_Vn6       += sysTotVn6;
+      aveSys_10_20_Vn8       += sysTotVn8;
+      aveSys_10_20_Vn6Vn4    += sysTotVn6Vn4;
+      aveSys_10_20_Vn8Vn4    += sysTotVn8Vn4;
+      aveSys_10_20_Vn8Vn6    += sysTotVn8Vn6;
+      aveSys_10_20_Vn46_Vn68 += sysTotVn46_Vn68;
+      aveSys_10_20_G1E       += sysTotG1E;
     }
     if(centBinCenter[icent] > 20. && centBinCenter[icent] < 30.){
-      aveSys_20_30_Vn2       += sysRegVn2;
-      aveSys_20_30_Vn4       += sysRegVn4;
-      aveSys_20_30_Vn6       += sysRegVn6;
-      aveSys_20_30_Vn8       += sysRegVn8;
-      aveSys_20_30_Vn6Vn4    += sysRegVn6Vn4;
-      aveSys_20_30_Vn8Vn4    += sysRegVn8Vn4;
-      aveSys_20_30_Vn8Vn6    += sysRegVn8Vn6;
-      aveSys_20_30_Vn46_Vn68 += sysRegVn46_Vn68;
-      aveSys_20_30_G1E       += sysRegG1E;
+      aveSys_20_30_Vn2       += sysTotVn2;
+      aveSys_20_30_Vn4       += sysTotVn4;
+      aveSys_20_30_Vn6       += sysTotVn6;
+      aveSys_20_30_Vn8       += sysTotVn8;
+      aveSys_20_30_Vn6Vn4    += sysTotVn6Vn4;
+      aveSys_20_30_Vn8Vn4    += sysTotVn8Vn4;
+      aveSys_20_30_Vn8Vn6    += sysTotVn8Vn6;
+      aveSys_20_30_Vn46_Vn68 += sysTotVn46_Vn68;
+      aveSys_20_30_G1E       += sysTotG1E;
     }
     if(centBinCenter[icent] > 30. && centBinCenter[icent] < 50.){
-      aveSys_30_50_Vn2       += sysRegVn2;
-      aveSys_30_50_Vn4       += sysRegVn4;
-      aveSys_30_50_Vn6       += sysRegVn6;
-      aveSys_30_50_Vn8       += sysRegVn8;
-      aveSys_30_50_Vn6Vn4    += sysRegVn6Vn4;
-      aveSys_30_50_Vn8Vn4    += sysRegVn8Vn4;
-      aveSys_30_50_Vn8Vn6    += sysRegVn8Vn6;
-      aveSys_30_50_Vn46_Vn68 += sysRegVn46_Vn68;
-      aveSys_30_50_G1E       += sysRegG1E;
+      aveSys_30_50_Vn2       += sysTotVn2;
+      aveSys_30_50_Vn4       += sysTotVn4;
+      aveSys_30_50_Vn6       += sysTotVn6;
+      aveSys_30_50_Vn8       += sysTotVn8;
+      aveSys_30_50_Vn6Vn4    += sysTotVn6Vn4;
+      aveSys_30_50_Vn8Vn4    += sysTotVn8Vn4;
+      aveSys_30_50_Vn8Vn6    += sysTotVn8Vn6;
+      aveSys_30_50_Vn46_Vn68 += sysTotVn46_Vn68;
+      aveSys_30_50_G1E       += sysTotG1E;
     }
     if(centBinCenter[icent] > 50.){
-      aveSys_50_60_Vn2       += sysRegVn2;
-      aveSys_50_60_Vn4       += sysRegVn4;
-      aveSys_50_60_Vn6       += sysRegVn6;
-      aveSys_50_60_Vn8       += sysRegVn8;
-      aveSys_50_60_Vn6Vn4    += sysRegVn6Vn4;
-      aveSys_50_60_Vn8Vn4    += sysRegVn8Vn4;
-      aveSys_50_60_Vn8Vn6    += sysRegVn8Vn6;
-      aveSys_50_60_Vn46_Vn68 += sysRegVn46_Vn68;
-      aveSys_50_60_G1E       += sysRegG1E;
+      aveSys_50_60_Vn2       += sysTotVn2;
+      aveSys_50_60_Vn4       += sysTotVn4;
+      aveSys_50_60_Vn6       += sysTotVn6;
+      aveSys_50_60_Vn8       += sysTotVn8;
+      aveSys_50_60_Vn6Vn4    += sysTotVn6Vn4;
+      aveSys_50_60_Vn8Vn4    += sysTotVn8Vn4;
+      aveSys_50_60_Vn8Vn6    += sysTotVn8Vn6;
+      aveSys_50_60_Vn46_Vn68 += sysTotVn46_Vn68;
+      aveSys_50_60_G1E       += sysTotG1E;
     }
 
     //-- Ellp 
