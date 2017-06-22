@@ -1,26 +1,9 @@
-#include "TSVDUnfold.h"
-#include "TMatrixD.h"
-#include "TLatex.h"
-#include "TFile.h"
-#include "TH1I.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TFile.h"
-#include "TMath.h"
-#include "TF1.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/src/RooUnfold.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/src/RooUnfoldSvd.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/src/RooUnfoldResponse.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/src/RooUnfoldBayes.h"
-#include "HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/src/RooUnfoldResponse.h"
-#include "HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold/src/RooUnfold.h"
+
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
-
 using namespace ebyese;
 
 //int centbin = 0;  //  0 -  5 %
