@@ -11,7 +11,7 @@ unfolding procedures, systematic studies, and plotting macros.
 
 ========================================== POST ANALYZER ==========================================
 This is the offline software used to perform the offline EbyE analysis in CMS.  It is assumed that 
-the user is using CMSSW, ROOT, and ROOUnfold for this. For the most part the software is location 
+the user is using CMSSW, ROOT, and ROOUnfold for this. For the most part the software is location- 
 independent aside from three essential files.  The three files in question are header files that 
 contain essential namespaces/classes for virtually every macro in this repository:
 
@@ -33,22 +33,23 @@ that need to be fixed.  I'll touch on those as we go along.
 
 Okay, now how do we use this code? The boomerangPlots and ESE directories contain most of the 
 important code to be run.  In each you will find bash scripts titled "runEverything*.sh" open and 
-read these.  This is the basic outline of what will be run in each case.  There are two 
+read these.  This is the basic outline of what will be run in each case.  There are three 
 location-dependent paths that need to be fixed in these file.  The first is the shell variable 
 $EBYESE, this points to the directory that this file is located on your machine.  The second is in 
 the $ROOUNFOLD variable in the load statements for all unfolding steps.  This variable needs to 
-point to the .so file for the ROOUnfold library.
+point to the .so file for the ROOUnfold library. The last variable is $CMSBASE, which points to 
+the src directory of your CMSSW release.
 
 The runEverything.sh script has two "passes." The first pass does a majority of the work, but in 
 order to complete the response matrix systematic shape study, the ROOUnfold software needs to be 
-hacked.  Head over to the ROOUnfold source code and edit the RooUnfoldBayes.cxx file.  Here, the 
+hacked.  Head over to $ROOUNFOLD/src and edit the RooUnfoldBayes.cxx file.  Here, the 
 variable _dosys needs to be set to true.  This will include the uncertainties on the response 
 matrix elements in error propagation. When finished navigate up one directory from src and 
 recompile the ROOUnfold code by typing "make." Now, head over to the runEverything.sh script and 
-set FIRSTPASS="0" and rerun. Once this has finished running, all the pretty physics plots and 
+set FIRSTPASS="0" and rerun. Once this has finished running, all the physics plots and 
 several performance plots can be found in the v$N/eta$ETA/plots/ directory. Chances are likely you 
-will need to go into the various plotting macros and manually change the settings.  All the default 
-settings are based on v2, |eta|<1.0, 0.3<pT<3.0 GeV. 
+will need to go into the various plotting macros and manually change the settings, like the range on 
+the axes.  All the default settings are based on v2, |eta|<1.0, 0.3<pT<3.0 GeV. 
 
 If I haven't emphasized it enough, the runEverything.sh file is key in understanding the workflow. 
 Each plotting macro has flags to catch if prerequisit procedures have been run prior to it and will 

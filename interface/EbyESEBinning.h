@@ -9,6 +9,24 @@
 #include "TAxis.h"
 #include "TString.h"
 #include "TLegend.h"
+#include "TDecompSVD.h"
+#include "TLine.h"
+#include "TFile.h"
+#include "TGraph.h"
+#include "TVectorD.h"
+#include "TCanvas.h"
+#include "TMinuit.h"
+#include "TExec.h"
+#include "TMultiGraph.h"
+#include "TLatex.h"
+#include "TGaxis.h"
+#include "TGraphAsymmErrors.h"
+#include "TDirectory.h"
+#include "TMath.h"
+#include "TError.h"
+#include "TPaletteAxis.h"
+
+#include "tdrstyle.C"
 #include <iostream>
 
 using namespace std;

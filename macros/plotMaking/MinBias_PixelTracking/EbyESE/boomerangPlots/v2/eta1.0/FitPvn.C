@@ -1094,7 +1094,11 @@ void FitPvn(){
     double eps = fEllP[icent]->GetParameter(0);
     double epse = fEllP[icent]->GetParError(0);
 
-    std::cout << Form("%.1f +/- %.1f\t", alpha, alphae) << Form("%.4f +/- %.4f\t", kn, kne) << Form("%.4f +/- %.4f\t", eps, epse) << std::endl;
+    std::cout << Form("%i--%i%s", cent_min[icent], cent_max[icent], "\\%") 
+	      << " & " << Form("$%.1f \\pm %.1f$", alpha, alphae) 
+	      << " & " << Form("$%.4f \\pm %.4f$", kn, kne) 
+	      << " & " << Form("$%.4f \\pm %.4f$ \\\\", eps, epse) 
+	      << std::endl;
   }
 
 }

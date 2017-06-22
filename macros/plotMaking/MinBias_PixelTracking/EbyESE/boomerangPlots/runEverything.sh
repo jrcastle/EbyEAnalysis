@@ -5,8 +5,9 @@ PMN="0.3" # Track pT min
 PMX="3.0" # Track pT max
 TEST="0"  # Test run flag
 
-EBYESE="/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/plotMaking/MinBias_PixelTracking/EbyESE"
-ROOUNFOLD="/home/j550c590/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold"
+CMSBASE="/home/j550c590/CMSSW_7_5_8_patch2/src"
+EBYESE="${CMSBASE}/HeavyIonsAnalysis/EbyEAnalysis/macros/plotMaking/MinBias_PixelTracking/EbyESE"
+ROOUNFOLD="${CMSBASE}/HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/RooUnfold"
 OUT="!!! PROGRESS:"
 
 FIRSTPASS="0"
@@ -18,7 +19,7 @@ FIRSTPASS="0"
 # make                                            #
 ###################################################
 
-cd /home/j550c590/CMSSW_7_5_8_patch2/src/
+cd $CMSBASE
 eval `scram runtime -sh`
 
 echo "$OUT Job started at $(date)"
