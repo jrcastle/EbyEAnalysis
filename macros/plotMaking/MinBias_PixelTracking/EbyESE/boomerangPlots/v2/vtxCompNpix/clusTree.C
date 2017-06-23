@@ -1,12 +1,5 @@
-#include "TTree.h"
-#include "TH1D.h"
-#include "TCanvas.h"
-#include "TFile.h"
-#include "TLatex.h"
-
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
+#include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
+using namespace ebyese;
 
 void clusTree(){
 

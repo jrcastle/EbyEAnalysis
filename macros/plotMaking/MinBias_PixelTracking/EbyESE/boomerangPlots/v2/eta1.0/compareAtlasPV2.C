@@ -1,26 +1,7 @@
-#include "TPaveStats.h"
-#include "TMath.h"
-#include "TExec.h"
-#include "TCanvas.h"
-#include "TFile.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TMultiGraph.h"
-#include "TGraphErrors.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TLatex.h"
-#include "TGaxis.h"
-#include "TAxis.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/HiEvtPlaneList.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyECumu.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/ATLAS_PV2.h"
-
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
 
 using namespace hi;
 using namespace ebyese;

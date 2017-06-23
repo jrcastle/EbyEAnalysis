@@ -1,11 +1,4 @@
-#include "TTree.h"
-#include "TFile.h"
-#include "TRandom3.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-
-#include <iostream>
-using namespace std;
 using namespace ebyese;
 
 void makeEvtSplitTree(){

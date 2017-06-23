@@ -1,11 +1,4 @@
-#include "TFile.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TMath.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-#include "/home/j550c590/tdrstyle.C"
-
 #include <iostream>
 
 using namespace ebyese;

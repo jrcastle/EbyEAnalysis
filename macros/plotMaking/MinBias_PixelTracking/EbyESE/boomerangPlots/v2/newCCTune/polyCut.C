@@ -1,18 +1,5 @@
-#include "TPaletteAxis.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TFile.h"
-#include "TCanvas.h"
-#include "TGraph.h"
-#include "TF1.h"
-#include "TMath.h"
-#include "TLine.h"
-#include "TLatex.h"
-
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
-
+#include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
+using namespace ebyese;
 
 void polyCut(){
 

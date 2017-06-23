@@ -1,20 +1,5 @@
-#include "TDecompSVD.h"
-#include "TLine.h"
-#include "TLegend.h"
-#include "TF1.h"
-#include "TFile.h"
-#include "TGraph.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TMatrixD.h"
-#include "TVectorD.h"
-#include "TCanvas.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/macros/unfolding/DAgostiniUnfold/DAgostiniUnfold.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
 
 using namespace ebyese;
 

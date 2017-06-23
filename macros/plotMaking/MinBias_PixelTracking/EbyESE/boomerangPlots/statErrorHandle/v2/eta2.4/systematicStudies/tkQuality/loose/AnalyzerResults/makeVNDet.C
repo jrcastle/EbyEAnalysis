@@ -1,16 +1,4 @@
-#include "TFile.h"
-#include "TDirectory.h"
-#include "TTree.h"
-#include "TCanvas.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TMath.h"
-#include "TString.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-
-#include <iostream>
-
 using namespace ebyese;
 
 void makeVNDet(){

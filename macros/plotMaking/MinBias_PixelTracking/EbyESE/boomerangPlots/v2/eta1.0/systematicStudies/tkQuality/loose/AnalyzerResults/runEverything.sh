@@ -20,7 +20,7 @@ root -l -b <<EOF
 .x makeDDResp.C++
 EOF
 
-cd $EBYESE/unfoldingv$N
+cd $EBYESE/unfoldingv3
 cp $WORK/CastleEbyE.root data/PbPb_2015/data/./
 cp $WORK/DDResp/dataDrivenResponseAndPriors.root DDResp/./
 bash unfoldDataBoomerang_RooUnfold.sh $N $ROOUNFOLD

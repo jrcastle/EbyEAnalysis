@@ -1,15 +1,4 @@
-#include "TFile.h"
-#include "TCanvas.h"
-#include "TH2D.h"
-#include "TLatex.h"
-#include "TPaletteAxis.h"
-#include "TLegend.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
-
 using namespace ebyese;
 
 void proj(){

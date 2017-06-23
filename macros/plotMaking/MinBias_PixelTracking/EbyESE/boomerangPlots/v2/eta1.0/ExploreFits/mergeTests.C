@@ -1,15 +1,4 @@
-#include "TCanvas.h"
-#include "TFile.h"
-#include "TGraphErrors.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TLatex.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
-
 using namespace ebyese;
 
 /*

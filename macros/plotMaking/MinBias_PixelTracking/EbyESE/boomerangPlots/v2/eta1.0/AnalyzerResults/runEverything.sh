@@ -9,22 +9,22 @@ cd $WORK
 
 echo "Job started on $(date)"
 
-#root -l -b <<EOF
-#.x makeVNDet.C++
-#EOF
-#root -l -b <<EOF
-#.x ReadTree_normDet.C++
-#EOF
-#cd DDResp
-#root -l -b <<EOF
-#.x makeDDResp.C++
-#EOF
+root -l -b <<EOF
+.x makeVNDet.C++
+EOF
+root -l -b <<EOF
+.x ReadTree_normDet.C++
+EOF
+cd DDResp
+root -l -b <<EOF
+.x makeDDResp.C++
+EOF
 
-#cd $EBYESE/unfoldingv$N
-#cp $WORK/CastleEbyE.root data/PbPb_2015/data/./
-#cp $WORK/DDResp/dataDrivenResponseAndPriors.root DDResp/./
-#bash unfoldDataBoomerang_RooUnfold.sh $N $ROOUNFOLD
-#cp txt/PbPb_2015/data/data$N.root $WORK/../UnfoldResults/dataResp/./
+cd $EBYESE/unfoldingv2
+cp $WORK/CastleEbyE.root data/PbPb_2015/data/./
+cp $WORK/DDResp/dataDrivenResponseAndPriors.root DDResp/./
+bash unfoldDataBoomerang_RooUnfold.sh $N $ROOUNFOLD
+cp txt/PbPb_2015/data/data$N.root $WORK/../UnfoldResults/dataResp/./
 
 #cd $EBYESE/unfoldingv$N
 #cp $WORK/CastleEbyE.root data/PbPb_2015/data/./
@@ -32,11 +32,11 @@ echo "Job started on $(date)"
 #bash unfoldDataBoomerangGaussResp_RooUnfold.sh $N $ROOUNFOLD
 #cp txt/PbPb_2015/data/data$N.root $WORK/../UnfoldResults/dataResp/data${N}Gauss.root
 
-cd $EBYESE/unfoldingv$N
-cp $WORK/CastleEbyE.root data/PbPb_2015/data/./
-cp $WORK/DDResp/dataDrivenResponseAndPriors.root DDResp/./
-bash unfoldDataBoomerang_RooUnfold.sh $N $ROOUNFOLD
-cp txt/PbPb_2015/data/data$N.root $WORK/../UnfoldResults/dataResp/data${N}_dosys.root
+#cd $EBYESE/unfoldingv$N
+#cp $WORK/CastleEbyE.root data/PbPb_2015/data/./
+#cp $WORK/DDResp/dataDrivenResponseAndPriors.root DDResp/./
+#bash unfoldDataBoomerang_RooUnfold.sh $N $ROOUNFOLD
+#cp txt/PbPb_2015/data/data$N.root $WORK/../UnfoldResults/dataResp/data${N}_dosys.root
 
 echo "Analysis complete!"
 echo "Job ended on $(date)"

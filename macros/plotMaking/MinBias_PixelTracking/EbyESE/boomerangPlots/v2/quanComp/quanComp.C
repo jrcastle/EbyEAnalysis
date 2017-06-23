@@ -1,12 +1,5 @@
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TCanvas.h"
-#include "TFile.h"
-
-#include "/users/j550c590/tdrstyle.C"
-
-#include <iostream>
-
+#include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
+using namespace ebyese;
 
 void quanComp(){
 

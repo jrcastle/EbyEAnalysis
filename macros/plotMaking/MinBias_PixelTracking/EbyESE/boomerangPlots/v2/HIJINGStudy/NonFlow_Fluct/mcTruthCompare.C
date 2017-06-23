@@ -1,18 +1,5 @@
-#include "TFile.h"
-#include "TTree.h"
-#include "TCanvas.h"
-#include "TH2D.h"
-#include "TH1I.h"
-#include "TH1D.h"
-#include "TMath.h"
-#include "TF1.h"
-#include "TString.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyECumu.h"
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
 
 using namespace ebyese;
 

@@ -1,13 +1,5 @@
-#include "TFile.h"
-#include "TH2D.h"
-#include "TLine.h"
-#include "TCanvas.h"
-#include "TLegend.h"
-
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
-
+#include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
+using namespace ebyese;
 
 void illustrateFilterCut(){
 

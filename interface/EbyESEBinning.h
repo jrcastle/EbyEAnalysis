@@ -1,6 +1,7 @@
 #ifndef __EbyESEBinning__
 #define __EbyESEBinning__
 
+#include "TTree.h"
 #include "TGraphErrors.h"
 #include "TMatrixD.h"
 #include "TF1.h"
@@ -34,9 +35,13 @@ using namespace std;
 namespace ebyese{
 
   //-- Analyzer output tree
-  const TString fAnaTreeNameTkQLoose        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelLoose.root";
-  const TString fAnaTreeNameTkQTight        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelTight.root";
-  const TString fAnaTreeName                = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelNominal.root";
+  const TString fAnaTreeNameTkQLoose        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelLoose_NoEff.root";
+  const TString fAnaTreeNameTkQTight        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelTight_NoEff.root";
+  const TString fAnaTreeName                = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelNominal_NoEff.root";
+
+  //const TString fAnaTreeNameTkQLoose        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelLoose.root";
+  //const TString fAnaTreeNameTkQTight        = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelTight.root";
+  //const TString fAnaTreeName                = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelNominal.root";
   const TString fAnaTreeNameVtx_leq_3       = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelNarrow.root";
   const TString fAnaTreeNameVtx3_15         = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelWide.root";
   const TString fAnaTreeNameNewCC           = "/rfs/jcastle/PbPb2015/PixelTracking_MB2/EbyETree_NewPixelCC2pct.root";

@@ -1,15 +1,6 @@
-#include "TH1D.h"
-#include "TFile.h"
-#include "TStyle.h"
-#include "TExec.h"
-#include "TF1.h"
-
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyESEBinning.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/HiEvtPlaneList.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/EbyECumu.h"
-#include "/home/j550c590/tdrstyle.C"
-
-#include <iostream>
 
 using namespace hi;
 using namespace ebyese;
