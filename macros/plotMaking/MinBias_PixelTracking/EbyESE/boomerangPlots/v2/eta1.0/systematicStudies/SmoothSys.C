@@ -1334,10 +1334,10 @@ void SmoothSys(){
     double sysVtxG1E       = fSmoothSysVtxG1E->Eval( centBinCenter[icent] );
 
     //-- Total
-    double sysTotVn2       = sqrt( pow(sysRegVn2,2) + pow(sysRespVn2,2) + pow(sysNewCCVn2,2) + pow(sysTkQVn2,2) + pow(sysVtxVn2,2) );
-    double sysTotVn4       = sqrt( pow(sysRegVn4,2) + pow(sysRespVn4,2) + pow(sysNewCCVn4,2) + pow(sysTkQVn4,2) + pow(sysVtxVn4,2) );
-    double sysTotVn6       = sqrt( pow(sysRegVn6,2) + pow(sysRespVn6,2) + pow(sysNewCCVn6,2) + pow(sysTkQVn6,2) + pow(sysVtxVn6,2) );
-    double sysTotVn8       = sqrt( pow(sysRegVn8,2) + pow(sysRespVn8,2) + pow(sysNewCCVn8,2) + pow(sysTkQVn8,2) + pow(sysVtxVn8,2) );
+    double sysTotVn2       = sqrt( pow(sysRegVn2,2) + pow(sysRespVn2,2) + pow(sysNewCCVn2,2) + pow(sysTkQVn2,2) + pow(sysVtxVn2,2) + pow(0.005,2) );
+    double sysTotVn4       = sqrt( pow(sysRegVn4,2) + pow(sysRespVn4,2) + pow(sysNewCCVn4,2) + pow(sysTkQVn4,2) + pow(sysVtxVn4,2) + pow(0.005,2) );
+    double sysTotVn6       = sqrt( pow(sysRegVn6,2) + pow(sysRespVn6,2) + pow(sysNewCCVn6,2) + pow(sysTkQVn6,2) + pow(sysVtxVn6,2) + pow(0.005,2) );
+    double sysTotVn8       = sqrt( pow(sysRegVn8,2) + pow(sysRespVn8,2) + pow(sysNewCCVn8,2) + pow(sysTkQVn8,2) + pow(sysVtxVn8,2) + pow(0.005,2) );
     double sysTotVn6Vn4    = sqrt( pow(sysRegVn6Vn4,2) + pow(sysRespVn6Vn4,2) + pow(sysNewCCVn6Vn4,2) + pow(sysTkQVn6Vn4,2) + pow(sysVtxVn6Vn4,2) );
     double sysTotVn8Vn4    = sqrt( pow(sysRegVn8Vn4,2) + pow(sysRespVn8Vn4,2) + pow(sysNewCCVn8Vn4,2) + pow(sysTkQVn8Vn4,2) + pow(sysVtxVn8Vn4,2) );
     double sysTotVn8Vn6    = sqrt( pow(sysRegVn8Vn6,2) + pow(sysRespVn8Vn6,2) + pow(sysNewCCVn8Vn6,2) + pow(sysTkQVn8Vn6,2) + pow(sysVtxVn8Vn6,2) );
