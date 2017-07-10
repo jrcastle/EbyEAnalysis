@@ -417,7 +417,7 @@ void sysResultsPlots(){
   grVn2RawSys->SetLineColor(9);
   grVn2RawSys->SetMarkerColor(9);
   grVn2RawSys->SetMarkerStyle(21);
-  grVn2RawSys->SetFillColor(17);
+  grVn2RawSys->SetFillColorAlpha(17, 0.5);
 
   //-- vn{4}
   grVn4Raw = new TGraphErrors(NCENT, centBinCenter, vn4Raw, nullCentErr, vn4RawState);
@@ -429,7 +429,7 @@ void sysResultsPlots(){
   grVn4RawSys->SetLineColor(kSpring+4);
   grVn4RawSys->SetMarkerColor(kSpring+4);
   grVn4RawSys->SetMarkerStyle(20);
-  grVn4RawSys->SetFillColor(17);
+  grVn4RawSys->SetFillColorAlpha(17, 0.5);
 
   //-- vn{6}
   grVn6Raw = new TGraphErrors(NCENT, centBinCenter, vn6Raw, nullCentErr, vn6RawState);
@@ -441,7 +441,7 @@ void sysResultsPlots(){
   grVn6RawSys->SetLineColor(6);
   grVn6RawSys->SetMarkerColor(6);
   grVn6RawSys->SetMarkerStyle(25);
-  grVn6RawSys->SetFillColor(17);
+  grVn6RawSys->SetFillColorAlpha(17, 0.5);
 
   //-- vn{8}
   grVn8Raw = new TGraphErrors(NCENT, centBinCenter, vn8Raw, nullCentErr, vn8RawState);
@@ -450,10 +450,10 @@ void sysResultsPlots(){
   grVn8Raw->SetMarkerStyle(28);
 
   grVn8RawSys = new TGraphErrors(NCENT, centBinCenter, vn8Raw, centBinErr, vn8RawSyse);
-  grVn8RawSys->SetLineColor(8);
+  grVn8RawSys->SetLineColor(kOrange+7);
   grVn8RawSys->SetMarkerColor(kOrange+7);
   grVn8RawSys->SetMarkerStyle(28);
-  grVn8RawSys->SetFillColor(17);
+  grVn8RawSys->SetFillColorAlpha(17, 0.5);
 
   //-- Gamma1Exp
   grGamma1Exp = new TGraphErrors(NCENT, centBinCenter, gamma1Exp, nullCentErr, gamma1ExpState) ;
@@ -661,10 +661,10 @@ void sysResultsPlots(){
   TLegend * legCumu = new TLegend(0.55, 0.27, 0.76, 0.52);
   legCumu->SetBorderSize(0);
   legCumu->SetFillStyle(0);
-  legCumu->AddEntry(grVn2RawSys, "k = 1", "lp");
-  legCumu->AddEntry(grVn4RawSys, "k = 2", "lp");
-  legCumu->AddEntry(grVn6RawSys, "k = 3", "lp");
-  legCumu->AddEntry(grVn8RawSys, "k = 4", "lp");
+  legCumu->AddEntry(grVn2RawSys, "#font[12]{m} = 2", "lp");
+  legCumu->AddEntry(grVn4RawSys, "#font[12]{m} = 4", "lp");
+  legCumu->AddEntry(grVn6RawSys, "#font[12]{m} = 6", "lp");
+  legCumu->AddEntry(grVn8RawSys, "#font[12]{m} = 8", "lp");
 
   //-- Fig. Cumulants
   double m1[NCENT];
@@ -682,7 +682,7 @@ void sysResultsPlots(){
   grCumuDummy->GetXaxis()->SetTitleOffset(0.85);
 
   //-- Y axis
-  grCumuDummy->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{2k}", norder_) );
+  grCumuDummy->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{#font[12]{m}}", norder_) );
   grCumuDummy->GetYaxis()->CenterTitle();
   grCumuDummy->GetYaxis()->SetRangeUser(cumuMin, cumuMax);
   grCumuDummy->GetYaxis()->SetDecimals(2);
@@ -713,7 +713,7 @@ void sysResultsPlots(){
   latex3.DrawLatex(0.385, 0.914, "26 #mub^{-1} (PbPb 5.02 TeV)");
   latex3.DrawLatex(0.24, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex3.DrawLatex(0.24, 0.75, Form("|#eta| < %.1f", tkEta));
-  latex3.DrawLatex(0.57, 0.54, "#bf{#font[12]{v}_{2}{2k}}");
+  latex3.DrawLatex(0.57, 0.54, "#font[12]{v}_{2}{#font[12]{m}}");
   cCumuRaw->SaveAs("../plots/skew/SysCumuRaw.pdf");
   /*
   TCanvas * cCumuVn2 = new TCanvas("cCumuVn2", "cCumuVn2", 500, 500);
