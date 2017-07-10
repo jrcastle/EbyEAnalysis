@@ -417,7 +417,7 @@ void sysResultsPlots(){
   grVn2RawSys->SetLineColor(9);
   grVn2RawSys->SetMarkerColor(9);
   grVn2RawSys->SetMarkerStyle(21);
-  grVn2RawSys->SetFillColorAlpha(17, 0.5);
+  grVn2RawSys->SetFillColor(17);
 
   //-- vn{4}
   grVn4Raw = new TGraphErrors(NCENT, centBinCenter, vn4Raw, nullCentErr, vn4RawState);
@@ -429,7 +429,7 @@ void sysResultsPlots(){
   grVn4RawSys->SetLineColor(kSpring+4);
   grVn4RawSys->SetMarkerColor(kSpring+4);
   grVn4RawSys->SetMarkerStyle(20);
-  grVn4RawSys->SetFillColorAlpha(17, 0.5);
+  grVn4RawSys->SetFillColor(17);
 
   //-- vn{6}
   grVn6Raw = new TGraphErrors(NCENT, centBinCenter, vn6Raw, nullCentErr, vn6RawState);
@@ -441,7 +441,7 @@ void sysResultsPlots(){
   grVn6RawSys->SetLineColor(6);
   grVn6RawSys->SetMarkerColor(6);
   grVn6RawSys->SetMarkerStyle(25);
-  grVn6RawSys->SetFillColorAlpha(17, 0.5);
+  grVn6RawSys->SetFillColor(17);
 
   //-- vn{8}
   grVn8Raw = new TGraphErrors(NCENT, centBinCenter, vn8Raw, nullCentErr, vn8RawState);
@@ -453,7 +453,7 @@ void sysResultsPlots(){
   grVn8RawSys->SetLineColor(kOrange+7);
   grVn8RawSys->SetMarkerColor(kOrange+7);
   grVn8RawSys->SetMarkerStyle(28);
-  grVn8RawSys->SetFillColorAlpha(17, 0.5);
+  grVn8RawSys->SetFillColor(17);
 
   //-- Gamma1Exp
   grGamma1Exp = new TGraphErrors(NCENT, centBinCenter, gamma1Exp, nullCentErr, gamma1ExpState) ;
@@ -661,10 +661,10 @@ void sysResultsPlots(){
   TLegend * legCumu = new TLegend(0.55, 0.27, 0.76, 0.52);
   legCumu->SetBorderSize(0);
   legCumu->SetFillStyle(0);
-  legCumu->AddEntry(grVn2RawSys, "#font[12]{m} = 2", "lp");
-  legCumu->AddEntry(grVn4RawSys, "#font[12]{m} = 4", "lp");
-  legCumu->AddEntry(grVn6RawSys, "#font[12]{m} = 6", "lp");
-  legCumu->AddEntry(grVn8RawSys, "#font[12]{m} = 8", "lp");
+  legCumu->AddEntry(grVn2RawSys, "#font[12]{m} = 2", "ep");
+  legCumu->AddEntry(grVn4RawSys, "#font[12]{m} = 4", "ep");
+  legCumu->AddEntry(grVn6RawSys, "#font[12]{m} = 6", "ep");
+  legCumu->AddEntry(grVn8RawSys, "#font[12]{m} = 8", "ep");
 
   //-- Fig. Cumulants
   double m1[NCENT];
@@ -699,12 +699,12 @@ void sysResultsPlots(){
   cCumuRaw->SetRightMargin(0.1);
   grCumuDummy->Draw("ap");
   grVn2RawSys->Draw("pE2same");
-  grVn2Raw->Draw("psame");
   grVn4RawSys->Draw("psameE2");
-  grVn4Raw->Draw("psame");
   grVn6RawSys->Draw("psameE2");
-  grVn6Raw->Draw("psame");
   grVn8RawSys->Draw("psameE2");
+  grVn2Raw->Draw("psame");
+  grVn4Raw->Draw("psame");
+  grVn6Raw->Draw("psame");  
   grVn8Raw->Draw("psame");
   legCumu->Draw("same");
   legCumu->SetTextFont(43); 
@@ -804,7 +804,7 @@ void sysResultsPlots(){
   */
   TLegend * legg1e = new TLegend(0.22, 0.22, 0.54, 0.375);
   legInit( legg1e );
-  legg1e->AddEntry(grGamma1ExpSys,    "#gamma_{1}^{exp}", "lp");
+  legg1e->AddEntry(grGamma1ExpSys,    "#gamma_{1}^{exp}", "ep");
   legg1e->AddEntry(grGamma1ExpTheory, "2.76 TeV Hydro",   "f");
 
   //-- Fig. Gamma1Exp
@@ -861,16 +861,16 @@ void sysResultsPlots(){
   //-- Fig. Cumu Ratio
   TLegend * leg64 = new TLegend(0.22, 0.21, 0.54, 0.335);
   legInit( leg64 );
-  leg64->AddEntry(grvn6vn4Ratio,    "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}", "lp");
+  leg64->AddEntry(grvn6vn4Ratio,    "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}", "ep");
   leg64->AddEntry(grvn6vn4RatioTheory, "2.76 TeV Hydro",      "f");
 
   TLegend * leg84 = new TLegend(0.22, 0.21, 0.54, 0.26);
   legInit( leg84 );
-  leg84->AddEntry(grvn8vn4Ratio, "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}", "lp");
+  leg84->AddEntry(grvn8vn4Ratio, "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}", "ep");
 
   TLegend * leg86 = new TLegend(0.25, 0.21, 0.57, 0.26);
   legInit( leg86 );
-  leg86->AddEntry(grvn8vn6Ratio, "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{6}", "lp");
+  leg86->AddEntry(grvn8vn6Ratio, "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{6}", "ep");
 
   TGraphErrors * grVn64Dummy = new TGraphErrors(NCENT, centBinCenter, m1, nullCentErr, nullCentErr);
 
@@ -1130,14 +1130,14 @@ void sysResultsPlots(){
     TLegend * leg64a = new TLegend(0.27, 0.22, 0.69, 0.34);
     leg64a->SetFillStyle(0);
     leg64a->SetBorderSize(0);
-    leg64a->AddEntry(grvn6vn4Ratio_Npart,      "5.02 TeV CMS",   "lp");
-    leg64a->AddEntry(grvn6vn4Ratio_ATLASNpart, "2.76 TeV ATLAS", "lp");
+    leg64a->AddEntry(grvn6vn4Ratio_Npart,      "5.02 TeV CMS",   "ep");
+    leg64a->AddEntry(grvn6vn4Ratio_ATLASNpart, "2.76 TeV ATLAS", "ep");
 
     TLegend * leg84a = new TLegend(0.27, 0.22, 0.69, 0.34);
     leg84a->SetFillStyle(0);
     leg84a->SetBorderSize(0);
-    leg84a->AddEntry(grvn8vn4Ratio_Npart,      "5.02 TeV CMS",   "lp");
-    leg84a->AddEntry(grvn8vn4Ratio_ATLASNpart, "2.76 TeV ATLAS", "lp");
+    leg84a->AddEntry(grvn8vn4Ratio_Npart,      "5.02 TeV CMS",   "ep");
+    leg84a->AddEntry(grvn8vn4Ratio_ATLASNpart, "2.76 TeV ATLAS", "ep");
 
     TLine * lone = new TLine(grvn6vn4Ratio_ATLASNpart->GetXaxis()->GetXmin(), 1.0, grvn6vn4Ratio_ATLASNpart->GetXaxis()->GetXmax(), 1.0);
     lone->SetLineStyle(2);
@@ -1193,10 +1193,10 @@ void sysResultsPlots(){
 
   TLegend * leg4668 = new TLegend(0.37, 0.21, 0.89, 0.38);
   legInit(leg4668);
-  leg4668->AddEntry(grvn46_vn68Ratio,      Form("(#font[12]{v}_{%i}{4}-#font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6}-#font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_), "lp");
-  leg4668->AddEntry(grTrentoP1_en46_en68,  "Trento p = 1",  "lp");
-  leg4668->AddEntry(grTrentoP0_en46_en68,  "Trento p = 0",  "lp");
-  leg4668->AddEntry(grTrentoPm1_en46_en68, "Trento p = -1", "lp");
+  leg4668->AddEntry(grvn46_vn68Ratio,      Form("(#font[12]{v}_{%i}{4}-#font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6}-#font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_), "ep");
+  leg4668->AddEntry(grTrentoP1_en46_en68,  "Trento p = 1",  "ep");
+  leg4668->AddEntry(grTrentoP0_en46_en68,  "Trento p = 0",  "ep");
+  leg4668->AddEntry(grTrentoPm1_en46_en68, "Trento p = -1", "ep");
 
   TCanvas * cVn46_Vn68 = new TCanvas("cVn46_Vn68", "cVn46_Vn68", 500, 500);
   cVn46_Vn68->cd();
@@ -1218,7 +1218,7 @@ void sysResultsPlots(){
 
   TLegend * leg46682 = new TLegend(0.37, 0.15, 0.56, 0.32);
   legInit(leg46682);
-  leg46682->AddEntry(grvn46_vn68Ratio,      Form("(#font[12]{v}_{%i}{4}-#font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6}-#font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_), "lp");
+  leg46682->AddEntry(grvn46_vn68Ratio,      Form("(#font[12]{v}_{%i}{4}-#font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6}-#font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_), "ep");
 
   //-- Fig. Gamma1Exp with Vn46_Vn68
   TCanvas * cG1eAndVn46_Vn68 = new TCanvas("cG1eAndVn46_Vn68", "cG1eAndVn46_Vn68", 1000, 500);
@@ -1273,14 +1273,14 @@ void sysResultsPlots(){
 
   TLegend * leg64c = new TLegend(0.29, 0.20, 0.62, 0.43);
   legInit( leg64c );
-  leg64c->AddEntry(grvn6vn4Ratio,            "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}", "lp");
-  leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "lp");
+  leg64c->AddEntry(grvn6vn4Ratio,            "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}", "ep");
+  leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "ep");
   leg64c->AddEntry(grvn6vn4RatioTheory,      "2.76 TeV Hydro",      "f");
 
   TLegend * leg84c = new TLegend(0.29, 0.20, 0.61, 0.33);
   legInit( leg84c );
-  leg84c->AddEntry(grvn8vn4Ratio,            "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}", "lp");
-  leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "lp");
+  leg84c->AddEntry(grvn8vn4Ratio,            "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}", "ep");
+  leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "ep");
 
   TCanvas * cCumuRatioWithATLAS = new TCanvas("cCumuRatioWithATLAS", "cCumuRatioWithATLAS", 1500, 500);
   cCumuRatioWithATLAS->Divide(3,1);

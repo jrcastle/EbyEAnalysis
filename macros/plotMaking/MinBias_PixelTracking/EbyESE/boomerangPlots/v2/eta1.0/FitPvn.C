@@ -467,6 +467,8 @@ void FitPvn(){
   formatGraph(grFitAlpha, "Centrality %", 0., 130,  "#alpha",       1, 21, "grFitAlpha");
   formatGraph(grFitE0,    "Centrality %", 0., 0.7,  "#varepsilon_{0}", 1, 34, "grFitE0");
 
+  grFitE0->SetMarkerSize(1.2);
+
   fOut->cd();
   grFitKn->Write();
   grFitAlpha->Write();
@@ -535,8 +537,8 @@ void FitPvn(){
   else      legKn = new TLegend(0.21, 0.2, 0.66, 0.38);
   legKn->SetBorderSize(0);
   legKn->SetFillStyle(0);
-  legKn->AddEntry(grFitKn,   "k_{2}",   "lp");
-  if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS 2.76 TeV", "lp");
+  legKn->AddEntry(grFitKn,   "k_{2}",   "ep");
+  if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS 2.76 TeV", "ep");
   legKn->AddEntry(grKnTh,    "Hydro 2.76 TeV", "l");
 
   TLegend * legAlpha = 0;
@@ -544,8 +546,8 @@ void FitPvn(){
   else      legAlpha = new TLegend(0.52, 0.65, 0.99, 0.90);
   legAlpha->SetBorderSize(0);
   legAlpha->SetFillStyle(0);
-  legAlpha->AddEntry(grFitAlpha,      "#alpha",   "lp");
-  if(ATLAS) legAlpha->AddEntry(grATLASAlpha,    "ATLAS 2.76 TeV", "lp");
+  legAlpha->AddEntry(grFitAlpha,      "#alpha",   "ep");
+  if(ATLAS) legAlpha->AddEntry(grATLASAlpha,    "ATLAS 2.76 TeV", "ep");
   legAlpha->AddEntry(grAlphaThGlaub,  "Glauber", "f");
   legAlpha->AddEntry(grAlphaThGlasma, "IP Glasma", "f");
 
@@ -554,8 +556,8 @@ void FitPvn(){
   else      legEcc0 = new TLegend(0.19, 0.65, 0.67, 0.90);
   legEcc0->SetBorderSize(0);
   legEcc0->SetFillStyle(0);
-  legEcc0->AddEntry(grFitE0,       "#varepsilon_{0}",   "lp");
-  if(ATLAS) legEcc0->AddEntry(grATLASEcc0,   "ATLAS 2.76 TeV", "lp");
+  legEcc0->AddEntry(grFitE0,       "#varepsilon_{0}",   "ep");
+  if(ATLAS) legEcc0->AddEntry(grATLASEcc0,   "ATLAS 2.76 TeV", "ep");
   legEcc0->AddEntry(grE0ThGlaub,  "Glauber", "f");
   legEcc0->AddEntry(grE0ThGlasma, "IP Glasma", "f");
 
@@ -1163,7 +1165,7 @@ void FitPvn(){
   legInit(legUnfObs3);
   legUnfObs3->SetTextFont(43);
   legUnfObs3->SetTextSize(32);
-  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(#font[12]{v}_{2})", "lp");
+  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(#font[12]{v}_{2})", "ep");
   legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian",                "l");
   legUnfObs3->AddEntry(fEllP[3],            "Elliptic Power",                 "l");
 
