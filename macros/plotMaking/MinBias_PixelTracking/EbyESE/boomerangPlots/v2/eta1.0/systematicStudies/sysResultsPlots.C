@@ -474,7 +474,7 @@ void sysResultsPlots(){
   grvn6vn4Ratio->SetMarkerStyle(21);
   grvn6vn4Ratio->SetMarkerSize(1.2);
   grvn6vn4Ratio->GetXaxis()->SetTitle( "Centrality %");
-  grvn6vn4Ratio->GetYaxis()->SetTitle( Form("v_{%i}{6} / v_{%i}{4}", norder_, norder_) );
+  grvn6vn4Ratio->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{6} / #font[12]{v}_{%i}{4}", norder_, norder_) );
   grvn6vn4Ratio->GetYaxis()->SetNdivisions(507);
   grvn6vn4Ratio->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
   grvn6vn4Ratio->GetYaxis()->SetTitleOffset(titleOffset);
@@ -486,7 +486,7 @@ void sysResultsPlots(){
   grvn6vn4RatioSys->SetMarkerStyle(21);
   grvn6vn4RatioSys->SetFillColor(17);
   grvn6vn4RatioSys->GetXaxis()->SetTitle( "Centrality %");
-  grvn6vn4RatioSys->GetYaxis()->SetTitle( Form("v_{%i}{6} / v_{%i}{4}", norder_, norder_) );
+  grvn6vn4RatioSys->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{6} / #font[12]{v}_{%i}{4}", norder_, norder_) );
   grvn6vn4RatioSys->GetYaxis()->SetNdivisions(507);
   grvn6vn4RatioSys->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
   grvn6vn4RatioSys->GetYaxis()->SetTitleOffset(titleOffset);
@@ -499,7 +499,7 @@ void sysResultsPlots(){
   grvn8vn4Ratio->SetMarkerStyle(21);
   grvn8vn4Ratio->SetMarkerSize(1.2);
   grvn8vn4Ratio->GetXaxis()->SetTitle( "Centrality %");
-  grvn8vn4Ratio->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{4}", norder_, norder_) );
+  grvn8vn4Ratio->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{8} / #font[12]{v}_{%i}{4}", norder_, norder_) );
   grvn8vn4Ratio->GetYaxis()->SetNdivisions(507);
   grvn8vn4Ratio->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
   grvn8vn4Ratio->GetYaxis()->SetTitleOffset(titleOffset);
@@ -511,7 +511,7 @@ void sysResultsPlots(){
   grvn8vn4RatioSys->SetMarkerStyle(21);
   grvn8vn4RatioSys->SetFillColor(17);
   grvn8vn4RatioSys->GetXaxis()->SetTitle( "Centrality %");
-  grvn8vn4RatioSys->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{4}", norder_, norder_) );
+  grvn8vn4RatioSys->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{8} / #font[12]{v}_{%i}{4}", norder_, norder_) );
   grvn8vn4RatioSys->GetYaxis()->SetNdivisions(507);
   grvn8vn4RatioSys->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
   grvn8vn4RatioSys->GetYaxis()->SetTitleOffset(titleOffset);
@@ -524,7 +524,7 @@ void sysResultsPlots(){
   grvn8vn6Ratio->SetMarkerStyle(21);
   grvn8vn6Ratio->SetMarkerSize(1.2);
   grvn8vn6Ratio->GetXaxis()->SetTitle( "Centrality %");
-  grvn8vn6Ratio->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{6}", norder_, norder_) );
+  grvn8vn6Ratio->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{8} / #font[12]{v}_{%i}{6}", norder_, norder_) );
   grvn8vn6Ratio->GetYaxis()->SetNdivisions(507);
   grvn8vn6Ratio->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
   grvn8vn6Ratio->GetYaxis()->SetTitleOffset(titleOffset+0.25);
@@ -536,7 +536,7 @@ void sysResultsPlots(){
   grvn8vn6RatioSys->SetMarkerStyle(21);
   grvn8vn6RatioSys->SetFillColor(17);
   grvn8vn6RatioSys->GetXaxis()->SetTitle( "Centrality %");
-  grvn8vn6RatioSys->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{6}", norder_, norder_) );
+  grvn8vn6RatioSys->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{8} / #font[12]{v}_{%i}{6}", norder_, norder_) );
   grvn8vn6RatioSys->GetYaxis()->SetNdivisions(507);
   grvn8vn6RatioSys->GetYaxis()->SetRangeUser(ratioMinVn8Vn6,ratioMaxVn8Vn6);
   grvn8vn6RatioSys->GetYaxis()->SetTitleOffset(titleOffset+0.25);
@@ -548,7 +548,7 @@ void sysResultsPlots(){
   grvn46_vn68Ratio->SetMarkerColor(1);
   grvn46_vn68Ratio->SetMarkerStyle(20);
   grvn46_vn68Ratio->GetXaxis()->SetTitle( "Centrality %");
-  grvn46_vn68Ratio->GetYaxis()->SetTitle( Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_) );
+  grvn46_vn68Ratio->GetYaxis()->SetTitle( Form("(#font[12]{v}_{%i}{4} - #font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6} - #font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_) );
   grvn46_vn68Ratio->GetYaxis()->SetTitleOffset(1.45);
   grvn46_vn68Ratio->GetYaxis()->SetDecimals(2);
   grvn46_vn68Ratio->GetYaxis()->SetRangeUser(vn46_vn68Min, vn46_vn68Max);
@@ -559,7 +559,7 @@ void sysResultsPlots(){
   grvn46_vn68RatioSys->SetMarkerStyle(20);
   grvn46_vn68RatioSys->SetFillColor(17);
   grvn46_vn68RatioSys->GetXaxis()->SetTitle( "Centrality %");
-  grvn46_vn68RatioSys->GetYaxis()->SetTitle( Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_) );
+  grvn46_vn68RatioSys->GetYaxis()->SetTitle( Form("(#font[12]{v}_{%i}{4} - #font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6} - #font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_) );
   grvn46_vn68RatioSys->GetYaxis()->SetTitleOffset(1.45);
   grvn46_vn68RatioSys->GetYaxis()->SetDecimals(2);
   grvn46_vn68RatioSys->GetYaxis()->SetRangeUser(vn46_vn68Min, vn46_vn68Max);
@@ -581,7 +581,7 @@ void sysResultsPlots(){
   grTrentoPm1_en46_en68->SetMarkerColor(kViolet-1);
   grTrentoPm1_en46_en68->SetMarkerStyle(26);
   grTrentoPm1_en46_en68->GetXaxis()->SetTitle( "Centrality %");
-  grTrentoPm1_en46_en68->GetYaxis()->SetTitle( Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_) );
+  grTrentoPm1_en46_en68->GetYaxis()->SetTitle( Form("(#font[12]{v}_{%i}{4} - #font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6} - #font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_) );
   grTrentoPm1_en46_en68->GetYaxis()->SetTitleOffset(1.45);
   grTrentoPm1_en46_en68->GetYaxis()->SetDecimals(2);
   grTrentoPm1_en46_en68->GetYaxis()->SetRangeUser(vn46_vn68Min, vn46_vn68Max);
@@ -603,7 +603,7 @@ void sysResultsPlots(){
   grTrentoP0_en46_en68->SetMarkerColor(kCyan+2);
   grTrentoP0_en46_en68->SetMarkerStyle(24);
   grTrentoP0_en46_en68->GetXaxis()->SetTitle( "Centrality %");
-  grTrentoP0_en46_en68->GetYaxis()->SetTitle( Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_) );
+  grTrentoP0_en46_en68->GetYaxis()->SetTitle( Form("(#font[12]{v}_{%i}{4} - #font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6} - #font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_) );
   grTrentoP0_en46_en68->GetYaxis()->SetTitleOffset(1.45);
   grTrentoP0_en46_en68->GetYaxis()->SetDecimals(2);
   grTrentoP0_en46_en68->GetYaxis()->SetRangeUser(vn46_vn68Min, vn46_vn68Max);
@@ -625,7 +625,7 @@ void sysResultsPlots(){
   grTrentoP1_en46_en68->SetMarkerColor(kOrange+7);
   grTrentoP1_en46_en68->SetMarkerStyle(25);
   grTrentoP1_en46_en68->GetXaxis()->SetTitle( "Centrality %");
-  grTrentoP1_en46_en68->GetYaxis()->SetTitle( Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_) );
+  grTrentoP1_en46_en68->GetYaxis()->SetTitle( Form("(#font[12]{v}_{%i}{4} - #font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6} - #font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_) );
   grTrentoP1_en46_en68->GetYaxis()->SetTitleOffset(1.45);
   grTrentoP1_en46_en68->GetYaxis()->SetDecimals(2);
   grTrentoP1_en46_en68->GetYaxis()->SetRangeUser(vn46_vn68Min, vn46_vn68Max);
@@ -638,12 +638,12 @@ void sysResultsPlots(){
   grGamma1ExpTheory   = new TGraphErrors("../theoryResults/skewness.txt",        "%lg %lg %lg");
   grvn6vn4RatioTheory = new TGraphErrors("../theoryResults/v2{6}_over_v2{4}.txt", "%lg %lg %lg");
 
-  formatGraph(grVn2Theory,         "Centrality %", cumuMin,     cumuMax,     Form("v_{%i}{2}", norder_),                      1,  20, "grVn2Theory");
-  formatGraph(grVn4Theory,         "Centrality %", cumuMin,     cumuMax,     Form("v_{%i}{4}", norder_),                      1,  20, "grVn4Theory");
-  formatGraph(grVn6Theory,         "Centrality %", cumuMin,     cumuMax,     Form("v_{%i}{6}", norder_),                      1,  20, "grVn6Theory");
-  formatGraph(grVn8Theory,         "Centrality %", cumuMin,     cumuMax,     Form("v_{%i}{8}", norder_),                      1,  20, "grVn8Theory");
+  formatGraph(grVn2Theory,         "Centrality %", cumuMin,     cumuMax,     Form("#font[12]{v}_{%i}{2}", norder_),                      1,  20, "grVn2Theory");
+  formatGraph(grVn4Theory,         "Centrality %", cumuMin,     cumuMax,     Form("#font[12]{v}_{%i}{4}", norder_),                      1,  20, "grVn4Theory");
+  formatGraph(grVn6Theory,         "Centrality %", cumuMin,     cumuMax,     Form("#font[12]{v}_{%i}{6}", norder_),                      1,  20, "grVn6Theory");
+  formatGraph(grVn8Theory,         "Centrality %", cumuMin,     cumuMax,     Form("#font[12]{v}_{%i}{8}", norder_),                      1,  20, "grVn8Theory");
   formatGraph(grGamma1ExpTheory,   "Centrality %", gamm1expMin, gamm1expMax, "#gamma_{1}^{exp}",                              1, 20, "grGamma1ExpTheory");
-  formatGraph(grvn6vn4RatioTheory, "Centrality %", ratioMin,    ratioMax,    Form("v_{%i}{6} / v_{%i}{4}", norder_, norder_), kOrange+3, 20, "grvn6vn4RatioTheory");
+  formatGraph(grvn6vn4RatioTheory, "Centrality %", ratioMin,    ratioMax,    Form("#font[12]{v}_{%i}{6} / #font[12]{v}_{%i}{4}", norder_, norder_), kOrange+3, 20, "grvn6vn4RatioTheory");
 
   grGamma1ExpTheory->SetFillColor(38);
   grGamma1ExpTheory->GetYaxis()->SetDecimals(1);
@@ -682,7 +682,7 @@ void sysResultsPlots(){
   grCumuDummy->GetXaxis()->SetTitleOffset(0.85);
 
   //-- Y axis
-  grCumuDummy->GetYaxis()->SetTitle( Form("v_{%i}{2k}", norder_) );
+  grCumuDummy->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{2k}", norder_) );
   grCumuDummy->GetYaxis()->CenterTitle();
   grCumuDummy->GetYaxis()->SetRangeUser(cumuMin, cumuMax);
   grCumuDummy->GetYaxis()->SetDecimals(2);
@@ -713,7 +713,7 @@ void sysResultsPlots(){
   latex3.DrawLatex(0.385, 0.914, "26 #mub^{-1} (PbPb 5.02 TeV)");
   latex3.DrawLatex(0.24, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex3.DrawLatex(0.24, 0.75, Form("|#eta| < %.1f", tkEta));
-  latex3.DrawLatex(0.57, 0.54, "#bf{v_{2}{2k}}");
+  latex3.DrawLatex(0.57, 0.54, "#bf{#font[12]{v}_{2}{2k}}");
   cCumuRaw->SaveAs("../plots/skew/SysCumuRaw.pdf");
   /*
   TCanvas * cCumuVn2 = new TCanvas("cCumuVn2", "cCumuVn2", 500, 500);
@@ -861,16 +861,16 @@ void sysResultsPlots(){
   //-- Fig. Cumu Ratio
   TLegend * leg64 = new TLegend(0.22, 0.21, 0.54, 0.335);
   legInit( leg64 );
-  leg64->AddEntry(grvn6vn4Ratio,    "v_{2}{6} / v_{2}{4}", "lp");
+  leg64->AddEntry(grvn6vn4Ratio,    "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}", "lp");
   leg64->AddEntry(grvn6vn4RatioTheory, "2.76 TeV Hydro",      "f");
 
   TLegend * leg84 = new TLegend(0.22, 0.21, 0.54, 0.26);
   legInit( leg84 );
-  leg84->AddEntry(grvn8vn4Ratio, "v_{2}{8} / v_{2}{4}", "lp");
+  leg84->AddEntry(grvn8vn4Ratio, "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}", "lp");
 
   TLegend * leg86 = new TLegend(0.25, 0.21, 0.57, 0.26);
   legInit( leg86 );
-  leg86->AddEntry(grvn8vn6Ratio, "v_{2}{8} / v_{2}{6}", "lp");
+  leg86->AddEntry(grvn8vn6Ratio, "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{6}", "lp");
 
   TGraphErrors * grVn64Dummy = new TGraphErrors(NCENT, centBinCenter, m1, nullCentErr, nullCentErr);
 
@@ -886,7 +886,7 @@ void sysResultsPlots(){
   grVn64Dummy->GetXaxis()->SetTitleOffset(0.85);
 
   //-- Y axis
-  grVn64Dummy->GetYaxis()->SetTitle( "v_{2}{6} / v_{2}{4}" );
+  grVn64Dummy->GetYaxis()->SetTitle( "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}" );
   grVn64Dummy->GetYaxis()->CenterTitle();
   grVn64Dummy->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
   grVn64Dummy->GetYaxis()->SetNdivisions(507);
@@ -898,10 +898,10 @@ void sysResultsPlots(){
   grVn64Dummy->GetYaxis()->SetTitleOffset(1.3);
 
   TGraphErrors * grVn84Dummy = (TGraphErrors*) grVn64Dummy->Clone("grVn84Dummy");
-  grVn84Dummy->GetYaxis()->SetTitle( "v_{2}{8} / v_{2}{4}" );
+  grVn84Dummy->GetYaxis()->SetTitle( "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}" );
 
   TGraphErrors * grVn86Dummy = (TGraphErrors*) grVn64Dummy->Clone("grVn86Dummy");
-  grVn86Dummy->GetYaxis()->SetTitle( "v_{2}{8} / v_{2}{6}" );
+  grVn86Dummy->GetYaxis()->SetTitle( "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{6}" );
   grVn86Dummy->GetYaxis()->SetRangeUser(ratioMinVn8Vn6, ratioMaxVn8Vn6);
   grVn86Dummy->GetYaxis()->SetDecimals(3);
   grVn86Dummy->GetYaxis()->SetTitleOffset(1.5);
@@ -1088,7 +1088,7 @@ void sysResultsPlots(){
     grvn6vn4Ratio_ATLASNpart->SetMarkerStyle(20);
     grvn6vn4Ratio_ATLASNpart->SetMarkerSize(1.2);
     grvn6vn4Ratio_ATLASNpart->GetXaxis()->SetTitle( "Centrality %");
-    grvn6vn4Ratio_ATLASNpart->GetYaxis()->SetTitle( Form("v_{%i}{6} / v_{%i}{4}", norder_, norder_) );
+    grvn6vn4Ratio_ATLASNpart->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{6} / #font[12]{v}_{%i}{4}", norder_, norder_) );
     grvn6vn4Ratio_ATLASNpart->GetYaxis()->SetTitleOffset(titleOffset);
     grvn6vn4Ratio_ATLASNpart->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
     grvn6vn4Ratio_ATLASNpart->GetYaxis()->SetDecimals(2);
@@ -1122,7 +1122,7 @@ void sysResultsPlots(){
     grvn8vn4Ratio_ATLASNpart->SetMarkerStyle(21);
     grvn8vn4Ratio_ATLASNpart->SetMarkerSize(1.2);
     grvn8vn4Ratio_ATLASNpart->GetXaxis()->SetTitle( "Centrality %");
-    grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{4}", norder_, norder_) );
+    grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetTitle( Form("#font[12]{v}_{%i}{8} / #font[12]{v}_{%i}{4}", norder_, norder_) );
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetTitleOffset(titleOffset);
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetDecimals(2);
@@ -1193,7 +1193,7 @@ void sysResultsPlots(){
 
   TLegend * leg4668 = new TLegend(0.37, 0.21, 0.89, 0.38);
   legInit(leg4668);
-  leg4668->AddEntry(grvn46_vn68Ratio,      Form("(v_{%i}{4}-v_{%i}{6})/(v_{%i}{6}-v_{%i}{8})", norder_, norder_, norder_, norder_), "lp");
+  leg4668->AddEntry(grvn46_vn68Ratio,      Form("(#font[12]{v}_{%i}{4}-#font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6}-#font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_), "lp");
   leg4668->AddEntry(grTrentoP1_en46_en68,  "Trento p = 1",  "lp");
   leg4668->AddEntry(grTrentoP0_en46_en68,  "Trento p = 0",  "lp");
   leg4668->AddEntry(grTrentoPm1_en46_en68, "Trento p = -1", "lp");
@@ -1218,7 +1218,7 @@ void sysResultsPlots(){
 
   TLegend * leg46682 = new TLegend(0.37, 0.15, 0.56, 0.32);
   legInit(leg46682);
-  leg46682->AddEntry(grvn46_vn68Ratio,      Form("(v_{%i}{4}-v_{%i}{6})/(v_{%i}{6}-v_{%i}{8})", norder_, norder_, norder_, norder_), "lp");
+  leg46682->AddEntry(grvn46_vn68Ratio,      Form("(#font[12]{v}_{%i}{4}-#font[12]{v}_{%i}{6})/(#font[12]{v}_{%i}{6}-#font[12]{v}_{%i}{8})", norder_, norder_, norder_, norder_), "lp");
 
   //-- Fig. Gamma1Exp with Vn46_Vn68
   TCanvas * cG1eAndVn46_Vn68 = new TCanvas("cG1eAndVn46_Vn68", "cG1eAndVn46_Vn68", 1000, 500);
@@ -1273,13 +1273,13 @@ void sysResultsPlots(){
 
   TLegend * leg64c = new TLegend(0.29, 0.20, 0.62, 0.43);
   legInit( leg64c );
-  leg64c->AddEntry(grvn6vn4Ratio,            "v_{2}{6} / v_{2}{4}", "lp");
+  leg64c->AddEntry(grvn6vn4Ratio,            "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}", "lp");
   leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "lp");
   leg64c->AddEntry(grvn6vn4RatioTheory,      "2.76 TeV Hydro",      "f");
 
   TLegend * leg84c = new TLegend(0.29, 0.20, 0.61, 0.33);
   legInit( leg84c );
-  leg84c->AddEntry(grvn8vn4Ratio,            "v_{2}{8} / v_{2}{4}", "lp");
+  leg84c->AddEntry(grvn8vn4Ratio,            "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}", "lp");
   leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "2.76 TeV ATLAS",      "lp");
 
   TCanvas * cCumuRatioWithATLAS = new TCanvas("cCumuRatioWithATLAS", "cCumuRatioWithATLAS", 1500, 500);

@@ -153,8 +153,8 @@ void setTDRStyle() {
   // tdrStyle->SetTimeOffset(Double_t toffset);
   // tdrStyle->SetHistMinimumZero(kTRUE);
 
-  tdrStyle->SetHatchesLineWidth(5);
-  tdrStyle->SetHatchesSpacing(0.05);
+  //tdrStyle->SetHatchesLineWidth(5);
+  tdrStyle->SetHatchesSpacing(4.);
 
   tdrStyle->cd();
 

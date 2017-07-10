@@ -50,7 +50,6 @@ double pEllP(double * x, double * par){
   double scale = par[3];
   double eccn  = x[0] / kn;
 
-
   double pi = TMath::Pi();
   double p1 = (scale * 2. * alpha * eccn / pi / kn) * pow( 1 - e0*e0, alpha + 0.5);
   double integ = 0.;
@@ -233,8 +232,8 @@ void FitPvn(){
     fitE0[icent]    = -1;
 
     hDummy[icent] = new TH1D(Form("hDummy_c%i", icent), Form("hDummy_c%i",icent), 152, 0-binw, vnMax[norder_]);
-    hDummy[icent]->GetXaxis()->SetTitle("v_{2}");
-    hDummy[icent]->GetYaxis()->SetTitle("p(v_{2})");
+    hDummy[icent]->GetXaxis()->SetTitle("#font[12]{v}_{2}");
+    hDummy[icent]->GetYaxis()->SetTitle("#font[12]{p}(#font[12]{v}_{2})");
 
     hFinalUnfold[icent] = (TH1D*) fFinalUnf->Get( Form("hFinalUnfoldStatAndSys_c%i", icent) );
     hFinalUnfold[icent]->SetLineColor(1);
@@ -505,38 +504,60 @@ void FitPvn(){
   formatGraph(grATLASEcc0,  "Centrality %", 0.1, 0.6,  "#epsilon_{0}", 1, 26, "grATLASE0");
 
   TGraph * grKnTh = new TGraph("theoryResults/Yan_n_s019.txt", "%lg %lg");
-  grKnTh->SetLineColor(kGreen+1);
-  TGraph * grE0ThGlaub = new TGraph("theoryResults/GlaubE0.txt", "%lg %lg");
+  grKnTh->SetLineColor(4);
+  
+  TGraphErrors * grE0ThGlaub = new TGraphErrors("theoryResults/GlaubE0.txt", "%lg %lg %lg");
   grE0ThGlaub->SetLineColor(4);
-  TGraph * grE0ThGlasma = new TGraph("theoryResults/GlasmaE0.txt", "%lg %lg");
-  grE0ThGlasma->SetLineColor(2);
-  TGraph * grAlphaThGlaub = new TGraph("theoryResults/GlaubAlpha.txt", "%lg %lg");
+  grE0ThGlaub->SetLineWidth(0);
+  grE0ThGlaub->SetFillColor(4);
+  grE0ThGlaub->SetFillStyle(3150);
+  
+  TGraphErrors * grE0ThGlasma = new TGraphErrors("theoryResults/GlasmaE0.txt", "%lg %lg %lg");
+  grE0ThGlasma->SetLineColor(2);  
+  grE0ThGlasma->SetLineWidth(0);
+  grE0ThGlasma->SetFillColor(2);
+  grE0ThGlasma->SetFillStyle(3159);
+  
+  TGraph * grAlphaThGlaub = new TGraphErrors("theoryResults/GlaubAlpha.txt", "%lg %lg %lg");
   grAlphaThGlaub->SetLineColor(4);
-  TGraph * grAlphaThGlasma = new TGraph("theoryResults/GlasmaAlpha.txt", "%lg %lg");
+  grAlphaThGlaub->SetLineWidth(0);
+  grAlphaThGlaub->SetFillColor(4);
+  grAlphaThGlaub->SetFillStyle(3150);
+  
+  TGraph * grAlphaThGlasma = new TGraphErrors("theoryResults/GlasmaAlpha.txt", "%lg %lg %lg");
   grAlphaThGlasma->SetLineColor(2);
+  grAlphaThGlasma->SetLineWidth(0);
+  grAlphaThGlasma->SetFillColor(2);
+  grAlphaThGlasma->SetFillStyle(3159);
 
-  TLegend * legKn = new TLegend(0.2, 0.2, 0.65, 0.38);
+  TLegend * legKn = 0;
+  if(ATLAS) legKn = new TLegend(0.21, 0.2, 0.66, 0.40);
+  else      legKn = new TLegend(0.21, 0.2, 0.66, 0.38);
   legKn->SetBorderSize(0);
   legKn->SetFillStyle(0);
   legKn->AddEntry(grFitKn,   "k_{2}",   "lp");
   if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS 2.76 TeV", "lp");
   legKn->AddEntry(grKnTh,    "Hydro 2.76 TeV", "l");
 
-  TLegend * legAlpha = new TLegend(0.52, 0.65, 0.99, 0.90);
+  TLegend * legAlpha = 0;
+  if(ATLAS) legAlpha = new TLegend(0.44, 0.65, 0.91, 0.90);
+  else      legAlpha = new TLegend(0.52, 0.65, 0.99, 0.90);
   legAlpha->SetBorderSize(0);
   legAlpha->SetFillStyle(0);
   legAlpha->AddEntry(grFitAlpha,      "#alpha",   "lp");
   if(ATLAS) legAlpha->AddEntry(grATLASAlpha,    "ATLAS 2.76 TeV", "lp");
-  legAlpha->AddEntry(grAlphaThGlaub,  "Glauber", "l");
-  legAlpha->AddEntry(grAlphaThGlasma, "IP Glasma", "l");
+  legAlpha->AddEntry(grAlphaThGlaub,  "Glauber", "f");
+  legAlpha->AddEntry(grAlphaThGlasma, "IP Glasma", "f");
 
-  TLegend * legEcc0 = new TLegend(0.18, 0.65, 0.66, 0.90);
+  TLegend * legEcc0 = 0;
+  if(ATLAS) legEcc0 = new TLegend(0.19, 0.60, 0.67, 0.90);
+  else      legEcc0 = new TLegend(0.19, 0.65, 0.67, 0.90);
   legEcc0->SetBorderSize(0);
   legEcc0->SetFillStyle(0);
   legEcc0->AddEntry(grFitE0,       "#varepsilon_{0}",   "lp");
   if(ATLAS) legEcc0->AddEntry(grATLASEcc0,   "ATLAS 2.76 TeV", "lp");
-  legEcc0->AddEntry(grE0ThGlaub,  "Glauber", "l");
-  legEcc0->AddEntry(grE0ThGlasma, "IP Glasma", "l");
+  legEcc0->AddEntry(grE0ThGlaub,  "Glauber", "f");
+  legEcc0->AddEntry(grE0ThGlasma, "IP Glasma", "f");
 
   TLegend * legFit = new TLegend(0.18, 0.20, 0.63, 0.35);
   legFit->SetBorderSize(0);
@@ -548,43 +569,43 @@ void FitPvn(){
     grFitKnSys->GetXaxis()->CenterTitle();
     grFitKnSys->GetXaxis()->SetNdivisions(507);
     grFitKnSys->GetXaxis()->SetLabelFont(43);
-    grFitKnSys->GetXaxis()->SetLabelSize(30);
+    grFitKnSys->GetXaxis()->SetLabelSize(32);
     grFitKnSys->GetXaxis()->SetTitleFont(43);
-    grFitKnSys->GetXaxis()->SetTitleSize(30);
+    grFitKnSys->GetXaxis()->SetTitleSize(35);
     grFitKnSys->GetXaxis()->SetTitleOffset(1.1);
     grFitKnSys->GetYaxis()->CenterTitle();
     grFitKnSys->GetYaxis()->SetLabelFont(43);
-    grFitKnSys->GetYaxis()->SetLabelSize(30);
+    grFitKnSys->GetYaxis()->SetLabelSize(32);
     grFitKnSys->GetYaxis()->SetTitleFont(43);
-    grFitKnSys->GetYaxis()->SetTitleSize(30);
+    grFitKnSys->GetYaxis()->SetTitleSize(32);
     grFitKnSys->GetYaxis()->SetTitleOffset(1.3);
 
     grFitE0Sys->GetXaxis()->CenterTitle();
     grFitE0Sys->GetXaxis()->SetNdivisions(507);
     grFitE0Sys->GetXaxis()->SetLabelFont(43);
-    grFitE0Sys->GetXaxis()->SetLabelSize(30);
+    grFitE0Sys->GetXaxis()->SetLabelSize(32);
     grFitE0Sys->GetXaxis()->SetTitleFont(43);
-    grFitE0Sys->GetXaxis()->SetTitleSize(30);
+    grFitE0Sys->GetXaxis()->SetTitleSize(35);
     grFitE0Sys->GetXaxis()->SetTitleOffset(1.1);
     grFitE0Sys->GetYaxis()->CenterTitle();
     grFitE0Sys->GetYaxis()->SetLabelFont(43);
-    grFitE0Sys->GetYaxis()->SetLabelSize(30);
+    grFitE0Sys->GetYaxis()->SetLabelSize(32);
     grFitE0Sys->GetYaxis()->SetTitleFont(43);
-    grFitE0Sys->GetYaxis()->SetTitleSize(30);
+    grFitE0Sys->GetYaxis()->SetTitleSize(32);
     grFitE0Sys->GetYaxis()->SetTitleOffset(1.3);
 
     grFitAlphaSys->GetXaxis()->CenterTitle();
     grFitAlphaSys->GetXaxis()->SetNdivisions(507);
     grFitAlphaSys->GetXaxis()->SetLabelFont(43);
-    grFitAlphaSys->GetXaxis()->SetLabelSize(30);
+    grFitAlphaSys->GetXaxis()->SetLabelSize(32);
     grFitAlphaSys->GetXaxis()->SetTitleFont(43);
-    grFitAlphaSys->GetXaxis()->SetTitleSize(30);
+    grFitAlphaSys->GetXaxis()->SetTitleSize(35);
     grFitAlphaSys->GetXaxis()->SetTitleOffset(1.1);
     grFitAlphaSys->GetYaxis()->CenterTitle();
     grFitAlphaSys->GetYaxis()->SetLabelFont(43);
-    grFitAlphaSys->GetYaxis()->SetLabelSize(30);
+    grFitAlphaSys->GetYaxis()->SetLabelSize(32);
     grFitAlphaSys->GetYaxis()->SetTitleFont(43);
-    grFitAlphaSys->GetYaxis()->SetTitleSize(30);
+    grFitAlphaSys->GetYaxis()->SetTitleSize(32);
     grFitAlphaSys->GetYaxis()->SetTitleOffset(1.3);
 
 
@@ -592,41 +613,57 @@ void FitPvn(){
     cParmSummary->Divide(3,1);
 
     cParmSummary->cd(1)->SetTopMargin(0.071);
+    cParmSummary->cd(1)->SetLeftMargin(0.17);
     grFitKnSys->Draw("apE2");
     grFitKn->Draw("psame");
     grKnTh->Draw("same");
     if(ATLAS) grATLASKn->Draw("psame");
     legKn->Draw("same");
-    legKn->SetTextFont(43);
-    legKn->SetTextSize(32);
-    latex5.DrawLatex(0.16, 0.94, "#bf{CMS}");
+    latex5.DrawLatex(0.17, 0.94, "#bf{CMS}");
     latex5.DrawLatex(0.34, 0.94, "26 #mub^{-1} (PbPb 5.02 TeV)");
-    latex4.DrawLatex(0.2, 0.82, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
-    latex4.DrawLatex(0.2, 0.72, Form("|#eta| < %.1f", tkEta));
+    latex4.DrawLatex(0.21, 0.82, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
+    latex4.DrawLatex(0.21, 0.72, Form("|#eta| < %.1f", tkEta));
 
     cParmSummary->cd(2)->SetTopMargin(0.071);
+    cParmSummary->cd(2)->SetLeftMargin(0.17);
     grFitE0Sys->Draw("apE2");
     grFitE0->Draw("psame");
-    grE0ThGlaub->Draw("same");
-    grE0ThGlasma->Draw("same");
+    grE0ThGlaub->Draw("3same");
+    grE0ThGlasma->Draw("3same");
     if(ATLAS) grATLASEcc0->Draw("psame");
     legEcc0->Draw("same");
-    legEcc0->SetTextFont(43);
-    legEcc0->SetTextSize(32);
-    latex5.DrawLatex(0.16, 0.94, "#bf{CMS}");
+    latex5.DrawLatex(0.17, 0.94, "#bf{CMS}");
     latex5.DrawLatex(0.34, 0.94, "26 #mub^{-1} (PbPb 5.02 TeV)");
 
     cParmSummary->cd(3)->SetTopMargin(0.071);
+    cParmSummary->cd(3)->SetLeftMargin(0.17);
+    if(ATLAS) grFitAlphaSys->GetXaxis()->SetLimits(0, 72.5);
     grFitAlphaSys->Draw("apE2");
     grFitAlpha->Draw("psame");
-    grAlphaThGlaub->Draw("same");
-    grAlphaThGlasma->Draw("same");
+    grAlphaThGlaub->Draw("3same");
+    grAlphaThGlasma->Draw("3same");
     if(ATLAS) grATLASAlpha->Draw("psame");
     legAlpha->Draw("same");
-    legAlpha->SetTextFont(43);
-    legAlpha->SetTextSize(32);
-    latex5.DrawLatex(0.16, 0.94, "#bf{CMS}");
+    latex5.DrawLatex(0.17, 0.94, "#bf{CMS}");
     latex5.DrawLatex(0.34, 0.94, "26 #mub^{-1} (PbPb 5.02 TeV)");
+
+    if(ATLAS){
+      legKn->SetTextFont(43);
+      legKn->SetTextSize(26);
+      legEcc0->SetTextFont(43);
+      legEcc0->SetTextSize(26);
+      legAlpha->SetTextFont(43);
+      legAlpha->SetTextSize(26);
+    }
+    else{
+      legKn->SetTextFont(43);
+      legKn->SetTextSize(32);
+      legEcc0->SetTextFont(43);
+      legEcc0->SetTextSize(32);
+      legAlpha->SetTextFont(43);
+      legAlpha->SetTextSize(32);
+    }
+
 
     cParmSummary->Update();
     cParmSummary->SaveAs(Form("plots/unfolding/FitParmSummary_v%i.pdf",norder_));
@@ -1120,16 +1157,20 @@ void FitPvn(){
   cUnfoldDistsBig_NoFit->SaveAs("cUnfoldDistsBig_NoFit.pdf");
   */
 
+  for(int icent = 3; icent < NCENT; icent++) fBG[icent]->SetLineStyle(2);
+
   TLegend * legUnfObs3 = new TLegend(0.05, 0.3, 0.43, 0.53);
   legInit(legUnfObs3);
-  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "p(v_{2})",        "lp");
-  legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian", "l");
-  legUnfObs3->AddEntry(fEllP[3],            "Elliptic power",  "l");
+  legUnfObs3->SetTextFont(43);
+  legUnfObs3->SetTextSize(32);
+  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(#font[12]{v}_{2})", "lp");
+  legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian",                "l");
+  legUnfObs3->AddEntry(fEllP[3],            "Elliptic Power",                 "l");
 
   TH1D * HD = new TH1D("HD", "HD", 152, 0-binw, vnMax[norder_]);
 
   double m = 0.28;  
-  HD->GetXaxis()->SetTitle("v_{2}");
+  HD->GetXaxis()->SetTitle("#font[12]{v}_{2}");
   HD->GetXaxis()->CenterTitle();
   HD->GetXaxis()->SetRange(1, HD->FindBin(m));
   HD->GetXaxis()->SetNdivisions(507);
@@ -1139,7 +1180,7 @@ void FitPvn(){
   HD->GetXaxis()->SetTitleSize(47);
   HD->GetXaxis()->SetTitleOffset(0.9);
 
-  HD->GetYaxis()->SetTitle("p(v_{2})");
+  HD->GetYaxis()->SetTitle("#font[12]{p}(#font[12]{v}_{2})");
   HD->GetYaxis()->CenterTitle();
   HD->GetYaxis()->SetLabelFont(43);
   HD->GetYaxis()->SetLabelSize(38);
@@ -1191,8 +1232,6 @@ void FitPvn(){
   fBG[c]->Draw("same");
   fEllP[c]->Draw("same");
   legUnfObs3->Draw("same");
-  legUnfObs3->SetTextFont(43);
-  legUnfObs3->SetTextSize(32);
   latex4.DrawLatex(0.05, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
 
   c = 11;
