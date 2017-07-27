@@ -787,25 +787,26 @@ void sysUnfoldDistns(){
     palette[icent]->SetY1NDC(0.2);
     palette[icent]->SetX2NDC(0.8);
     palette[icent]->SetY2NDC(0.5);
-    latex.DrawLatex(0.6, 0.89, "Response Matrix");
-    latex.DrawLatex(0.18, 0.89, "A");
+    latex4.DrawLatex(0.45, 0.87, "Response Matrix");
+    latex4.DrawLatex(0.19, 0.87, "#bf{A}");
 
     cCovRespUnf[icent]->cd(2);
     cCovRespUnf[icent]->cd(2)->SetLogy();
     hObs[icent]->Scale(1./hObs[icent]->Integral());
+    hObs[icent]->SetMaximum(5.*hObs[icent]->GetMaximum());
     hObs[icent]->GetYaxis()->SetTitle( Form("p(v_{%i})", norder_) );
     hObs[icent]->Draw();
     hFinalUnfoldSys[icent]->Draw("e2same");
     setex2->Draw();
     hFinalUnf[icent]->Draw("same");
-    legUnf[icent] = new TLegend(0.6481, 0.7578, 0.9933, 0.8940);
+    legUnf[icent] = new TLegend(0.6481, 0.7178, 0.9933, 0.8540);
     legUnf[icent]->SetBorderSize(0);
     legUnf[icent]->SetFillStyle(0);
     legUnf[icent]->AddEntry(hObs[icent],       "Observed", "lp");
     legUnf[icent]->AddEntry(hFinalUnf[icent],  "Unfolded", "lp");
     legUnf[icent]->Draw("same");
-    latex.DrawLatex(0.56, 0.89, "Unfold Distribution");
-    latex.DrawLatex(0.18, 0.89, "B");
+    latex4.DrawLatex(0.65, 0.87, "Unfolding");
+    latex4.DrawLatex(0.19, 0.87, "#bf{B}");
 
     //-- Convert cov matrix to corr matrix
     hCorrMatrix[icent] = new TH2D( Form("hCorrMatrix_c%i", icent), Form("hCorrMatrix_c%i", icent), NBins, 0., vnMax[norder_], NBins, 0., vnMax[norder_] );
@@ -836,9 +837,11 @@ void sysUnfoldDistns(){
     paletteCov[icent]->SetY1NDC(0.2);
     paletteCov[icent]->SetX2NDC(0.8);
     paletteCov[icent]->SetY2NDC(0.5);
-    latex.DrawLatex(0.58, 0.89, "Covariance Matrix");
+    latex4.DrawLatex(0.58, 0.89, "Covariance Matrix");
     */
     cCovRespUnf[icent]->cd(3);
+    hCorrMatrix[icent]->GetXaxis()->SetTitle( Form("v_{%i,i}", norder_) );
+    hCorrMatrix[icent]->GetYaxis()->SetTitle( Form("v_{%i,j}", norder_) );
     hCorrMatrix[icent]->GetXaxis()->SetNdivisions(508);
     hCorrMatrix[icent]->GetYaxis()->SetNdivisions(508);
     hCorrMatrix[icent]->GetZaxis()->SetNdivisions(508);
@@ -849,8 +852,8 @@ void sysUnfoldDistns(){
     paletteCov[icent]->SetY1NDC(0.2);
     paletteCov[icent]->SetX2NDC(0.8);
     paletteCov[icent]->SetY2NDC(0.5);
-    latex.DrawLatex(0.58, 0.89, "Correlation Matrix");
-    latex.DrawLatex(0.18, 0.89, "C");
+    latex4.DrawLatex(0.43, 0.87, "Correlation Matrix");
+    latex4.DrawLatex(0.19, 0.87, "#bf{C}");
 
     cCovRespUnf[icent]->cd(4);
     cCovRespUnf[icent]->cd(4)->SetLogx();
@@ -858,8 +861,8 @@ void sysUnfoldDistns(){
     l1p2->Draw("same");
     grRefoldChi2[icent]->GetYaxis()->SetRangeUser(0.1, 10000.);
     cCovRespUnf[icent]->cd(4)->SetLogy();
-    latex.DrawLatex(0.65, 0.89, "Refold #chi^{2}/NDF");
-    latex.DrawLatex(0.18, 0.89, "D");
+    latex4.DrawLatex(0.52, 0.87, "Refold #chi^{2}/NDF");
+    latex4.DrawLatex(0.19, 0.87, "#bf{D}");
 
     cCovRespUnf[icent]->cd(5);
     cCovRespUnf[icent]->cd(5)->SetLogy();
@@ -868,8 +871,8 @@ void sysUnfoldDistns(){
       hRefold[icent][i]->Scale(1./hRefold[icent][i]->Integral());
       hRefold[icent][i]->Draw("same");
     }
-    latex.DrawLatex(0.7, 0.89, "Refolding");
-    latex.DrawLatex(0.18, 0.89, "E");
+    latex4.DrawLatex(0.65, 0.87, "Refolding");
+    latex4.DrawLatex(0.19, 0.87, "#bf{E}");
 
     cCovRespUnf[icent]->cd(6);
     leg->Draw();
@@ -1149,7 +1152,7 @@ void sysUnfoldDistns(){
   legInit(legUnfObs3);
   legUnfObs3->AddEntry(hObs[0],                  "Observed p(v_{2})", "lp");
   legUnfObs3->AddEntry(hFinalUnf[0],             "Unfolded p(v_{2})", "lp");
-  legUnfObs3->AddEntry(hRefold[0][finalIter[0]], "Refolded p(v_{2})", "l");
+  //legUnfObs3->AddEntry(hRefold[0][finalIter[0]], "Refolded p(v_{2})", "l");
 
   TCanvas * cFinalUnfoldMerged3 = new TCanvas("cFinalUnfoldMerged3", "cFinalUnfoldMerged3", 1500, 600);
   cFinalUnfoldMerged3->SetLeftMargin(0.18);
@@ -1172,7 +1175,7 @@ void sysUnfoldDistns(){
   hFinalUnfoldSys[c]->Draw("e2same");
   hFinalUnf[c]->Draw("same");
   hObs[c]->Draw("same");
-  hRefold[c][i]->Draw("same");
+  //hRefold[c][i]->Draw("same");
   latex4.DrawLatex(0.465, 0.91, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex4.DrawLatex(0.77, 0.81, Form("|#eta| < %.1f", tkEta));
   latex4.DrawLatex(0.26, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
@@ -1185,7 +1188,7 @@ void sysUnfoldDistns(){
   hFinalUnfoldSys[c]->Draw("e2same");
   hFinalUnf[c]->Draw("same");
   hObs[c]->Draw("same");
-  hRefold[c][i]->Draw("same");
+  //hRefold[c][i]->Draw("same");
   legUnfObs3->Draw("same");
   legUnfObs3->SetTextFont(43);
   legUnfObs3->SetTextSize(32); 
@@ -1199,7 +1202,7 @@ void sysUnfoldDistns(){
   hFinalUnfoldSys[c]->Draw("e2same");
   hFinalUnf[c]->Draw("same");
   hObs[c]->Draw("same");
-  hRefold[c][i]->Draw("same");
+  //hRefold[c][i]->Draw("same");
   latex4.DrawLatex(0.05, 0.23, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
 
   cFinalUnfoldMerged3->cd(0);

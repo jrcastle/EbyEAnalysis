@@ -33,7 +33,7 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("EbyETree_NewPixelNominal.root")
+    fileName = cms.string("EbyETree_NewPixelTight_NoEff.root")
 )
 
 process.ebyeana.Subevent_Standard = cms.untracked.bool(True)
@@ -54,8 +54,8 @@ process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixelPbPb_no
 #process.ebyeana.effTable_     = cms.untracked.string("EffCorrectionsPixelPbPb_wide.root")    # 3 < |Vz| < 15 cm
 
 # Vertex Cut
-process.ebyeana.minvz_ = cms.untracked.double(0.0)   #####PAY ATTENTION!!!!!!! In the analyzer, the cut is: 
-process.ebyeana.maxvz_ = cms.untracked.double(15.0)  #####PAY ATTENTION!!!!!!! if( fabs(vz) < minvz_ || fabs(vz) > maxvz_ ) vZaccept = false;
+process.ebyeana.minvz_ = cms.untracked.double(0.0)    #####PAY ATTENTION!!!!!!! In the analyzer, the cut is: 
+process.ebyeana.maxvz_ = cms.untracked.double(15.0)   #####PAY ATTENTION!!!!!!! if( fabs(vz) < minvz_ || fabs(vz) > maxvz_ ) vZaccept = false;
 
 # Save run number?
 process.ebyeana.Branch_Run = cms.untracked.bool(False)

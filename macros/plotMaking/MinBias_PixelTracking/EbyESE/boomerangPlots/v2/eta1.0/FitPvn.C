@@ -7,6 +7,9 @@ using namespace ebyese;
 
 int BIN = 1;
 string fname = "EllPFits.root";
+double rmin = 0.75;
+double rmax = 1.25;
+
 /*
 double pEllP(double * x, double * par){
 
@@ -133,6 +136,9 @@ void FitPvn(){
 
   TF1 * fBG[NCENT];
   TF1 * fEllP[NCENT];
+
+  TH1D * hRatioBGtoUnf[NCENT];
+  TH1D * hRatioEllPtoUnf[NCENT];
 
   TFile * fBottomLine;
   TGraph * grChi2EllP;
@@ -359,6 +365,38 @@ void FitPvn(){
       }
     }
 
+    //-- Fit ratio to unf 
+    hRatioBGtoUnf[icent]   = new TH1D(Form("hRatioBGtoUnfc%i", icent),   Form("hRatioBGtoUnfc%i", icent),   NBins, 0., vnMax[norder_]);
+    hRatioEllPtoUnf[icent] = new TH1D(Form("hRatioEllPtoUnfc%i", icent), Form("hRatioEllPtoUnfc%i", icent), NBins, 0., vnMax[norder_]);
+    for(int bin = 1; bin <= NBins; bin++){
+      double v2   = hRatioBGtoUnf[icent]->GetBinCenter(bin);
+      double bg   = fBG[icent]->Eval(v2);
+      double ellp = fEllP[icent]->Eval(v2);
+
+      hRatioBGtoUnf[icent]->SetBinContent(bin, bg);
+      hRatioEllPtoUnf[icent]->SetBinContent(bin, ellp);
+    }
+
+    hRatioBGtoUnf[icent]->Divide( hFinalUnfold[icent] );
+    hRatioBGtoUnf[icent]->SetLineColor(4);
+    hRatioBGtoUnf[icent]->SetMarkerColor(4);
+    hRatioBGtoUnf[icent]->SetMarkerStyle(21);
+    hRatioBGtoUnf[icent]->SetMinimum(rmin);
+    hRatioBGtoUnf[icent]->SetMaximum(rmax);
+    hRatioBGtoUnf[icent]->GetXaxis()->SetTitle(Form("v_{%i}", norder_));
+    hRatioBGtoUnf[icent]->GetYaxis()->SetTitle("Ratio: fit/data");
+    hRatioBGtoUnf[icent]->GetXaxis()->SetRange(1, hFinalUnfoldSys[icent]->FindBin(0.28));
+
+    hRatioEllPtoUnf[icent]->Divide( hFinalUnfold[icent] );
+    hRatioEllPtoUnf[icent]->SetLineColor(2);
+    hRatioEllPtoUnf[icent]->SetMarkerColor(2);
+    hRatioEllPtoUnf[icent]->SetMarkerStyle(20);
+    hRatioEllPtoUnf[icent]->SetMinimum(rmin);
+    hRatioEllPtoUnf[icent]->SetMaximum(rmax);
+    hRatioEllPtoUnf[icent]->GetXaxis()->SetTitle(Form("v_{%i}", norder_));
+    hRatioEllPtoUnf[icent]->GetYaxis()->SetTitle("Ratio: fit/data");
+    hRatioBGtoUnf[icent]->GetXaxis()->SetRange(1, hFinalUnfoldSys[icent]->FindBin(0.28));
+
     //-- Increase hist maximums post-fit.
     if(icent == 3 || icent == 5){
       hFinalUnfold[icent]->SetMaximum( 6e6 );
@@ -505,7 +543,7 @@ void FitPvn(){
   formatGraph(grATLASAlpha, "Centrality %", 0.1, 120,  "#alpha",       1, 25, "grATLASAlpha");
   formatGraph(grATLASEcc0,  "Centrality %", 0.1, 0.6,  "#epsilon_{0}", 1, 26, "grATLASE0");
 
-  TGraph * grKnTh = new TGraph("theoryResults/Yan_n_s019.txt", "%lg %lg");
+  TGraph * grKnTh = new TGraph("theoryResults/Yan_n_s019_REAL.txt", "%lg %lg");
   grKnTh->SetLineColor(4);
   
   TGraphErrors * grE0ThGlaub = new TGraphErrors("theoryResults/GlaubE0.txt", "%lg %lg %lg");
@@ -538,8 +576,8 @@ void FitPvn(){
   legKn->SetBorderSize(0);
   legKn->SetFillStyle(0);
   legKn->AddEntry(grFitKn,   "k_{2}",   "ep");
-  if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS 2.76 TeV", "ep");
-  legKn->AddEntry(grKnTh,    "Hydro 2.76 TeV", "l");
+  if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS", "ep");
+  legKn->AddEntry(grKnTh,    "Hydro", "l");
 
   TLegend * legAlpha = 0;
   if(ATLAS) legAlpha = new TLegend(0.44, 0.65, 0.91, 0.90);
@@ -547,7 +585,7 @@ void FitPvn(){
   legAlpha->SetBorderSize(0);
   legAlpha->SetFillStyle(0);
   legAlpha->AddEntry(grFitAlpha,      "#alpha",   "ep");
-  if(ATLAS) legAlpha->AddEntry(grATLASAlpha,    "ATLAS 2.76 TeV", "ep");
+  if(ATLAS) legAlpha->AddEntry(grATLASAlpha,    "ATLAS", "ep");
   legAlpha->AddEntry(grAlphaThGlaub,  "Glauber", "f");
   legAlpha->AddEntry(grAlphaThGlasma, "IP Glasma", "f");
 
@@ -557,7 +595,7 @@ void FitPvn(){
   legEcc0->SetBorderSize(0);
   legEcc0->SetFillStyle(0);
   legEcc0->AddEntry(grFitE0,       "#varepsilon_{0}",   "ep");
-  if(ATLAS) legEcc0->AddEntry(grATLASEcc0,   "ATLAS 2.76 TeV", "ep");
+  if(ATLAS) legEcc0->AddEntry(grATLASEcc0,   "ATLAS", "ep");
   legEcc0->AddEntry(grE0ThGlaub,  "Glauber", "f");
   legEcc0->AddEntry(grE0ThGlasma, "IP Glasma", "f");
 
@@ -720,13 +758,13 @@ void FitPvn(){
   leg1->SetBorderSize(0);
   leg1->SetFillStyle(0);
   leg1->AddEntry(fBG[3],   "Bessel-Gaussian (v_{n}^{RP}, #delta_{v_{n}})", "l");
-  leg1->AddEntry(fEllP[3], "Elliptic Power (#epsilon_{0}, #alpha, k_{n})", "l");
+  leg1->AddEntry(fEllP[3], "Elliptic power (#epsilon_{0}, #alpha, k_{n})", "l");
 
   TLegend * leg2 = new TLegend(0.27, 0.78, 0.61, 0.91);
   leg2->SetBorderSize(0);
   leg2->SetFillStyle(0);
   leg2->AddEntry(grChi2BG,   "Bessel-Gaussian (v_{n}^{RP}, #delta_{v_{n}})", "p");
-  leg2->AddEntry(grChi2EllP, "Elliptic Power (#epsilon_{0}, #alpha, k_{n})", "p");
+  leg2->AddEntry(grChi2EllP, "Elliptic power (#epsilon_{0}, #alpha, k_{n})", "p");
 
   TCanvas * cUnfoldDistsBig = new TCanvas("cUnfoldDistsBig", "cUnfoldDistsBig", 1500, 1000);
   cUnfoldDistsBig->Divide(3,2,0,0);
@@ -1167,7 +1205,7 @@ void FitPvn(){
   legUnfObs3->SetTextSize(32);
   legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(#font[12]{v}_{2})", "ep");
   legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian",                "l");
-  legUnfObs3->AddEntry(fEllP[3],            "Elliptic Power",                 "l");
+  legUnfObs3->AddEntry(fEllP[3],            "Elliptic power",                 "l");
 
   TH1D * HD = new TH1D("HD", "HD", 152, 0-binw, vnMax[norder_]);
 
@@ -1253,6 +1291,88 @@ void FitPvn(){
 
   cFinalUnfoldMerged3->Update();
   cFinalUnfoldMerged3->SaveAs("plots/skew/cFinalUnfoldEllPMerged3.pdf");
+
+
+  TLegend * legUnfObsRatio3 = new TLegend(0.13, 0.21, 0.51, 0.44);
+  legInit(legUnfObsRatio3);
+  legUnfObsRatio3->SetTextFont(43);
+  legUnfObsRatio3->SetTextSize(30);
+  legUnfObsRatio3->AddEntry(hRatioBGtoUnf[3],   "Bessel Gaussian", "ep");
+  legUnfObsRatio3->AddEntry(hRatioEllPtoUnf[3], "Elliptic power",  "ep");
+
+  TLine * llll = new TLine(0., 1., 0.28, 1.);
+  llll->SetLineStyle(2);
+
+  TH1D * HDD = new TH1D("HDD", "HDD", 152, 0-binw, vnMax[norder_]);
+
+  HDD->GetXaxis()->SetTitle("#font[12]{v}_{2}");
+  HDD->GetXaxis()->CenterTitle();
+  HDD->GetXaxis()->SetRange(1, HDD->FindBin(m));
+  HDD->GetXaxis()->SetNdivisions(507);
+  HDD->GetXaxis()->SetLabelFont(43);
+  HDD->GetXaxis()->SetLabelSize(38);
+  HDD->GetXaxis()->SetTitleFont(43);
+  HDD->GetXaxis()->SetTitleSize(47);
+  HDD->GetXaxis()->SetTitleOffset(0.9);
+
+  HDD->GetYaxis()->SetTitle("Ratio: Fit/Data");
+  HDD->GetYaxis()->CenterTitle();
+  HDD->GetYaxis()->SetNdivisions(507);
+  HDD->GetYaxis()->SetLabelFont(43);
+  HDD->GetYaxis()->SetLabelSize(38);
+  HDD->GetYaxis()->SetTitleFont(43);
+  HDD->GetYaxis()->SetTitleSize(43);
+  HDD->GetYaxis()->SetTitleOffset(1.4);
+
+  HDD->SetMaximum(rmax);
+  HDD->SetMinimum(rmin);
+
+
+  TCanvas * cFinalUnfoldMergedRatio3 = new TCanvas("cFinalUnfoldMergedRatio3", "cFinalUnfoldMergedRatio3", 1500, 600);
+  cFinalUnfoldMergedRatio3->SetLeftMargin(0.18);
+  cFinalUnfoldMergedRatio3->SetRightMargin(0.01);
+  cFinalUnfoldMergedRatio3->SetTopMargin(0.071);
+  cFinalUnfoldMergedRatio3->Modified();
+  cFinalUnfoldMergedRatio3->Update();
+  cFinalUnfoldMergedRatio3->Divide(3,1,0,0);
+
+  c = 3;
+  cFinalUnfoldMergedRatio3->cd(1);
+  //cFinalUnfoldMergedRatio3->cd(1)->SetLogy();
+  HDD->Draw();
+  hRatioBGtoUnf[c]->Draw("same");
+  hRatioEllPtoUnf[c]->Draw("same");
+  llll->Draw("same");
+  latex4.DrawLatex(0.26, 0.90, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
+
+  c = 6;
+  cFinalUnfoldMergedRatio3->cd(2);
+  //cFinalUnfoldMergedRatio3->cd(2)->SetLogy();
+  HDD->Draw();
+  hRatioBGtoUnf[c]->Draw("same");
+  hRatioEllPtoUnf[c]->Draw("same");
+  legUnfObsRatio3->Draw("same");
+  llll->Draw("same");
+  latex4.DrawLatex(0.05, 0.90, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
+
+  c = 11;
+  cFinalUnfoldMergedRatio3->cd(3);
+  //cFinalUnfoldMergedRatio3->cd(3)->SetLogy();
+  HDD->Draw();
+  hRatioBGtoUnf[c]->Draw("same");
+  hRatioEllPtoUnf[c]->Draw("same");
+  llll->Draw("same");
+  latex4.DrawLatex(0.05, 0.90, Form("#bf{%i - %i%s}", cent_min[c], cent_max[c], "%") );
+
+  //cFinalUnfoldMergedRatio3->cd(0);
+  //latex4.DrawLatex(0.083, 0.94, "#bf{CMS}");
+  //latex4.DrawLatex(0.775, 0.94, "26 #mub^{-1} (PbPb 5.02 TeV)");
+
+  cFinalUnfoldMergedRatio3->Update();
+  cFinalUnfoldMergedRatio3->SaveAs("plots/skew/cFinalUnfoldEllPMergedRatio3.pdf");
+
+
+
 
 
 

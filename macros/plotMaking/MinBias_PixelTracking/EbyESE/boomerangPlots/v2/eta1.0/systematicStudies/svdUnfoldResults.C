@@ -83,6 +83,7 @@ void svdUnfoldResults(){
 
   TLatex latex;
   TLatex latex2;
+  TLatex latex4;
   //
   // MAIN
   //
@@ -91,7 +92,9 @@ void svdUnfoldResults(){
   latex.SetTextFont(43);
   latex.SetTextSize(23);
   latex2.SetNDC();
-
+  latex4.SetNDC();
+  latex4.SetTextFont(43);
+  latex4.SetTextSize(33);
   //-- Get Stat Errors
   fStatSVD = new TFile( Form("../../../statErrorHandle/v%i/eta%.1f/StatisticalUncertaintiesSVD_v%i.root", norder_, tkEta, norder_)  );
   hVarianceOfMean_Vn2       = (TH1D*) fStatSVD->Get("hVarianceOfMean_Vn2");
@@ -297,18 +300,19 @@ void svdUnfoldResults(){
     palette[icent]->SetY1NDC(0.2);
     palette[icent]->SetX2NDC(0.8);
     palette[icent]->SetY2NDC(0.5);
-    latex.DrawLatex(0.6, 0.89, "Response Matrix");
-    latex.DrawLatex(0.18, 0.89, "A");
+    latex4.DrawLatex(0.45, 0.87, "Response Matrix");
+    latex4.DrawLatex(0.19, 0.87, "#bf{A}");
 
     cCovRespUnf[icent]->cd(2);
     cCovRespUnf[icent]->cd(2)->SetLogy();
+    hObs[icent]->SetMaximum(5.*hObs[icent]->GetMaximum());
     hObs[icent]->Draw();
     finalUnfm1[icent]->Draw("same");
     finalUnf[icent]->Draw("same");
     finalUnfp1[icent]->Draw("same");
     legUnf->Draw("same");
-    latex.DrawLatex(0.53, 0.89, "Unfolded Distribution");
-    latex.DrawLatex(0.18, 0.89, "B");
+    latex4.DrawLatex(0.65, 0.87, "Unfolding");
+    latex4.DrawLatex(0.19, 0.87, "#bf{B}");
 
     //-- Convert cov matrix to corr matrix
     hCorrMatrix[icent] = new TH2D( Form("hCorrMatrix_c%i", icent), Form("hCorrMatrix_c%i", icent), NBins, 0., vnMax[norder_], NBins, 0., vnMax[norder_] );
@@ -330,6 +334,8 @@ void svdUnfoldResults(){
     M2H(MCorr, hCorrMatrix[icent]);
 
     cCovRespUnf[icent]->cd(3);
+    hCorrMatrix[icent]->GetXaxis()->SetTitle( Form("v_{%i,i}", norder_) );
+    hCorrMatrix[icent]->GetYaxis()->SetTitle( Form("v_{%i,j}", norder_) );
     hCorrMatrix[icent]->GetXaxis()->SetNdivisions(508);
     hCorrMatrix[icent]->GetYaxis()->SetNdivisions(508);
     hCorrMatrix[icent]->GetZaxis()->SetNdivisions(508);
@@ -340,16 +346,16 @@ void svdUnfoldResults(){
     paletteCov[icent]->SetY1NDC(0.2);
     paletteCov[icent]->SetX2NDC(0.8);
     paletteCov[icent]->SetY2NDC(0.5);
-    latex.DrawLatex(0.58, 0.89, "Correlation Matrix");
-    latex.DrawLatex(0.18, 0.89, "C");
+    latex4.DrawLatex(0.43, 0.87, "Correlation Matrix");
+    latex4.DrawLatex(0.19, 0.87, "#bf{C}");
 
     cCovRespUnf[icent]->cd(4);
     cCovRespUnf[icent]->cd(4)->SetLogy();
     hdi[icent]->Draw();
     lOne[icent]->Draw("same");
     lKreg[icent]->Draw("same");
-    latex.DrawLatex(0.65, 0.89,  "Regularization");
-    latex.DrawLatex(0.18, 0.89, "D");
+    latex4.DrawLatex(0.52, 0.87,  "Regularization");
+    latex4.DrawLatex(0.19, 0.87, "#bf{D}");
 
     cCovRespUnf[icent]->cd(5);
     cCovRespUnf[icent]->cd(5)->SetLogy();
@@ -358,8 +364,8 @@ void svdUnfoldResults(){
     hrefold[icent]->Draw("same");
     hrefoldp1[icent]->Draw("same");
     legRef->Draw();
-    latex.DrawLatex(0.75, 0.89,  "Refolding");
-    latex.DrawLatex(0.18, 0.89, "E");
+    latex4.DrawLatex(0.65, 0.87, "Refolding");
+    latex4.DrawLatex(0.19, 0.87, "#bf{E}");
 
     cCovRespUnf[icent]->cd(6);
     latex2.DrawLatex(0.4, 0.6,  Form("Cent %i - %i%s", cent_min[icent], cent_max[icent], "%"));

@@ -3,17 +3,17 @@ config = Configuration()
 from CRABClient.UserUtilities import getUsernameFromSiteDB
 
 config.section_('General')
-config.General.requestName            = 'EbyEPbPb2015_PixelTracksHIMinimumBias2_ATLASComp'
+config.General.requestName            = 'EbyEPbPb2015_PixelTracksHIMinimumBias2_NewPixelTight_NoEff'
 config.General.transferOutputs        = True
 config.General.transferLogs           = False
 
 config.section_('JobType')
-config.JobType.outputFiles            = ['EbyETree_ATLASComp.root']
+config.JobType.outputFiles            = ['EbyETree_NewPixelTight_NoEff.root']
 config.JobType.pyCfgParams            = ['noprint']
 config.JobType.pluginName             = 'Analysis'
 config.JobType.psetName               = 'ebyeAnalysis_pixelTrack_cfg.py'
 config.JobType.maxJobRuntimeMin       = 1315
-config.JobType.inputFiles             = ['EffCorrectionsPixel_TT_pt_0_10_v2.root', 'EffCorrectionsPixel_z_3_15_pt_0_10.root', 'EffCorrectionsPixel_z_minus_15_minus_3_pt_0_10.root', 'EffCorrectionsPixel_z_minus_3_3_pt_0_10.root']
+config.JobType.inputFiles             = ['EffCorrectionsPixelPbPb_loose.root', 'EffCorrectionsPixelPbPb_narrow.root', 'EffCorrectionsPixelPbPb_nominal.root', 'EffCorrectionsPixelPbPb_tight.root', 'EffCorrectionsPixelPbPb_wide.root']
 
 config.section_('Data')
 #config.Data.inputDBS                  = 'phys03'
@@ -24,7 +24,7 @@ config.Data.runRange                  = '262548-263757'
 config.Data.unitsPerJob               = 25
 config.Data.publication               = False
 config.Data.splitting                 = 'LumiBased'
-config.Data.outLFNDirBase             = '/store/user/jcastle/EbyEPbPb2015_PixelTracksHIMinimumBias2_ATLASComp'
+config.Data.outLFNDirBase             = '/store/user/jcastle/EbyEPbPb2015_PixelTracksHIMinimumBias2_NewPixelTight_NoEff'
 config.Data.lumiMask                  = 'Cert_262548-263757_PromptReco_HICollisions15_JSON_v2.txt'
 #config.Data.lumiMask                  = 'smallSampleGoldenJSON.txt'
 #config.Data.lumiMask                  = 'run263614_JSON.txt' 

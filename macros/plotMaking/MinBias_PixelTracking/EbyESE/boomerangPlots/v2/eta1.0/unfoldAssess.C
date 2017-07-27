@@ -511,5 +511,21 @@ void unfoldAssess(){
   c2SE->Update();
   c2SE->SaveAs( "plots/unfolding/c2SE.pdf" );
 
+  for(int icent = 0; icent < NCENT; icent++){
+
+    double chi2GX = fGausX[icent]->GetChisquare() / (double)fGausX[icent]->GetNDF();
+    double chi2GY = fGausY[icent]->GetChisquare() / (double)fGausY[icent]->GetNDF();
+    double chi2SX = fStudTX[icent]->GetChisquare() / (double)fStudTX[icent]->GetNDF();
+    double chi2SY = fStudTY[icent]->GetChisquare() / (double)fStudTY[icent]->GetNDF();
+
+    std::cout << Form("c%i\t", icent) 
+	      << Form("Chi2/NDF GX = %.1f\t", chi2GX) 
+	      << Form("Chi2/NDF GY = %.1f\t", chi2GY) 
+	      << Form("Chi2/NDF SX = %.1f\t", chi2SX) 
+	      << Form("Chi2/NDF SY = %.1f", chi2SY) 
+	      << std::endl;
+
+  }
+
 }
 
