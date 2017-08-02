@@ -864,7 +864,7 @@ void sysResultsPlots(){
 
   cGamma1Exp->SaveAs("../plots/skew/SysGamma1Exp.pdf");
 
-  // ------------------------ BEGIN PAPER FIGURE 4 ------------------------
+  // ------------------------ END PAPER FIGURE 4 ------------------------
 
 
   //-- Fig. Cumu Ratio
