@@ -606,6 +606,8 @@ void FitPvn(){
   //-- Fit parms vs npart
   if(dosys){
 
+    // ------------------------ BEGIN PAPER FIGURE 5 ------------------------
+
     grFitKnSys->GetXaxis()->CenterTitle();
     grFitKnSys->GetXaxis()->SetNdivisions(507);
     grFitKnSys->GetXaxis()->SetLabelFont(43);
@@ -647,7 +649,6 @@ void FitPvn(){
     grFitAlphaSys->GetYaxis()->SetTitleFont(43);
     grFitAlphaSys->GetYaxis()->SetTitleSize(32);
     grFitAlphaSys->GetYaxis()->SetTitleOffset(1.3);
-
 
     TCanvas * cParmSummary = new TCanvas("cParmSummary", "cParmSummary", 1500, 500);
     cParmSummary->Divide(3,1);
@@ -704,9 +705,11 @@ void FitPvn(){
       legAlpha->SetTextSize(32);
     }
 
-
     cParmSummary->Update();
     cParmSummary->SaveAs(Form("plots/unfolding/FitParmSummary_v%i.pdf",norder_));
+
+    // ------------------------ END PAPER FIGURE 5 ------------------------
+
   }
   else{
     TCanvas * cParmSummary = new TCanvas("cParmSummary", "cParmSummary", 1500, 500);
@@ -1197,6 +1200,8 @@ void FitPvn(){
   cUnfoldDistsBig_NoFit->SaveAs("cUnfoldDistsBig_NoFit.pdf");
   */
 
+  // ------------------------ BEGIN PAPER FIGURE 1 ------------------------
+
   for(int icent = 3; icent < NCENT; icent++) fBG[icent]->SetLineStyle(2);
 
   TLegend * legUnfObs3 = new TLegend(0.05, 0.3, 0.43, 0.53);
@@ -1238,8 +1243,6 @@ void FitPvn(){
     fBG[c]->SetParameter(0, 1);
     fEllP[c]->SetParameter(3, 1);
   }
-
-
 
   TCanvas * cFinalUnfoldMerged3 = new TCanvas("cFinalUnfoldMerged3", "cFinalUnfoldMerged3", 1500, 600);
   cFinalUnfoldMerged3->SetLeftMargin(0.18);
@@ -1292,6 +1295,7 @@ void FitPvn(){
   cFinalUnfoldMerged3->Update();
   cFinalUnfoldMerged3->SaveAs("plots/skew/cFinalUnfoldEllPMerged3.pdf");
 
+  // ------------------------ END PAPER FIGURE 1 ------------------------
 
   TLegend * legUnfObsRatio3 = new TLegend(0.13, 0.21, 0.51, 0.44);
   legInit(legUnfObsRatio3);

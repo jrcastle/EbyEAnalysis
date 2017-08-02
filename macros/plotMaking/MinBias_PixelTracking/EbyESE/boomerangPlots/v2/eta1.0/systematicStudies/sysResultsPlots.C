@@ -658,6 +658,8 @@ void sysResultsPlots(){
 
   //-- DRAW!
 
+  // ------------------------ BEGIN PAPER FIGURE 2 ------------------------
+
   TLegend * legCumu = new TLegend(0.55, 0.27, 0.76, 0.52);
   legCumu->SetBorderSize(0);
   legCumu->SetFillStyle(0);
@@ -666,7 +668,6 @@ void sysResultsPlots(){
   legCumu->AddEntry(grVn6RawSys, "#font[12]{m} = 6", "ep");
   legCumu->AddEntry(grVn8RawSys, "#font[12]{m} = 8", "ep");
 
-  //-- Fig. Cumulants
   double m1[NCENT];
   for(int i = 0; i < NCENT; i++) m1[i] = -1.;
   TGraphErrors * grCumuDummy = new TGraphErrors(NCENT, centBinCenter, m1, nullCentErr, nullCentErr);
@@ -715,6 +716,9 @@ void sysResultsPlots(){
   latex3.DrawLatex(0.24, 0.75, Form("|#eta| < %.1f", tkEta));
   latex3.DrawLatex(0.57, 0.54, "#font[12]{v}_{2}{#font[12]{m}}");
   cCumuRaw->SaveAs("../plots/skew/SysCumuRaw.pdf");
+
+  // ------------------------ END PAPER FIGURE 2 ------------------------
+
   /*
   TCanvas * cCumuVn2 = new TCanvas("cCumuVn2", "cCumuVn2", 500, 500);
   cCumuVn2->cd();
@@ -802,6 +806,9 @@ void sysResultsPlots(){
 
   cCumuTheoryComp->SaveAs("../plots/skew/cCumuTheoryComp.pdf");
   */
+
+  // ------------------------ BEGIN PAPER FIGURE 4 ------------------------
+
   TLegend * legg1e = new TLegend(0.22, 0.22, 0.54, 0.375);
   legInit( legg1e );
   legg1e->AddEntry(grGamma1ExpSys,    "#gamma_{1}^{exp}", "ep");
@@ -856,6 +863,8 @@ void sysResultsPlots(){
   cGamma1Exp->Update();
 
   cGamma1Exp->SaveAs("../plots/skew/SysGamma1Exp.pdf");
+
+  // ------------------------ BEGIN PAPER FIGURE 4 ------------------------
 
 
   //-- Fig. Cumu Ratio
@@ -1127,6 +1136,8 @@ void sysResultsPlots(){
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetDecimals(2);
 
+    // ------------------------ BEGIN PAPER FIGURE 3 ------------------------
+
     TLegend * leg64a = new TLegend(0.27, 0.22, 0.69, 0.34);
     leg64a->SetFillStyle(0);
     leg64a->SetBorderSize(0);
@@ -1183,6 +1194,8 @@ void sysResultsPlots(){
 
     cATLASComp->Update();
     cATLASComp->SaveAs("../plots/skew/cSysATLASComp.pdf");
+
+    // ------------------------ END PAPER FIGURE 3 ------------------------
 
   }
 
