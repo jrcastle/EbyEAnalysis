@@ -9,9 +9,10 @@ void sysResultsPlots(){
 
   TH1D::SetDefaultSumw2();
 
-  int centbin     = 4;
-  int norder_     = 2;
-  double tkEta    = 1.0;
+  int centbin       = 4;
+  int norder_       = 2;
+  double tkEta      = 1.0;
+  double CENTOFFSET = 0.5;
 
   bool dosys     = 0;
   bool smoothSys = 1;
@@ -714,7 +715,7 @@ void sysResultsPlots(){
   latex3.DrawLatex(0.385, 0.914, "26 #mub^{-1} (PbPb 5.02 TeV)");
   latex3.DrawLatex(0.24, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex3.DrawLatex(0.24, 0.75, Form("|#eta| < %.1f", tkEta));
-  latex3.DrawLatex(0.57, 0.54, "#font[12]{v}_{2}{#font[12]{m}}");
+  //latex3.DrawLatex(0.57, 0.54, "#font[12]{v}_{2}{#font[12]{m}}");
   cCumuRaw->SaveAs("../plots/skew/SysCumuRaw.pdf");
 
   // ------------------------ END PAPER FIGURE 2 ------------------------
@@ -811,8 +812,8 @@ void sysResultsPlots(){
 
   TLegend * legg1e = new TLegend(0.22, 0.22, 0.54, 0.375);
   legInit( legg1e );
-  legg1e->AddEntry(grGamma1ExpSys,    "#gamma_{1}^{exp}", "ep");
-  legg1e->AddEntry(grGamma1ExpTheory, "Hydro",            "f");
+  legg1e->AddEntry(grGamma1ExpSys,    "Data",               "ep");
+  legg1e->AddEntry(grGamma1ExpTheory, "Hydrodynamic Model", "f");
 
   //-- Fig. Gamma1Exp
   double m2[NCENT];
@@ -1090,6 +1091,7 @@ void sysResultsPlots(){
       0.003727};
     int ATLASVn6Vn4_numpoints = 16;
 
+    for(int i = 0; i < 16; i++) ATLASVn6Vn4_xval[i] = ATLASVn6Vn4_xval[i] + CENTOFFSET;
 
     grvn6vn4Ratio_ATLASNpart = new TGraphErrors(ATLASVn6Vn4_numpoints, ATLASVn6Vn4_xval, ATLASVn6Vn4_yval, ATLASVn6Vn4_xerr, ATLASVn6Vn4_ystatsys);
     grvn6vn4Ratio_ATLASNpart->SetLineColor(1);
@@ -1125,6 +1127,8 @@ void sysResultsPlots(){
       0.003727};
     int ATLASVn8Vn4_numpoints = 16;
 
+    for(int i =0; i < 16; i++)ATLASVn8Vn4_xval[i] = ATLASVn6Vn4_xval[i] + CENTOFFSET;
+
     grvn8vn4Ratio_ATLASNpart = new TGraphErrors(ATLASVn8Vn4_numpoints, ATLASVn8Vn4_xval, ATLASVn8Vn4_yval, ATLASVn8Vn4_xerr, ATLASVn8Vn4_ystatsys);
     grvn8vn4Ratio_ATLASNpart->SetLineColor(1);
     grvn8vn4Ratio_ATLASNpart->SetMarkerColor(1);
@@ -1135,8 +1139,6 @@ void sysResultsPlots(){
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetTitleOffset(titleOffset);
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
     grvn8vn4Ratio_ATLASNpart->GetYaxis()->SetDecimals(2);
-
-    // ------------------------ BEGIN PAPER FIGURE 3 ------------------------
 
     TLegend * leg64a = new TLegend(0.27, 0.22, 0.69, 0.34);
     leg64a->SetFillStyle(0);
@@ -1194,8 +1196,6 @@ void sysResultsPlots(){
 
     cATLASComp->Update();
     cATLASComp->SaveAs("../plots/skew/cSysATLASComp.pdf");
-
-    // ------------------------ END PAPER FIGURE 3 ------------------------
 
   }
 
@@ -1273,6 +1273,9 @@ void sysResultsPlots(){
   cG1eAndVn46_Vn68->SaveAs("../plots/skew/cSysG1EAndVn46_Vn68.pdf");
 
   //-- Fig. Cumu Ratio with ATLAS
+
+  // ------------------------ BEGIN PAPER FIGURE 3 ------------------------
+
   grvn6vn4Ratio_ATLASNpart->SetLineColor(1);
   grvn6vn4Ratio_ATLASNpart->SetMarkerColor(1);
   grvn6vn4Ratio_ATLASNpart->SetMarkerStyle(24);
@@ -1286,14 +1289,14 @@ void sysResultsPlots(){
 
   TLegend * leg64c = new TLegend(0.29, 0.20, 0.62, 0.43);
   legInit( leg64c );
-  leg64c->AddEntry(grvn6vn4Ratio,            "#font[12]{v}_{2}{6} / #font[12]{v}_{2}{4}", "ep");
-  leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "ATLAS",      "ep");
-  leg64c->AddEntry(grvn6vn4RatioTheory,      "Hydro",      "f");
+  leg64c->AddEntry(grvn6vn4Ratio,            "CMS",                "ep");
+  leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "ATLAS",              "ep");
+  leg64c->AddEntry(grvn6vn4RatioTheory,      "Hydrodynamic Model", "f");
 
   TLegend * leg84c = new TLegend(0.29, 0.20, 0.61, 0.33);
   legInit( leg84c );
-  leg84c->AddEntry(grvn8vn4Ratio,            "#font[12]{v}_{2}{8} / #font[12]{v}_{2}{4}", "ep");
-  leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "ATLAS",      "ep");
+  leg84c->AddEntry(grvn8vn4Ratio,            "CMS",   "ep");
+  leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "ATLAS", "ep");
 
   TCanvas * cCumuRatioWithATLAS = new TCanvas("cCumuRatioWithATLAS", "cCumuRatioWithATLAS", 1500, 500);
   cCumuRatioWithATLAS->Divide(3,1);
@@ -1342,7 +1345,7 @@ void sysResultsPlots(){
   grvn8vn6RatioSys->Draw("pE2same");
   grvn8vn6Ratio->Draw("psame");
   line2->Draw("same");
-  leg86->Draw("same");
+  //leg86->Draw("same");
   latex3.DrawLatex(0.23, 0.915, "#bf{CMS}");
   latex3.DrawLatex(0.41, 0.916, "26 #mub^{-1} (PbPb 5.02 TeV)");
   latex3.DrawLatex(0.443, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
@@ -1359,6 +1362,8 @@ void sysResultsPlots(){
 
   cCumuRatioWithATLAS->Update();
   cCumuRatioWithATLAS->SaveAs("../plots/skew/SysCumuRatioWithATLAS.pdf");
+
+  // ------------------------ END PAPER FIGURE 3 ------------------------  
 
   //-- Save results to file
   fOut = new TFile("PhysicsResults.root", "recreate");

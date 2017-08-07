@@ -127,6 +127,9 @@ void FitPvn(){
 
   TFile * fMoscowFits;
 
+  TFile * fAna;
+  TH1D * hObs[NCENT];
+
   //-- Unfold histos
   TFile * fFinalUnf;
   TH1D * hFinalUnfold[NCENT];
@@ -213,6 +216,8 @@ void FitPvn(){
   setTDRStyle();
   TExec *setex2 = new TExec("setex2","gStyle->SetErrorX(0.5)");
 
+  fAna = new TFile("AnalyzerResults/CastleEbyE.root");
+
   fFinalUnf    = new TFile( Form("systematicStudies/SysUnfoldDistns_v%i.root", norder_) );
   fMoscowFits = new TFile("MoscowEllpFits.root");
 
@@ -232,6 +237,12 @@ void FitPvn(){
   for(int icent = 0; icent < NCENT; icent++){
 
     //if(icent != BIN) continue;
+
+    hObs[icent] = (TH1D*) fAna->Get( Form("qwebye/hVnFull_c%i", icent) );
+    hObs[icent]->SetMarkerStyle(25);
+    hObs[icent]->SetMarkerColor(1);
+    hObs[icent]->SetLineColor(1);
+    hObs[icent]->Scale(1./hObs[icent]->Integral("width"));
 
     fitKn[icent]    = -1;
     fitAlpha[icent] = -1;
@@ -505,7 +516,7 @@ void FitPvn(){
   formatGraph(grFitAlpha, "Centrality %", 0., 130,  "#alpha",       1, 21, "grFitAlpha");
   formatGraph(grFitE0,    "Centrality %", 0., 0.7,  "#varepsilon_{0}", 1, 34, "grFitE0");
 
-  grFitE0->SetMarkerSize(1.2);
+  grFitE0->SetMarkerSize(1.3);
 
   fOut->cd();
   grFitKn->Write();
@@ -528,6 +539,8 @@ void FitPvn(){
     formatGraph(grFitKnSys,    "Centrality %", 0., 0.75, "k_{2}",       1, 20, "grFitKnSys");
     formatGraph(grFitAlphaSys, "Centrality %", 0., 120, "#alpha",       1, 21, "grFitAlphaSys");
     formatGraph(grFitE0Sys,    "Centrality %", 0., 0.7, "#varepsilon_{0}", 1, 34, "grFitE0Sys");
+    
+    grFitE0Sys->SetMarkerSize(1.3);
 
     grFitKnSys->SetFillColor(17);
     grFitAlphaSys->SetFillColor(17);
@@ -575,29 +588,29 @@ void FitPvn(){
   else      legKn = new TLegend(0.21, 0.2, 0.66, 0.38);
   legKn->SetBorderSize(0);
   legKn->SetFillStyle(0);
-  legKn->AddEntry(grFitKn,   "k_{2}",   "ep");
+  legKn->AddEntry(grFitKn,   "Data",   "ep");
   if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS", "ep");
-  legKn->AddEntry(grKnTh,    "Hydro", "l");
+  legKn->AddEntry(grKnTh,    "Hydrodynamic Model", "l");
 
   TLegend * legAlpha = 0;
   if(ATLAS) legAlpha = new TLegend(0.44, 0.65, 0.91, 0.90);
   else      legAlpha = new TLegend(0.52, 0.65, 0.99, 0.90);
   legAlpha->SetBorderSize(0);
   legAlpha->SetFillStyle(0);
-  legAlpha->AddEntry(grFitAlpha,      "#alpha",   "ep");
+  legAlpha->AddEntry(grFitAlpha,      "Data",   "ep");
   if(ATLAS) legAlpha->AddEntry(grATLASAlpha,    "ATLAS", "ep");
   legAlpha->AddEntry(grAlphaThGlaub,  "Glauber", "f");
-  legAlpha->AddEntry(grAlphaThGlasma, "IP Glasma", "f");
+  legAlpha->AddEntry(grAlphaThGlasma, "IP-Glasma", "f");
 
   TLegend * legEcc0 = 0;
   if(ATLAS) legEcc0 = new TLegend(0.19, 0.60, 0.67, 0.90);
   else      legEcc0 = new TLegend(0.19, 0.65, 0.67, 0.90);
   legEcc0->SetBorderSize(0);
   legEcc0->SetFillStyle(0);
-  legEcc0->AddEntry(grFitE0,       "#varepsilon_{0}",   "ep");
+  legEcc0->AddEntry(grFitE0,       "Data",   "ep");
   if(ATLAS) legEcc0->AddEntry(grATLASEcc0,   "ATLAS", "ep");
   legEcc0->AddEntry(grE0ThGlaub,  "Glauber", "f");
-  legEcc0->AddEntry(grE0ThGlasma, "IP Glasma", "f");
+  legEcc0->AddEntry(grE0ThGlasma, "IP-Glasma", "f");
 
   TLegend * legFit = new TLegend(0.18, 0.20, 0.63, 0.35);
   legFit->SetBorderSize(0);
@@ -1204,21 +1217,22 @@ void FitPvn(){
 
   for(int icent = 3; icent < NCENT; icent++) fBG[icent]->SetLineStyle(2);
 
-  TLegend * legUnfObs3 = new TLegend(0.05, 0.3, 0.43, 0.53);
+  TLegend * legUnfObs3 = new TLegend(0.05, 0.3, 0.43, 0.63);
   legInit(legUnfObs3);
   legUnfObs3->SetTextFont(43);
   legUnfObs3->SetTextSize(32);
-  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(#font[12]{v}_{2})", "ep");
-  legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian",                "l");
-  legUnfObs3->AddEntry(fEllP[3],            "Elliptic power",                 "l");
+  legUnfObs3->AddEntry(hObs[3],             "#font[12]{p}(#font[12]{v}_{2}^{obs})", "ep");
+  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(#font[12]{v}_{2})",       "ep");
+  legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian",                      "l");
+  legUnfObs3->AddEntry(fEllP[3],            "Elliptic power",                       "l");
 
   TH1D * HD = new TH1D("HD", "HD", 152, 0-binw, vnMax[norder_]);
 
-  double m = 0.28;  
+  double m = 0.32;  
   HD->GetXaxis()->SetTitle("#font[12]{v}_{2}");
   HD->GetXaxis()->CenterTitle();
   HD->GetXaxis()->SetRange(1, HD->FindBin(m));
-  HD->GetXaxis()->SetNdivisions(507);
+  HD->GetXaxis()->SetNdivisions(506);
   HD->GetXaxis()->SetLabelFont(43);
   HD->GetXaxis()->SetLabelSize(38);
   HD->GetXaxis()->SetTitleFont(43);
@@ -1256,6 +1270,7 @@ void FitPvn(){
   cFinalUnfoldMerged3->cd(1);
   cFinalUnfoldMerged3->cd(1)->SetLogy();
   HD->Draw();
+  hObs[c]->Draw("same");
   hFinalUnfoldSys[c]->Draw("e2same");
   setex2->Draw();
   hFinalUnfoldStat[c]->Draw("same");
@@ -1269,6 +1284,7 @@ void FitPvn(){
   cFinalUnfoldMerged3->cd(2);
   cFinalUnfoldMerged3->cd(2)->SetLogy();
   HD->Draw();
+  hObs[c]->Draw("same");
   hFinalUnfoldSys[c]->Draw("e2same");
   setex2->Draw();
   hFinalUnfoldStat[c]->Draw("same");
@@ -1281,6 +1297,7 @@ void FitPvn(){
   cFinalUnfoldMerged3->cd(3);
   cFinalUnfoldMerged3->cd(3)->SetLogy();
   HD->Draw();
+  hObs[c]->Draw("same");
   hFinalUnfoldSys[c]->Draw("e2same");
   setex2->Draw();
   hFinalUnfoldStat[c]->Draw("same");
