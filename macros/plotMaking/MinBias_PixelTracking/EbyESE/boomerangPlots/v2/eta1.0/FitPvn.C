@@ -331,6 +331,7 @@ void FitPvn(){
     hFinalUnfold[icent]->Fit( Form("fBG_c%i", icent), "BL0", "", 0.0, vnmax[icent]);
     if(!moscowFits){
       hFinalUnfold[icent]->Fit( Form("fEllP_c%i", icent), "L0", "", 0.0, vnmax[icent]);
+      gMinuit->mnmatu(0);
       //-- contours
       if( contours ){
 	for(int isig = 0; isig < Nsig; isig++){

@@ -10,6 +10,8 @@ void sysUnfoldDistns(){
   int norder_     = 2;
   double tkEta    = 1.0;
 
+  bool propSysResp = 0;
+
   bool smooth  = 1;
   bool drawObs = 1;
 
@@ -633,6 +635,8 @@ void sysUnfoldDistns(){
       double relErr_GaussRespe = hSysGaussResp_RatioToNominal[icent]->GetBinError(i);
       relErr_GaussResp = fabs(1. - relErr_GaussResp);
       if( compatibleWithZero( relErr_GaussResp, relErr_GaussRespe) ) relErr_GaussResp = 0.;
+      if( !propSysResp ) relErr_GaussResp = 0.;
+
 
       double relErr_Vtx       = std::max(relErr_Vtx3, relErr_Vtx3_15);
       double relErr_TkQuality = std::max(relErr_TkLoose, relErr_TkLoose);
@@ -679,6 +683,7 @@ void sysUnfoldDistns(){
 	double sysTkQ  = hSysErrPointToPoint_TkQ[icent]->GetBinContent(i);
 	double sysNCC  = hSysErrPointToPoint_NCC[icent]->GetBinContent(i);
 	double sysGRP  = hSysErrPointToPoint_GRP[icent]->GetBinContent(i);
+	if( !propSysResp ) sysGRP = 0.;
 
 	double statErr = hFinalUnf[icent]->GetBinError(i);
 	double respErr = hFinalUnfSysResp[icent]->GetBinError(i);

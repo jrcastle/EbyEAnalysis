@@ -6,6 +6,7 @@ using namespace ebyese;
 void SmoothSys(){
 
   const int norder_ = 2;
+  bool propRespUncert = 0;
 
   TFile * fOut;
   TH1D * SmoothSysTotVn2;
@@ -1303,6 +1304,18 @@ void SmoothSys(){
     double sysRespVn46_Vn68 = fSmoothSysRespVn46_Vn68->Eval( centBinCenter[icent] );
     double sysRespG1E       = fSmoothSysRespG1E->Eval( centBinCenter[icent] );
 
+    if(!propRespUncert){
+      sysRespVn2       = 0;
+      sysRespVn4       = 0;
+      sysRespVn6       = 0;
+      sysRespVn8       = 0;
+      sysRespVn6Vn4    = 0;
+      sysRespVn8Vn4    = 0;
+      sysRespVn8Vn6    = 0;
+      sysRespVn46_Vn68 = 0;
+      sysRespG1E       = 0;
+    }
+
     double sysNewCCVn2       = fSmoothSysNewCCVn2->Eval( centBinCenter[icent] );
     double sysNewCCVn4       = fSmoothSysNewCCVn4->Eval( centBinCenter[icent] );
     double sysNewCCVn6       = fSmoothSysNewCCVn6->Eval( centBinCenter[icent] );
@@ -1419,6 +1432,12 @@ void SmoothSys(){
       double sysRespKn     = fSmoothSysRespKn->Eval( centBinCenter[icent] );
       double sysRespAlpha  = fSmoothSysRespAlpha->Eval( centBinCenter[icent] );
       double sysRespE0     = fSmoothSysRespE0->Eval( centBinCenter[icent] );
+
+      if(!propRespUncert){
+	sysRespKn     = 0;
+	sysRespAlpha  = 0;
+	sysRespE0     = 0;
+      }
 
       double sysNewCCKn     = fSmoothSysNewCCKn->Eval( centBinCenter[icent] );
       double sysNewCCAlpha  = fSmoothSysNewCCAlpha->Eval( centBinCenter[icent] );
