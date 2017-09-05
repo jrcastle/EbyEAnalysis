@@ -249,8 +249,8 @@ void FitPvn(){
     fitE0[icent]    = -1;
 
     hDummy[icent] = new TH1D(Form("hDummy_c%i", icent), Form("hDummy_c%i",icent), 152, 0-binw, vnMax[norder_]);
-    hDummy[icent]->GetXaxis()->SetTitle("#font[12]{v}_{2}");
-    hDummy[icent]->GetYaxis()->SetTitle("#font[12]{p}(#font[12]{v}_{2})");
+    hDummy[icent]->GetXaxis()->SetTitle("v_{2}");
+    hDummy[icent]->GetYaxis()->SetTitle("p(v_{2})");
 
     hFinalUnfold[icent] = (TH1D*) fFinalUnf->Get( Form("hFinalUnfoldStatAndSys_c%i", icent) );
     hFinalUnfold[icent]->SetLineColor(1);
@@ -1222,15 +1222,15 @@ void FitPvn(){
   legInit(legUnfObs3);
   legUnfObs3->SetTextFont(43);
   legUnfObs3->SetTextSize(32);
-  legUnfObs3->AddEntry(hObs[3],             "#font[12]{p}(#font[12]{v}_{2}^{obs})", "ep");
-  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(#font[12]{v}_{2})",       "ep");
+  legUnfObs3->AddEntry(hObs[3],             "p(v_{2}^{obs})", "ep");
+  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "p(v_{2})",       "ep");
   legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian",                      "l");
   legUnfObs3->AddEntry(fEllP[3],            "Elliptic power",                       "l");
 
   TH1D * HD = new TH1D("HD", "HD", 152, 0-binw, vnMax[norder_]);
 
   double m = 0.32;  
-  HD->GetXaxis()->SetTitle("#font[12]{v}_{2}");
+  HD->GetXaxis()->SetTitle("v_{2}");
   HD->GetXaxis()->CenterTitle();
   HD->GetXaxis()->SetRange(1, HD->FindBin(m));
   HD->GetXaxis()->SetNdivisions(506);
@@ -1240,7 +1240,7 @@ void FitPvn(){
   HD->GetXaxis()->SetTitleSize(47);
   HD->GetXaxis()->SetTitleOffset(0.9);
 
-  HD->GetYaxis()->SetTitle("#font[12]{p}(#font[12]{v}_{2})");
+  HD->GetYaxis()->SetTitle("p(v_{2})");
   HD->GetYaxis()->CenterTitle();
   HD->GetYaxis()->SetLabelFont(43);
   HD->GetYaxis()->SetLabelSize(38);
@@ -1327,7 +1327,7 @@ void FitPvn(){
 
   TH1D * HDD = new TH1D("HDD", "HDD", 152, 0-binw, vnMax[norder_]);
 
-  HDD->GetXaxis()->SetTitle("#font[12]{v}_{2}");
+  HDD->GetXaxis()->SetTitle("v_{2}");
   HDD->GetXaxis()->CenterTitle();
   HDD->GetXaxis()->SetRange(1, HDD->FindBin(m));
   HDD->GetXaxis()->SetNdivisions(507);

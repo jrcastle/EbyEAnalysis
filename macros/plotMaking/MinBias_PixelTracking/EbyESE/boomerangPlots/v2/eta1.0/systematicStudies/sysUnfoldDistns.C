@@ -10,7 +10,7 @@ void sysUnfoldDistns(){
   int norder_     = 2;
   double tkEta    = 1.0;
 
-  bool propSysResp = 0;
+  bool propSysResp = 1;
 
   bool smooth  = 1;
   bool drawObs = 1;

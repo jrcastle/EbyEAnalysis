@@ -6,7 +6,7 @@ using namespace ebyese;
 void SmoothSys(){
 
   const int norder_ = 2;
-  bool propRespUncert = 0;
+  bool propRespUncert = 1;
 
   TFile * fOut;
   TH1D * SmoothSysTotVn2;
