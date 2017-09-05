@@ -250,7 +250,7 @@ void FitPvn(){
 
     hDummy[icent] = new TH1D(Form("hDummy_c%i", icent), Form("hDummy_c%i",icent), 152, 0-binw, vnMax[norder_]);
     hDummy[icent]->GetXaxis()->SetTitle("v_{2}");
-    hDummy[icent]->GetYaxis()->SetTitle("p(v_{2})");
+    hDummy[icent]->GetYaxis()->SetTitle("#font[12]{p}(v_{2})");
 
     hFinalUnfold[icent] = (TH1D*) fFinalUnf->Get( Form("hFinalUnfoldStatAndSys_c%i", icent) );
     hFinalUnfold[icent]->SetLineColor(1);
@@ -277,7 +277,7 @@ void FitPvn(){
     hDummy[icent]->GetXaxis()->SetRange(1, hFinalUnfoldSys[icent]->FindBin(0.28));
     hFinalUnfoldSys[icent]->GetXaxis()->SetRange(hFinalUnfoldSys[icent]->FindBin(-0.1), hFinalUnfoldSys[icent]->FindBin(0.28));
     hFinalUnfoldSys[icent]->GetXaxis()->SetTitle("v_{2}");
-    hFinalUnfoldSys[icent]->GetYaxis()->SetTitle("p(v_{2})");
+    hFinalUnfoldSys[icent]->GetYaxis()->SetTitle("#font[12]{p}(v_{2})");
 
 
     //if( icent != 3 && icent != 5 && icent !=7 ) continue;
@@ -1222,8 +1222,8 @@ void FitPvn(){
   legInit(legUnfObs3);
   legUnfObs3->SetTextFont(43);
   legUnfObs3->SetTextSize(32);
-  legUnfObs3->AddEntry(hObs[3],             "p(v_{2}^{obs})", "ep");
-  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "p(v_{2})",       "ep");
+  legUnfObs3->AddEntry(hObs[3],             "#font[12]{p}(v_{2}^{obs})", "ep");
+  legUnfObs3->AddEntry(hFinalUnfoldStat[3], "#font[12]{p}(v_{2})",       "ep");
   legUnfObs3->AddEntry(fBG[3],              "Bessel-Gaussian",                      "l");
   legUnfObs3->AddEntry(fEllP[3],            "Elliptic power",                       "l");
 
@@ -1240,7 +1240,7 @@ void FitPvn(){
   HD->GetXaxis()->SetTitleSize(47);
   HD->GetXaxis()->SetTitleOffset(0.9);
 
-  HD->GetYaxis()->SetTitle("p(v_{2})");
+  HD->GetYaxis()->SetTitle("#font[12]{p}(v_{2})");
   HD->GetYaxis()->CenterTitle();
   HD->GetYaxis()->SetLabelFont(43);
   HD->GetYaxis()->SetLabelSize(38);
