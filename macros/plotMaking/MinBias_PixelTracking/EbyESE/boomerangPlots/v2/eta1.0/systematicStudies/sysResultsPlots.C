@@ -356,6 +356,13 @@ void sysResultsPlots(){
     double sysErrVn8Vn6    = sysRelErrTotVn8Vn6 * vn8vn6;
     double sysErrVn46_Vn68 = sysRelErrTotVn46_Vn68 * vn46_vn68;
 
+    if(icent == 0){
+      vn2 = -1.;
+      vn4 = -1.;
+      vn6 = -1.;
+      vn8 = -1.;
+    }
+
     //-- vn{2}
     vn2Raw[icent]      = vn2;
     vn2RawState[icent] = vn2e;
@@ -813,7 +820,7 @@ void sysResultsPlots(){
   TLegend * legg1e = new TLegend(0.22, 0.22, 0.54, 0.375);
   legInit( legg1e );
   legg1e->AddEntry(grGamma1ExpSys,    "Data",               "ep");
-  legg1e->AddEntry(grGamma1ExpTheory, "Hydrodynamic Model", "f");
+  legg1e->AddEntry(grGamma1ExpTheory, "Hydro 2.76 TeV", "f");
 
   //-- Fig. Gamma1Exp
   double m2[NCENT];
@@ -1144,13 +1151,13 @@ void sysResultsPlots(){
     leg64a->SetFillStyle(0);
     leg64a->SetBorderSize(0);
     leg64a->AddEntry(grvn6vn4Ratio_Npart,      "CMS",   "ep");
-    leg64a->AddEntry(grvn6vn4Ratio_ATLASNpart, "ATLAS", "ep");
+    leg64a->AddEntry(grvn6vn4Ratio_ATLASNpart, "ATLAS 2.76 TeV", "ep");
 
     TLegend * leg84a = new TLegend(0.27, 0.22, 0.69, 0.34);
     leg84a->SetFillStyle(0);
     leg84a->SetBorderSize(0);
     leg84a->AddEntry(grvn8vn4Ratio_Npart,      "CMS",   "ep");
-    leg84a->AddEntry(grvn8vn4Ratio_ATLASNpart, "ATLAS", "ep");
+    leg84a->AddEntry(grvn8vn4Ratio_ATLASNpart, "ATLAS 2.76 TeV", "ep");
 
     TLine * lone = new TLine(grvn6vn4Ratio_ATLASNpart->GetXaxis()->GetXmin(), 1.0, grvn6vn4Ratio_ATLASNpart->GetXaxis()->GetXmax(), 1.0);
     lone->SetLineStyle(2);
@@ -1289,14 +1296,14 @@ void sysResultsPlots(){
 
   TLegend * leg64c = new TLegend(0.29, 0.20, 0.62, 0.43);
   legInit( leg64c );
-  leg64c->AddEntry(grvn6vn4Ratio,            "CMS",                "ep");
-  leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "ATLAS",              "ep");
-  leg64c->AddEntry(grvn6vn4RatioTheory,      "Hydrodynamic Model", "f");
+  leg64c->AddEntry(grvn6vn4Ratio,            "CMS",            "ep");
+  leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "ATLAS 2.76 TeV", "ep");
+  leg64c->AddEntry(grvn6vn4RatioTheory,      "Hydro 2.76 TeV", "f");
 
   TLegend * leg84c = new TLegend(0.29, 0.20, 0.61, 0.33);
   legInit( leg84c );
   leg84c->AddEntry(grvn8vn4Ratio,            "CMS",   "ep");
-  leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "ATLAS", "ep");
+  leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "ATLAS 2.76 TeV", "ep");
 
   TCanvas * cCumuRatioWithATLAS = new TCanvas("cCumuRatioWithATLAS", "cCumuRatioWithATLAS", 1500, 500);
   cCumuRatioWithATLAS->Divide(3,1);

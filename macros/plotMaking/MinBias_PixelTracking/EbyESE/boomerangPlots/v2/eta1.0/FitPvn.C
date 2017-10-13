@@ -591,7 +591,7 @@ void FitPvn(){
   legKn->SetFillStyle(0);
   legKn->AddEntry(grFitKn,   "Data",   "ep");
   if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS", "ep");
-  legKn->AddEntry(grKnTh,    "Hydrodynamic Model", "l");
+  legKn->AddEntry(grKnTh,    "Hydro 2.76 TeV", "l");
 
   TLegend * legAlpha = 0;
   if(ATLAS) legAlpha = new TLegend(0.44, 0.65, 0.91, 0.90);
