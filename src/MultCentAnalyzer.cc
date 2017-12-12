@@ -47,7 +47,7 @@
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidateFwd.h"
 #include "HeavyIonsAnalysis/EbyEAnalysis/interface/TrackEfficiency.h"
 #include <DataFormats/HeavyIonEvent/interface/ClusterCompatibility.h>
-#include "/afs/cern.ch/work/j/jcastle/CMSSW_7_5_8_patch2/src/HeavyIonsAnalysis/EbyEAnalysis/interface/HiEvtPlaneList.h"
+#include "HeavyIonsAnalysis/EbyEAnalysis/interface/HiEvtPlaneList.h"
 
 #include "TROOT.h"
 #include "TRandom3.h"
