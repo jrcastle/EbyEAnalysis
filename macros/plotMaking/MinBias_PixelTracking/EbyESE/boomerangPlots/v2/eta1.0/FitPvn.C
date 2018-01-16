@@ -74,12 +74,13 @@ void FitPvn(){
   bool ATLAS      = 0;
   bool fixKn      = 0;
   bool fixAlpha   = 0;
+  bool fixE0      = 0;
   bool moscowFits = 0;
   bool contours   = 0;
   // kn 0.40
   // al 71.1
   // e0 .17
-  //-- Free kn
+  //-- Free kn DEFAULT!!!!
   double knGuess[NCENT] = {16.2,  16.2,  16.2,  0.48,    0.38, 0.37, 0.37, 0.34, 0.32, 0.29, 0.28, 0.28};
   double alGuess[NCENT] = {2.8e5, 2.8e5, 2.8e5, 90.0,    63.0, 47.0, 41.0, 30.0, 20.0, 12.0, 11.0, 8.0};
   double e0Guess[NCENT] = {0.0,   0.0,   0.0,   0.13,    0.19, 0.22, 0.23, 0.26, 0.29, 0.30, 0.31, 0.30};
@@ -96,6 +97,10 @@ void FitPvn(){
   //double e0Guess[NCENT] = {0.0,   0.0,   0.0,      0.137, 0.156, 0.171, 0.183, 0.190, 0.199, 0.207, 0.217, 0.232};
   //double alGuess[NCENT];
   //for(int icent = 0; icent < NCENT; icent++) alGuess[icent] = (Npart[icent]-1)/2.;
+  //-- Glauber Parms
+  //double knGuess[NCENT] = {16.2,  16.2,  16.2,  0.31,  0.30,  0.29,  0.28,  0.27,  0.26,  0.25,  0.27,  0.27};
+  //double alGuess[NCENT] = {2.8e5, 2.8e5, 2.8e5, 41.0,  32.3,  26.4,  19.7,  16.4,  13.0,  10.6,  8.5,   6.7};
+  //double e0Guess[NCENT] = {0.0,   0.0,   0.0,   0.195, 0.242, 0.280, 0.318, 0.347, 0.377, 0.401, 0.425, 0.450};
 
   double vnmax[NCENT]   = {0.25,   0.25,   0.25,   0.25,   0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.25,  0.23};
   //double vnmax[NCENT]   = {0.25,   0.25,   0.25,   0.25,   0.25,  0.25,  0.25,  0.27,  0.27,  0.27,  0.27,  0.23};
@@ -107,6 +112,7 @@ void FitPvn(){
     e0Guess[10] = 0.2;
     e0Guess[11] = 0.18;
   }
+  /*
   if( fixAlpha ){
     for(int icent = 0; icent < NCENT; icent++){
       alGuess[icent] = (Npart[icent]-1)/2.;
@@ -115,7 +121,7 @@ void FitPvn(){
     }
     e0Guess[11] = 0.18;
   }
-
+  */
   int norder_  = 2;
   double tkEta = 1.0;
 
@@ -323,8 +329,9 @@ void FitPvn(){
       fEllP[icent]->SetParLimits(0, 0., 1.);
       fEllP[icent]->SetParLimits(2, 0., 1.);
       fEllP[icent]->SetParameters(e0Guess[icent], alGuess[icent], knGuess[icent], hFinalUnfold[icent]->GetMaximum());
-      if( fixKn ) fEllP[icent]->FixParameter(2, knGuess[icent]);
+      if( fixKn )    fEllP[icent]->FixParameter(2, knGuess[icent]);
       if( fixAlpha ) fEllP[icent]->FixParameter(1, alGuess[icent]);
+      if( fixE0 )    fEllP[icent]->FixParameter(0, e0Guess[icent]);
       fEllP[icent]->SetParNames("ecc0", "alpha", "kn", "Scale");
     }
 
@@ -570,7 +577,7 @@ void FitPvn(){
   grE0ThGlasma->SetLineColor(2);  
   grE0ThGlasma->SetLineWidth(0);
   grE0ThGlasma->SetFillColor(2);
-  grE0ThGlasma->SetFillStyle(3159);
+  //grE0ThGlasma->SetFillStyle(3159);
   
   TGraph * grAlphaThGlaub = new TGraphErrors("theoryResults/GlaubAlpha.txt", "%lg %lg %lg");
   grAlphaThGlaub->SetLineColor(4);
@@ -582,16 +589,16 @@ void FitPvn(){
   grAlphaThGlasma->SetLineColor(2);
   grAlphaThGlasma->SetLineWidth(0);
   grAlphaThGlasma->SetFillColor(2);
-  grAlphaThGlasma->SetFillStyle(3159);
+  //grAlphaThGlasma->SetFillStyle(3159);
 
   TLegend * legKn = 0;
   if(ATLAS) legKn = new TLegend(0.21, 0.2, 0.66, 0.40);
-  else      legKn = new TLegend(0.21, 0.2, 0.66, 0.38);
+  else      legKn = new TLegend(0.18, 0.2, 0.66, 0.38);
   legKn->SetBorderSize(0);
   legKn->SetFillStyle(0);
   legKn->AddEntry(grFitKn,   "Data",   "ep");
   if(ATLAS) legKn->AddEntry(grATLASKn, "ATLAS", "ep");
-  legKn->AddEntry(grKnTh,    "Hydro 2.76 TeV", "l");
+  legKn->AddEntry(grKnTh,    "Hydro 2.76 TeV, Ref. [11]", "l");
 
   TLegend * legAlpha = 0;
   if(ATLAS) legAlpha = new TLegend(0.44, 0.65, 0.91, 0.90);
@@ -683,8 +690,8 @@ void FitPvn(){
     cParmSummary->cd(2)->SetLeftMargin(0.17);
     grFitE0Sys->Draw("apE2");
     grFitE0->Draw("psame");
-    grE0ThGlaub->Draw("3same");
     grE0ThGlasma->Draw("3same");
+    grE0ThGlaub->Draw("3same");
     if(ATLAS) grATLASEcc0->Draw("psame");
     legEcc0->Draw("same");
     latex5.DrawLatex(0.17, 0.94, "#bf{CMS}");
@@ -695,8 +702,8 @@ void FitPvn(){
     if(ATLAS) grFitAlphaSys->GetXaxis()->SetLimits(0, 72.5);
     grFitAlphaSys->Draw("apE2");
     grFitAlpha->Draw("psame");
-    grAlphaThGlaub->Draw("3same");
     grAlphaThGlasma->Draw("3same");
+    grAlphaThGlaub->Draw("3same");
     if(ATLAS) grATLASAlpha->Draw("psame");
     legAlpha->Draw("same");
     latex5.DrawLatex(0.17, 0.94, "#bf{CMS}");
@@ -712,7 +719,7 @@ void FitPvn(){
     }
     else{
       legKn->SetTextFont(43);
-      legKn->SetTextSize(32);
+      legKn->SetTextSize(28);
       legEcc0->SetTextFont(43);
       legEcc0->SetTextSize(32);
       legAlpha->SetTextFont(43);

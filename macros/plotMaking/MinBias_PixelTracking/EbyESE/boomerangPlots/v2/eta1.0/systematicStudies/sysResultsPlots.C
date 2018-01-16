@@ -146,6 +146,17 @@ void sysResultsPlots(){
   double trentoP1_en46_en68[NCENT];
   TGraph * grTrentoP1_en46_en68;
 
+  //-- Theory vn8/vn4, vn8/vn6
+  double centTh[15] = {7.5, 12.5, 17.5, 22.5, 27.5, 32.5, 37.5, 42.5, 47.5, 52.5, 57.5, 62.5, 67.5, 72.5, 77.5};
+  double vn4Th[15] = {0.021280, 0.032314, 0.042395, 0.048115, 0.058599, 0.063362, 0.064672, 0.069342, 0.072704, 0.073192, 0.075080, 0.077313, 0.076903, 0.075231, 0.069355};
+  double vn6Th[15] = {0.021974, 0.032255, 0.042300, 0.047945, 0.058350, 0.063102, 0.064303, 0.068890, 0.072199, 0.072360, 0.074085, 0.075653, 0.074757, 0.073021, 0.065992};
+  double vn8Th[15] = {0.021205, 0.032224, 0.042274, 0.047950, 0.058309, 0.063083, 0.064277, 0.068830, 0.072118, 0.072208, 0.073981, 0.075355, 0.074269, 0.072502, 0.064771};
+  double vn84Th[15];
+  double vn86Th[15];
+  TGraph * grVn84Th;
+  TGraph * grVn86Th;
+
+
   //-- Statistical Errors
   TFile * fStat;
   TH1D * hVarianceOfMean_Vn2;
@@ -227,6 +238,23 @@ void sysResultsPlots(){
   SmoothSysTotVn8Vn6    = (TH1D*) fSmoothSys->Get("SmoothSysTotVn8Vn6");
   SmoothSysTotVn46_Vn68 = (TH1D*) fSmoothSys->Get("SmoothSysTotVn46_Vn68");
   SmoothSysTotG1E       = (TH1D*) fSmoothSys->Get("SmoothSysTotG1E");
+
+  //-- Theory curves for vn8/vn6 and vn8/vn4
+  for(int ith = 0; ith < 15; ith++){
+
+    if( vn4Th[ith] == 0 || vn6Th[ith] == 0 || vn8Th[ith] == 0 ){
+      vn84Th[ith] = -1.;
+      vn86Th[ith] = -1.;
+    }
+    else{
+      vn84Th[ith] = vn8Th[ith] / vn4Th[ith];
+      vn86Th[ith] = vn8Th[ith] / vn6Th[ith];
+    }
+
+    std::cout << "vn8/vn4 th = " << vn84Th[ith] << std::endl;
+    std::cout << "vn8/vn6 th = " << vn86Th[ith] << std::endl;
+
+  }
 
   //-- Start looping over the data...
   for(int icent = 0; icent < NCENT; icent++){
@@ -425,7 +453,7 @@ void sysResultsPlots(){
   grVn2RawSys->SetLineColor(9);
   grVn2RawSys->SetMarkerColor(9);
   grVn2RawSys->SetMarkerStyle(21);
-  grVn2RawSys->SetFillColor(17);
+  grVn2RawSys->SetFillColor(16);
 
   //-- vn{4}
   grVn4Raw = new TGraphErrors(NCENT, centBinCenter, vn4Raw, nullCentErr, vn4RawState);
@@ -437,7 +465,7 @@ void sysResultsPlots(){
   grVn4RawSys->SetLineColor(kSpring+4);
   grVn4RawSys->SetMarkerColor(kSpring+4);
   grVn4RawSys->SetMarkerStyle(20);
-  grVn4RawSys->SetFillColor(17);
+  grVn4RawSys->SetFillColor(16);
 
   //-- vn{6}
   grVn6Raw = new TGraphErrors(NCENT, centBinCenter, vn6Raw, nullCentErr, vn6RawState);
@@ -449,7 +477,7 @@ void sysResultsPlots(){
   grVn6RawSys->SetLineColor(6);
   grVn6RawSys->SetMarkerColor(6);
   grVn6RawSys->SetMarkerStyle(25);
-  grVn6RawSys->SetFillColor(17);
+  grVn6RawSys->SetFillColor(16);
 
   //-- vn{8}
   grVn8Raw = new TGraphErrors(NCENT, centBinCenter, vn8Raw, nullCentErr, vn8RawState);
@@ -461,7 +489,7 @@ void sysResultsPlots(){
   grVn8RawSys->SetLineColor(kOrange+7);
   grVn8RawSys->SetMarkerColor(kOrange+7);
   grVn8RawSys->SetMarkerStyle(28);
-  grVn8RawSys->SetFillColor(17);
+  grVn8RawSys->SetFillColor(16);
 
   //-- Gamma1Exp
   grGamma1Exp = new TGraphErrors(NCENT, centBinCenter, gamma1Exp, nullCentErr, gamma1ExpState) ;
@@ -473,7 +501,7 @@ void sysResultsPlots(){
   grGamma1ExpSys->SetLineColor(2);
   grGamma1ExpSys->SetMarkerColor(2);
   grGamma1ExpSys->SetMarkerStyle(20);
-  grGamma1ExpSys->SetFillColor(17);
+  grGamma1ExpSys->SetFillColor(16);
 
   //-- vn{6} / vn{4}
   grvn6vn4Ratio = new TGraphErrors(NCENT, centBinCenter, ratio_vn6_vn4, nullCentErr, ratio_vn6_vn4State);
@@ -492,7 +520,7 @@ void sysResultsPlots(){
   grvn6vn4RatioSys->SetLineColor(4);
   grvn6vn4RatioSys->SetMarkerColor(4);
   grvn6vn4RatioSys->SetMarkerStyle(21);
-  grvn6vn4RatioSys->SetFillColor(17);
+  grvn6vn4RatioSys->SetFillColor(16);
   grvn6vn4RatioSys->GetXaxis()->SetTitle( "Centrality %");
   grvn6vn4RatioSys->GetYaxis()->SetTitle( Form("v_{%i}{6} / v_{%i}{4}", norder_, norder_) );
   grvn6vn4RatioSys->GetYaxis()->SetNdivisions(507);
@@ -517,7 +545,7 @@ void sysResultsPlots(){
   grvn8vn4RatioSys->SetLineColor(kGreen+2);
   grvn8vn4RatioSys->SetMarkerColor(kGreen+2);
   grvn8vn4RatioSys->SetMarkerStyle(21);
-  grvn8vn4RatioSys->SetFillColor(17);
+  grvn8vn4RatioSys->SetFillColor(16);
   grvn8vn4RatioSys->GetXaxis()->SetTitle( "Centrality %");
   grvn8vn4RatioSys->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{4}", norder_, norder_) );
   grvn8vn4RatioSys->GetYaxis()->SetNdivisions(507);
@@ -542,13 +570,41 @@ void sysResultsPlots(){
   grvn8vn6RatioSys->SetLineColor(kViolet-1);
   grvn8vn6RatioSys->SetMarkerColor(kViolet-1);
   grvn8vn6RatioSys->SetMarkerStyle(21);
-  grvn8vn6RatioSys->SetFillColor(17);
+  grvn8vn6RatioSys->SetFillColor(16);
   grvn8vn6RatioSys->GetXaxis()->SetTitle( "Centrality %");
   grvn8vn6RatioSys->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{6}", norder_, norder_) );
   grvn8vn6RatioSys->GetYaxis()->SetNdivisions(507);
   grvn8vn6RatioSys->GetYaxis()->SetRangeUser(ratioMinVn8Vn6,ratioMaxVn8Vn6);
   grvn8vn6RatioSys->GetYaxis()->SetTitleOffset(titleOffset+0.25);
   grvn8vn6RatioSys->GetYaxis()->SetDecimals(3);
+
+  //-- vn8 / vn4 theory prediction
+  grVn84Th = new TGraph(15, centTh, vn84Th);
+  grVn84Th->SetLineColor(28);
+  grVn84Th->SetLineWidth(2);
+  grVn84Th->GetXaxis()->SetTitle( "Centrality %");
+  grVn84Th->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{4}", norder_, norder_) );
+  grVn84Th->GetYaxis()->SetNdivisions(507);
+  grVn84Th->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
+  grVn84Th->GetYaxis()->SetTitleOffset(titleOffset);
+  grVn84Th->GetYaxis()->SetDecimals(2);
+
+  //-- vn8 / vn6 theory prediction
+  double dummyCentTh[13];
+  double dummyVn86Th[13];
+  for(int ith = 0; ith < 13; ith++){
+    dummyCentTh[ith] = centTh[ith+2];
+    dummyVn86Th[ith] = vn86Th[ith+2];
+  }
+  grVn86Th = new TGraph(13, dummyCentTh, dummyVn86Th);
+  grVn86Th->SetLineColor(kOrange+9);
+  grVn86Th->SetLineWidth(2);
+  grVn86Th->GetXaxis()->SetTitle( "Centrality %");
+  grVn86Th->GetYaxis()->SetTitle( Form("v_{%i}{8} / v_{%i}{6}", norder_, norder_) );
+  grVn86Th->GetYaxis()->SetNdivisions(507);
+  grVn86Th->GetYaxis()->SetRangeUser(ratioMin, ratioMax);
+  grVn86Th->GetYaxis()->SetTitleOffset(titleOffset);
+  grVn86Th->GetYaxis()->SetDecimals(2);
 
   //-- vn{6}, vn{8} splitting prediction  
   grvn46_vn68Ratio = new TGraphErrors(NCENT, centBinCenter, ratio_vn46_vn68, nullCentErr, ratio_vn46_vn68State);
@@ -557,7 +613,7 @@ void sysResultsPlots(){
   grvn46_vn68Ratio->SetMarkerStyle(20);
   grvn46_vn68Ratio->GetXaxis()->SetTitle( "Centrality %");
   grvn46_vn68Ratio->GetYaxis()->SetTitle( Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_) );
-  grvn46_vn68Ratio->GetYaxis()->SetTitleOffset(1.45);
+  grvn46_vn68Ratio->GetYaxis()->SetTitleOffset(1.);
   grvn46_vn68Ratio->GetYaxis()->SetDecimals(2);
   grvn46_vn68Ratio->GetYaxis()->SetRangeUser(vn46_vn68Min, vn46_vn68Max);
 
@@ -565,10 +621,10 @@ void sysResultsPlots(){
   grvn46_vn68RatioSys->SetLineColor(1);
   grvn46_vn68RatioSys->SetMarkerColor(1);
   grvn46_vn68RatioSys->SetMarkerStyle(20);
-  grvn46_vn68RatioSys->SetFillColor(17);
+  grvn46_vn68RatioSys->SetFillColor(16);
   grvn46_vn68RatioSys->GetXaxis()->SetTitle( "Centrality %");
   grvn46_vn68RatioSys->GetYaxis()->SetTitle( Form("(v_{%i}{4} - v_{%i}{6})/(v_{%i}{6} - v_{%i}{8})", norder_, norder_, norder_, norder_) );
-  grvn46_vn68RatioSys->GetYaxis()->SetTitleOffset(1.45);
+  grvn46_vn68RatioSys->GetYaxis()->SetTitleOffset(1.);
   grvn46_vn68RatioSys->GetYaxis()->SetDecimals(2);
   grvn46_vn68RatioSys->GetYaxis()->SetRangeUser(vn46_vn68Min, vn46_vn68Max);
 
@@ -820,7 +876,7 @@ void sysResultsPlots(){
   TLegend * legg1e = new TLegend(0.22, 0.22, 0.54, 0.375);
   legInit( legg1e );
   legg1e->AddEntry(grGamma1ExpSys,    "Data",               "ep");
-  legg1e->AddEntry(grGamma1ExpTheory, "Hydro 2.76 TeV", "f");
+  legg1e->AddEntry(grGamma1ExpTheory, "Hydro 2.76 TeV, Ref. [27]", "f");
 
   //-- Fig. Gamma1Exp
   double m2[NCENT];
@@ -1225,11 +1281,11 @@ void sysResultsPlots(){
   cVn46_Vn68->SetRightMargin(0.1);
   grvn46_vn68RatioSys->Draw("apE2");
   grvn46_vn68Ratio->Draw("psame");
-  grTrentoP1_en46_en68->Draw("psame");
-  grTrentoP0_en46_en68->Draw("psame");
-  grTrentoPm1_en46_en68->Draw("psame");
+  //grTrentoP1_en46_en68->Draw("psame");
+  //grTrentoP0_en46_en68->Draw("psame");
+  //grTrentoPm1_en46_en68->Draw("psame");
   l11->Draw("same");
-  leg4668->Draw("same");
+  //leg4668->Draw("same");
   latex.DrawLatex(0.20, 0.913, "#bf{CMS}");
   latex.DrawLatex(0.64, 0.913, "PbPb 5.02 TeV");
   latex2.DrawLatex(0.49, 0.84, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
@@ -1291,20 +1347,26 @@ void sysResultsPlots(){
   grvn8vn4Ratio_ATLASNpart->SetMarkerColor(1);
   grvn8vn4Ratio_ATLASNpart->SetMarkerStyle(25);
 
-  grvn6vn4RatioSys->SetFillColor(17);
-  grvn8vn4RatioSys->SetFillColor(17);
+  grvn6vn4RatioSys->SetFillColor(16);
+  grvn8vn4RatioSys->SetFillColor(16);
 
-  TLegend * leg64c = new TLegend(0.29, 0.20, 0.62, 0.43);
+  TLegend * leg64c = new TLegend(0.27, 0.20, 0.6, 0.43);
   legInit( leg64c );
   leg64c->AddEntry(grvn6vn4Ratio,            "CMS",            "ep");
   leg64c->AddEntry(grvn6vn4Ratio_ATLASNpart, "ATLAS 2.76 TeV", "ep");
-  leg64c->AddEntry(grvn6vn4RatioTheory,      "Hydro 2.76 TeV", "f");
+  leg64c->AddEntry(grvn6vn4RatioTheory,      "Hydro 2.76 TeV, Ref. [27]", "f");
 
-  TLegend * leg84c = new TLegend(0.29, 0.20, 0.61, 0.33);
+  TLegend * leg84c = new TLegend(0.27, 0.20, 0.6, 0.43);
   legInit( leg84c );
   leg84c->AddEntry(grvn8vn4Ratio,            "CMS",   "ep");
   leg84c->AddEntry(grvn8vn4Ratio_ATLASNpart, "ATLAS 2.76 TeV", "ep");
+  leg84c->AddEntry(grVn84Th,                 "Hydro 2.76 TeV, Ref [27]", "l");
 
+  TLegend * leg86c = new TLegend(0.27, 0.20, 0.6, 0.33);
+  legInit( leg86c );
+  leg86c->AddEntry(grvn8vn6Ratio,            "CMS",   "ep");
+  leg86c->AddEntry(grVn86Th,                 "Hydro 2.76 TeV, Ref. [27]", "l");
+  
   TCanvas * cCumuRatioWithATLAS = new TCanvas("cCumuRatioWithATLAS", "cCumuRatioWithATLAS", 1500, 500);
   cCumuRatioWithATLAS->Divide(3,1);
 
@@ -1337,6 +1399,7 @@ void sysResultsPlots(){
   grvn8vn4RatioSys->Draw("pE2same");
   grvn8vn4Ratio_ATLASNpart->Draw("psame");
   grvn8vn4Ratio->Draw("psame");
+  grVn84Th->Draw("lsame");
   line2->Draw("same");
   leg84c->Draw("same");
   latex3.DrawLatex(0.20, 0.915, "#bf{CMS}");
@@ -1351,21 +1414,22 @@ void sysResultsPlots(){
   grVn86Dummy->Draw("ap");
   grvn8vn6RatioSys->Draw("pE2same");
   grvn8vn6Ratio->Draw("psame");
+  grVn86Th->Draw("lsame");
   line2->Draw("same");
-  //leg86->Draw("same");
+  leg86c->Draw("same");
   latex3.DrawLatex(0.23, 0.915, "#bf{CMS}");
   latex3.DrawLatex(0.41, 0.916, "26 #mub^{-1} (PbPb 5.02 TeV)");
   latex3.DrawLatex(0.443, 0.83, Form("%.1f < p_{T} < %.1f GeV/c", pt_min[0], pt_max[NPT-1]));
   latex3.DrawLatex(0.73, 0.76, Form("|#eta| < %.1f", tkEta));
 
   leg64c->SetTextFont(43);
-  leg64c->SetTextSize(26);
+  leg64c->SetTextSize(25);
 
   leg84c->SetTextFont(43);
-  leg84c->SetTextSize(26);
+  leg84c->SetTextSize(25);
 
-  leg86->SetTextFont(43);
-  leg86->SetTextSize(26);
+  leg86c->SetTextFont(43);
+  leg86c->SetTextSize(25);
 
   cCumuRatioWithATLAS->Update();
   cCumuRatioWithATLAS->SaveAs("../plots/skew/SysCumuRatioWithATLAS.pdf");
